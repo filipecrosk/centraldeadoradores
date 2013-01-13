@@ -95,21 +95,34 @@
 														dataType: 'html',
 														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val() },
 														success: function(data) {
-															$(".componente").remove();
-															$("#local").val("");
-															$("#data").val("");
-															$("#hora").val("");
-															$("#responsavel").val("");
-															$.ajax({
-																url: '/ajax/getsuccessalert',
-																type: 'post',
-																dataType: 'html',
-																data: {"texto":"Escala gravada com sucesso!"},
-																success: function(data) {
-																	$("#alerts").html(data);
-																	$(".salvar").button('reset');
-																}
-															});
+															if($.trim(data) !== "Ok"){
+																$.ajax({
+																	url: '/ajax/geterroralert',
+																	type: 'post',
+																	dataType: 'html',
+																	data: {"texto":data},
+																	success: function(data) {
+																		$("#alerts").html(data);
+																		$(".salvar").button('reset');
+																	}
+																});
+															} else {
+																$(".componente").remove();
+																$("#local").val("");
+																$("#data").val("");
+																$("#hora").val("");
+																$("#responsavel").val("");
+																$.ajax({
+																	url: '/ajax/getsuccessalert',
+																	type: 'post',
+																	dataType: 'html',
+																	data: {"texto":"Escala gravada com sucesso!"},
+																	success: function(data) {
+																		$("#alerts").html(data);
+																		$(".salvar").button('reset');
+																	}
+																});
+															}
 														},
 														error: function(data){
 															alert(data);

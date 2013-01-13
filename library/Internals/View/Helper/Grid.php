@@ -19,6 +19,7 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 	private $filter = true;
 	private $sort = true;
 	private $info = true;
+	private $showWeekDay = false;
 	
 	function __construct($type, $view, $data = null) {
 		$this->view = $view;
@@ -136,6 +137,9 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 							if(Internals_Util::isValidDateTime($value)){
 								$data = new DateTime($value);
 								$content .= $data->format('d/m/Y à\s H:i');
+								if($this->showWeekDay){
+									$content .= " - ".Internals_Util::getDayOfWeekName($data->format('w'));
+								}
 							} else {
 								$content .= Internals_Util::excerpt($value, 300);
 							}
@@ -300,6 +304,11 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 	
 	public function setInfo($bool){
 		$this->info = $bool;
+	}
+	
+	public function setShowWeekDay()
+	{
+		$this->showWeekDay = true;
 	}
 	
 	private function putDefaultHeader() {

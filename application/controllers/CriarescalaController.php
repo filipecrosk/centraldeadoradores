@@ -23,7 +23,8 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$modalCreateLocal->putSaveButton ();
 		$modalCreateLocal->putCancelButton ();
 		$modalCreateLocal->setModalName ( "NovoLocal" );
-		$body = '<form class="form-horizontal">
+		$body = new Application_Form_Locais();
+			/*'<form class="form-horizontal">
 				    <div class="control-group">
 				      <label class="control-label" for="nomeLocal">Nome: </label>
 				      <div class="controls">
@@ -36,7 +37,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				        	<input type="text" class="input-xlarge" id="enderecoLocal">
 				      </div>
 				  	</div>
-				</form>';
+				</form>';*/
 		$modalCreateLocal->setBody ( $body );
 		$modalConfirmaNovoLocal = new Internals_Modal ( "O local digitado não está cadastrado. Deseja cadastrar este local?", "Novo local" );
 		$modalConfirmaNovoLocal->putYesButton ();
@@ -58,7 +59,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 					$('." . $modalConfirmaNovoLocal->getModalName () . "Yes').click(function(){
 						$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('hide');
 						$('#" . $modalCreateLocal->getModalName () . "').modal('show');
-						$(\"#nomeLocal\").val($(\"#local\").val());
+						$(\"#nome\").val($(\"#local\").val());
 					});
 					$('." . $modalCreateLocal->getModalName () . "Save').click(function(){
 						$(this).button('loading');
@@ -66,7 +67,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 									url: '/ajax/novolocal',
 									type: 'post',
 									dataType: 'html',
-									data: { 'nomeLocal': $(\"#nomeLocal\").val(), 'enderecoLocal': $(\"#enderecoLocal\").val() },
+									data: { 'nomeLocal': $(\"#nome\").val(), 'enderecoLocal': $(\"#endereco\").val() },
 									success: function(data) {
 										$('#" . $modalCreateLocal->getModalName () . "').modal('hide');
 										$(this).button('reset');
@@ -88,10 +89,19 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$hora = $this->getRequest ()->getPost ( 'hora', null );
 		$nomeResponsavel = $this->getRequest ()->getPost ( 'nomeResponsavel', null );
 		$escala = $this->getRequest ()->getPost ( 'escalados', null );
+				
 		$local = LocalQuery::create ()->filterByNome ( $nomeLocal )->findOne ();
+		$date = new DateTime($data . " " . $hora.":00");
+		$existente = EscalaPessoaQuery::create()
+			->filterByIdLocal($local->getId())
+			->filterByData($date->format('Y-m-d H:i:s')) 
+			->findOne();
+		if($existente != null){
+			echo 'Já existe uma escala criada para esta hora para este local.';
+			return;
+		}
 		
 		$responsavel = UsuarioQuery::create ()->filterByNome ( $nomeResponsavel )->findOne ();
-		
 		$funcoes = FuncaoQuery::create ()->find ();
 		$arrFuncoes = array ();
 		foreach ( $funcoes as $funcao ) {
@@ -138,9 +148,12 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$alertEmail->setEmailHeader($email);
 				$alertEmail->setUsuario($usuario);
 				$alertEmail->save();
-			} catch ( Exception $ex ) { }
+			} catch ( Exception $ex ) {
+				echo "Ocorreu um erro. ".$ex;
+				return;
+			}
 		}
-		echo "sucesso";
+		echo "Ok";
 	}
 	
 	public function getdicaAction(){

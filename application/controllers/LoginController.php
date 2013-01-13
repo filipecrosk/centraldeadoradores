@@ -5,7 +5,7 @@ class LoginController extends Zend_Controller_Action {
 	public function init(){
 		parent::init();
 		if(Internals_Auth::Check()){
-			$this->_redirect("index");
+			$this->_redirect("/");
 		}
 		$this->_helper->layout()->setLayout("1column");
 	}
@@ -18,7 +18,7 @@ class LoginController extends Zend_Controller_Action {
 		 $this->_helper->viewRenderer->setNoRender(true);
 
 		 if(Internals_Auth::Autenticar($this->getRequest()->getPost('Usuario', null), $this->getRequest()->getPost('Senha', null))){
-		 	$this->_redirect("index");
+		 	$this->_redirect("/");
 		 }
 		 else{
 		 	Internals_Message::error("Erro de login");

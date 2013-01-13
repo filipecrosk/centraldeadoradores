@@ -39,7 +39,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
-		
+		$this->view->grid->setShowWeekDay();
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
   																	 LocalPeer::OM_CLASS=>LocalPeer::ID));
 	 	$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
@@ -49,7 +49,37 @@ class EscalaController extends Internals_Controller_CloseAction {
 							array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "equal", "0")),
 							array("<img src='/default/images/icone-interrogacao.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "notequal", "0"))
 						 );
+		
+		$modalConfirmaNovoLocal = new Internals_Modal ( "O local digitado não está cadastrado. Deseja cadastrar este local?", "Novo local" );
+		$modalConfirmaNovoLocal->putYesButton ();
+		$modalConfirmaNovoLocal->putNoButton ();
+		$modalConfirmaNovoLocal->setModalName ( "ConfirmaNovoLocal" );
+		$this->view->modal = array ();
+		$this->view->modal [] = $modalConfirmaNovoLocal;
+		
 		$this->view->grid->addFlagColumn("Status",$criterio);
+		$criterio = array(array("<img alt='delete' onclick='javascript:confirmDelete(this); return false;' src='/default/images/icone-delete.png' style=' width:20px; display: block; margin-left: auto;margin-right: auto;' >", false));
+		$this->view->grid->addFlagColumn("Excluir",$criterio);
+		$link = array("/escala/excluir?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
+  																	 LocalPeer::OM_CLASS=>LocalPeer::ID));
+		$this->view->grid->addLink("Excluir", $link, null, false);
+		
+		$this->view->inlineScript ()->captureStart ();
+		echo 
+		"
+		var link = '';
+		function confirmDelete(comp){
+			link = $(comp).parent().attr('href');
+			$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('show');
+		}
+		$(document).ready(function() {
+			$('." . $modalConfirmaNovoLocal->getModalName () . "Yes').click(function(){
+				$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('hide');
+				window.location.replace(link);
+			});
+		});
+		";
+		$this->view->inlineScript ()->captureEnd ();
 	}
 	
 	public function confirmadasAction(){
@@ -209,16 +239,21 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->useEscalaPessoaQuery()
 				->filterByData($data)
 				->filterByIdLocal($idLocal)
-				->joinUsuarioRelatedByIdUsuario()
 			->endUse()
 			->withColumn("Funcao.Nome")
-			->withColumn("Usuario.Nome")
-			->withColumn("Usuario.Id")
 			->withColumn("EscalaPessoa.IdStatusEscala")
 			->withColumn("EscalaPessoa.MotivoRecusa")
+			->withColumn("EscalaPessoa.IdUsuario")
 			->select(array("Funcao.Nome", "EscalaPessoa.IdStatusEscala"))
 			->find()
 			->toArray();
+		
+		for ($i = 0; $i < count($dados); $i++) {
+			$usuario = UsuarioQuery::create()
+				->findPk($dados[$i]["EscalaPessoaIdUsuario"]);
+			$dados[$i]["UsuarioId"] = $usuario->getId();
+			$dados[$i]["UsuarioNome"] = $usuario->getNome();
+		}
 		
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaFuncaoPeer::OM_CLASS, $this->view, $dados);
 		
@@ -258,5 +293,16 @@ class EscalaController extends Internals_Controller_CloseAction {
 		Internals_Message::success("Escala recusada com sucesso!");
 		$this->_redirect("escala/aconfirmar");
 	}
-
+	public function excluirAction(){
+		$this->_helper->layout()->setLayout("blank");
+		$this->_helper->viewRenderer->setNoRender();
+		$data = $this->getRequest()->getParam('data', null);
+		$local = $this->getRequest()->getParam('idLocal', null);
+		$escalas = EscalaPessoaQuery::create()
+			->filterByData($data)
+			->filterByIdLocal($local)
+			->delete();		
+		Internals_Message::success("Escala excluída com sucesso.");
+		$this->_redirect("escala");
+	}
 }

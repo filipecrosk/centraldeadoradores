@@ -49,59 +49,6 @@
 			
 		}
 	});
-	function verifyBrowser(){
-		var userAgent = navigator.userAgent.toLowerCase();
-		var version   = 0;
-		$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
-		if ($.browser.msie) {
-			userAgent = $.browser.version;
-			userAgent = userAgent.substring(0,userAgent.indexOf('.'));	
-			version = userAgent;
-			if(version < 10){
-				return false;
-			}
-		}
-		if ($.browser.chrome) {
-			userAgent = userAgent.substring(userAgent.indexOf('chrome/') + 7);
-			userAgent = userAgent.substring(0,userAgent.indexOf('.'));	
-			version = userAgent;
-			$.browser.safari = false;
-			if(version < 23){
-				return false;
-			}
-		}
-		if ($.browser.safari) {
-			userAgent = userAgent.substring(userAgent.indexOf('safari/') + 7);	
-			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
-			version = userAgent;	
-			if(version < 534){
-				return false;
-			}
-		}
-		if ($.browser.mozilla) {
-			if (navigator.userAgent.toLowerCase().indexOf('firefox') != -1) {
-			userAgent = userAgent.substring(userAgent.indexOf('firefox/') + 8);
-			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
-			version = userAgent;
-				if(version < 17){
-					return false;
-				}
-			}
-			else {
-				return false;
-			}
-		}
-		
-		if ($.browser.opera) {
-			userAgent = userAgent.substring(userAgent.indexOf('version/') + 8);
-			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
-			version = userAgent;
-			if(version < 12){
-				return false;
-			}
-		}
-		return true;
-	}
 </script>
 <div id="body" class="offset1">
 	<p style="text-align:center;">Todos os campos são de preenchimento obrigatório!</p>
