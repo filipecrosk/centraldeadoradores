@@ -1,0 +1,161 @@
+<script type="text/javascript">
+	var toSend = [];
+	$(document).ready(function(){
+		var destinatarios = [];
+		$("#envioemailform").submit(function(){
+			var oEditor = CKEDITOR.instances.corpoMensagem;
+			if($(toSend).size() === 0){
+				$.ajax({
+					url: '/ajax/geterroralert',
+					type: 'post',
+					dataType: 'html',
+					data: {"texto":"Por favor, escolha pelo menos 1 destinatário válido!"},
+					success: function(data) {
+						$("#alerts").html(data);
+						$(document).scrollTop(0);
+					}
+				});
+			} else if($("#assunto").val() == ""){
+				$.ajax({
+					url: '/ajax/geterroralert',
+					type: 'post',
+					dataType: 'html',
+					data: {"texto":"Por favor, digite o assunto!"},
+					success: function(data) {
+						$("#alerts").html(data);
+						$(document).scrollTop(0);
+					}
+				});
+			} else if(oEditor.getData() == ""){
+				$.ajax({
+					url: '/ajax/geterroralert',
+					type: 'post',
+					dataType: 'html',
+					data: {"texto":"Por favor, digite o conteúdo do e-mail!"},
+					success: function(data) {
+						$("#alerts").html(data);
+						$(document).scrollTop(0);
+					}
+				});
+			} else {
+				//Marcar mensagem para envio
+				$("#destinatario").prop('disabled', true);
+				$("#assunto").prop('disabled', true);
+				oEditor.setReadOnly(true);
+				$("#enviar").button('loading');
+				$.ajax({
+					url: '/envioemail/marcarenvio',
+					type: 'post',
+					dataType: 'html',
+					data: {
+							'destinatarios':toSend,
+							'assunto':$("#assunto").val(),
+							'corpoMensagem': oEditor.getData()
+						  },
+					success: function(data) {
+						$("#destinatario").prop('disabled', false);
+						$("#destinatario").val("");
+						$("#assunto").prop('disabled', false);
+						$("#assunto").val("");
+						oEditor.setReadOnly(false);
+						oEditor.setData("");
+						$("#enviar").button('reset');
+						toSend = [];
+						$("#selecionados").html('');
+						$.ajax({
+							url: '/ajax/getsuccessalert',
+							type: 'post',
+							dataType: 'html',
+							data: {"texto":"Mensagens marcadas para envio com sucesso!"},
+							success: function(data) {
+								$("#alerts").html(data);
+								$(document).scrollTop(0);
+							}
+						});
+					}
+				});	
+			}
+			return false;
+		});
+		$("#destinatario").after("<div id='selecionados'></div>");
+		$.ajax({
+			url: '/ajax/getdestinatarios',
+			dataType: 'json',
+			success: function(data) {
+				
+				jQuery.each(data, function(i, val) {
+					destinatarios.push(val.Nome);
+				});
+				$("#destinatario").typeahead({
+					source:destinatarios,
+				    onselect: function (obj) {
+				        adicionarDestinatario($("#destinatario"));
+				    }
+				});
+			}
+		});
+		
+		$("#destinatario").focus(function(){
+			$(this).keypress(function(event) {
+				if ( event.which == 13 && jQuery.inArray($(this).val(), destinatarios) != -1) {
+					adicionarDestinatario($(this));
+					event.preventDefault();
+				}
+			});
+		});
+	});
+	function adicionarDestinatario(destinatario){
+		if(jQuery.inArray($(destinatario).val(), toSend) == -1){
+			var arr = $(destinatario).val().split(':');
+			var type = "";
+			if(arr[0] == "Banda"){
+				type = "Banda";
+			} else if(arr[0] == "Area"){
+				type = "Area";
+			} else if(arr[0] == "Função"){
+				type = "Funcao";
+			} else if(arr[0] == "Todos"){
+				type = "Todos";
+				toSend = [];
+				$("#selecionados").html('');
+				$("#destinatario").prop('disabled', true);
+			} else {
+				type = "Usuario";
+			}
+			$("#selecionados").append("<div title='"+$(destinatario).val()+"' class='dest dest" + type + "'>"+$(destinatario).val()+"<span class='close' style='margin-left:3px;' onclick='removeDest($(this).parent())'>×</span></div>");
+			toSend.push($(destinatario).val());
+		}
+		$(destinatario).val("");
+	}
+	function removeDest(comp){
+		toSend = jQuery.grep(toSend, function(value) {
+			  return value != $(comp).attr("title");
+		});
+		if($(comp).attr('title') == "Todos"){
+			$("#destinatario").prop('disabled', false);
+		}
+		$(comp).remove();
+	}
+</script>
+<div id="teste"></div>
+<h3>Enviar E-mail</h3>
+<form id="envioemailform" method="post" action="/envioemail/enviar">
+	<div class="form-inline">
+		<div class="control-group" >
+			<span class="help-block">Digite o nome dos usuários que serão os destinatários do e-mail ou 'Banda' para escolher uma Banda,
+			ou 'Ministério' para escolher um ministério, ou 'Função' para escolher uma função. Quando encontrar o destinatário que
+			deseja, aperte enter.</span>
+			<label class="control-label" for="destinatario" class="input-xxlarge">Destinatários: </label>
+			<input id="destinatario" type="text">
+		</div>
+		<div class="control-group" >
+			<label class="control-label" for="assunto">Assunto: </label>
+			<input id="assunto" type="text" class="input-xxlarge">
+		</div>
+		<div class="control-group" >
+			<label class="control-label" for="assunto">Mensagem: </label>
+			<textarea class="ckeditor" id="corpoMensagem" name="corpoMensagem"></textarea>
+		</div>
+		<button id="enviar" class="btn btn-primary" autocomplete="off" data-loading-text="Enviando..." style="float:right;margin-right:30px;margin-top:15px;margin-bottom:30px;">Enviar</button>
+	</div>
+</form>

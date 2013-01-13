@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/levantamento/!svn/ver/1/runtime/lib/util
+END
+PropelDateTime.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/levantamento/!svn/ver/1/runtime/lib/util/PropelDateTime.php
+END
+PropelPager.php
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/levantamento/!svn/ver/1/runtime/lib/util/PropelPager.php
+END
+NodePeer.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/levantamento/!svn/ver/1/runtime/lib/util/NodePeer.php
+END
+PropelAutoloader.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/levantamento/!svn/ver/1/runtime/lib/util/PropelAutoloader.php
+END
+PropelModelPager.php
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/levantamento/!svn/ver/1/runtime/lib/util/PropelModelPager.php
+END
+PropelColumnTypes.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/levantamento/!svn/ver/1/runtime/lib/util/PropelColumnTypes.php
+END
+BasePeer.php
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/levantamento/!svn/ver/1/runtime/lib/util/BasePeer.php
+END
+PropelConditionalProxy.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/util/PropelConditionalProxy.php
+END

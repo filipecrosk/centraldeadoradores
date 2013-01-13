@@ -1,0 +1,1 @@
+INSERT INTO `adoradores`.`conta_email` (`Id_Conta_Email`, `UserName`, `Password`, `Emails_Enviados`, `Ultimo_Envio`) VALUES (1, 'centraldeadoradores@centraldeadoradores.com.br', 'adoradoresmail', 0, '2012-01-01');

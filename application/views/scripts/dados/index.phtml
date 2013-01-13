@@ -1,0 +1,452 @@
+<script type="text/javascript">
+<!--
+	$(document).ready(function(){
+		$('select').change(function(){
+			verificaCondicoes();			
+		});
+		function verificaCondicoes(){
+			if($('select[name="estaEmCelula"]').val() == "1"){
+				$('.estaEmCelula').fadeIn("slow", "linear");						
+			}else{
+				$('.estaEmCelula').fadeOut("slow", "linear");
+				$('select[name="diaCelula"]').val("");
+				$('select[name="horaCelula"]').val("");
+				$('select[name="minutoCelula"]').val("");
+			}
+			if($('select[name="coordenador"]').val() == "1"){
+				$('.eCoordenador').fadeIn("slow", "linear");						
+			}else{
+				$('.eCoordenador').fadeOut("slow", "linear");
+				$('select[name="diaCoordenador"]').val("");
+				$('select[name="horaCoordenador"]').val("");
+				$('select[name="minutoCoordenador"]').val("");
+			}
+			if($('select[name="discipulador"]').val() == "1"){
+				$('.eDiscipulador').fadeIn("slow", "linear");						
+			}else{
+				$('.eDiscipulador').fadeOut("slow", "linear");
+				$('select[name="diaDiscipulador"]').val("");
+				$('select[name="horaDiscipulador"]').val("");
+				$('select[name="minutoDiscipulador"]').val("");
+			}
+			if($('select[name="lider"]').val() == "1"){
+				$('.eLider').fadeIn("slow", "linear");
+				$('.naoELider').fadeOut("slow", "linear");
+				$('select[name="liderTreinamento"]').val("");
+				$('select[name="nomeLider"]').val("");						
+			}else{
+				$('.naoELider').fadeIn("slow", "linear");
+				$('.eLider').fadeOut("slow", "linear");
+				$('select[name="diaLider"]').val("");
+				$('select[name="horaLider"]').val("");
+				$('select[name="minutoLider"]').val("");
+			}				
+			if($('select[name="ccm"]').val() == "1"){
+				$('.fazCCM').fadeIn("slow", "linear");						
+			}else{
+				$('.fazCCM').fadeOut("slow", "linear");
+			}
+		}
+	});
+// -->
+</script>
+		
+<div id="all">
+	<h1>Central de Adoradores</h1>
+	<p>Levantamento de dados da Central de Adoradores</p>
+	<p>Essas informações são muito importantes para conhecermos a disponibilidade de todos e 
+	podermos aproveitar melhor o tempo de cada um. Por favor, preencha os campos a seguir.</p>
+	<form action="dados" method="post">
+		<table id="formulario" >		
+			<tr>
+				<td>Você está em uma célula?</td>
+				<td>
+					<select name="estaEmCelula">		
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>
+				</td>			
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr class="estaEmCelula">
+				<td>Dia da sua célula:</td>
+				<td>
+					<select name="diaCelula">
+						<option value="1">Domingo</option>
+						<option value="2">Segunda</option>
+						<option value="3">Terça</option>
+						<option value="4">Quarta</option>
+						<option value="5">Quinta</option>
+						<option value="6">Sexta</option>
+						<option value="7">Sábado</option>
+					</select>
+				</td>
+				<td>Horário:</td>
+				<td style="width:200px;">
+					<select name="horaCelula">
+						<option value="1">01</option>
+						<option value="2">02</option>
+						<option value="3">03</option>
+						<option value="4">04</option>
+						<option value="5">05</option>
+						<option value="6">06</option>
+						<option value="7">07</option>
+						<option value="8">08</option>
+						<option value="9">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					 horas<br>
+					<select name="minutoCelula">
+						<option value="0">00</option>
+						<option value="1">10</option>
+						<option value="2">20</option>
+						<option value="3">30</option>
+						<option value="4">40</option>
+						<option value="5">50</option>
+					</select>
+					 minutos<br>
+					<select name="periodoCelula">
+						<option value="1">am</option>
+						<option value="2" selected="selected">pm</option>
+					</select>
+				</td>
+				<td>&nbsp;</td>
+				<td style="width:200px;">&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Você é coordenador?</td>
+				<td>
+					<select name="coordenador">						
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>			
+			</tr>
+			<tr class="eCoordenador">
+				<td>Dia do seu GD:</td>
+				<td>
+					<select name="diaCoordenador">
+						<option value="1">Domingo</option>
+						<option value="2">Segunda</option>
+						<option value="3">Terça</option>
+						<option value="4">Quarta</option>
+						<option value="5">Quinta</option>
+						<option value="6">Sexta</option>
+						<option value="7">Sábado</option>
+					</select>
+				</td>
+				<td>Frequência:</td>
+				<td style="width:200px;">
+					<select name="frequenciaCoordenador">
+						<option value="1">Semanal</option>
+						<option value="2">Quinzenal</option>
+						<option value="3">Mensal</option>
+					</select>
+				</td>
+				<td>Horário:</td>
+				<td style="width:200px;">
+					<select name="horaCoordenador">
+						<option value="1">01</option>
+						<option value="2">02</option>
+						<option value="3">03</option>
+						<option value="4">04</option>
+						<option value="5">05</option>
+						<option value="6">06</option>
+						<option value="7">07</option>
+						<option value="8">08</option>
+						<option value="9">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					 horas<br>
+					<select name="minutoCoordenador">
+						<option value="0">00</option>
+						<option value="1">10</option>
+						<option value="2">20</option>
+						<option value="3">30</option>
+						<option value="4">40</option>
+						<option value="5">50</option>
+					</select>
+					 minutos<br>
+					<select name="periodoCoordenador">
+						<option value="1">am</option>
+						<option value="2" selected="selected">pm</option>
+					</select>
+				</td>			
+			</tr>
+			<tr>
+				<td>Você é discipulador?</td>
+				<td>
+					<select name="discipulador">						
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>			
+			</tr>
+			<tr class="eDiscipulador">
+				<td>Dia do seu GD:</td>
+				<td>
+					<select name="diaDiscipulador">
+						<option value="1">Domingo</option>
+						<option value="2">Segunda</option>
+						<option value="3">Terça</option>
+						<option value="4">Quarta</option>
+						<option value="5">Quinta</option>
+						<option value="6">Sexta</option>
+						<option value="7">Sábado</option>
+					</select>
+				</td>
+				<td>Frequência:</td>
+				<td style="width:200px;">
+					<select name="frequenciaDiscipulador">
+						<option value="1">Semanal</option>
+						<option value="2">Quinzenal</option>
+						<option value="3">Mensal</option>
+					</select>
+				</td>
+				<td>Horário:</td>
+				<td style="width:200px;">
+					<select name="horaDiscipulador">
+						<option value="1">01</option>
+						<option value="2">02</option>
+						<option value="3">03</option>
+						<option value="4">04</option>
+						<option value="5">05</option>
+						<option value="6">06</option>
+						<option value="7">07</option>
+						<option value="8">08</option>
+						<option value="9">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					 horas<br>
+					<select name="minutoDiscipulador">
+						<option value="0">00</option>
+						<option value="1">10</option>
+						<option value="2">20</option>
+						<option value="3">30</option>
+						<option value="4">40</option>
+						<option value="5">50</option>
+					</select>
+					 minutos<br>
+					<select name="periodoDiscipulador">
+						<option value="1">am</option>
+						<option value="2" selected="selected">pm</option>
+					</select>
+				</td>			
+			</tr>
+			<tr>
+				<td>Você é líder de célula?</td>
+				<td>
+					<select name="lider">						
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>			
+			</tr>
+			<tr class="eLider">
+				<td>Dia do seu GD:</td>
+				<td>
+					<select name="diaLider">
+						<option value="1">Domingo</option>
+						<option value="2">Segunda</option>
+						<option value="3">Terça</option>
+						<option value="4">Quarta</option>
+						<option value="5">Quinta</option>
+						<option value="6">Sexta</option>
+						<option value="7">Sábado</option>
+					</select>
+				</td>
+				<td>Frequência:</td>
+				<td style="width:200px;">
+					<select name="frequenciaLider">
+						<option value="1">Semanal</option>
+						<option value="2">Quinzenal</option>
+						<option value="3">Mensal</option>
+					</select>
+				</td>
+				<td>Horário:</td>
+				<td style="width:200px;">
+					<select name="horaLider">
+						<option value="1">01</option>
+						<option value="2">02</option>
+						<option value="3">03</option>
+						<option value="4">04</option>
+						<option value="5">05</option>
+						<option value="6">06</option>
+						<option value="7">07</option>
+						<option value="8">08</option>
+						<option value="9">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					 horas<br>
+					<select name="minutoLider">
+						<option value="0">00</option>
+						<option value="1">10</option>
+						<option value="2">20</option>
+						<option value="3">30</option>
+						<option value="4">40</option>
+						<option value="5">50</option>
+					</select>
+					 minutos<br>
+					<select name="periodoLider">
+						<option value="1">am</option>
+						<option value="2" selected="selected">pm</option>
+					</select>
+				</td>			
+			</tr>
+			<tr class="naoELider">
+				<td>Nome do líder da sua célula: </td>
+				<td colspan="5">
+					<input type="text" name="nomeLider" style="width:100%;" />
+				</td>
+			</tr>
+			<tr class="naoELider">
+				<td>Você é líder em treinamento?</td>
+				<td>
+					<select name="liderTreinamento">						
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>
+				</td>			
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td>Você faz CCM?</td>
+				<td>
+					<select name="ccm">						
+						<option value="0" selected="selected">Não</option>				
+						<option value="1">Sim</option>
+					</select>	
+				</td>				
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr class="fazCCM">
+				<td>Dia:</td>
+				<td>
+					<select name="diaCCM">
+						<option value="1">Domingo</option>
+						<option value="2">Segunda</option>
+						<option value="3">Terça</option>
+						<option value="4">Quarta</option>
+						<option value="5">Quinta</option>
+						<option value="6">Sexta</option>
+						<option value="7">Sábado</option>
+					</select>
+				</td>
+				<td>Horário:</td>
+				<td style="width:200px;">
+					<select name="horaCCM">
+						<option value="1">01</option>
+						<option value="2">02</option>
+						<option value="3">03</option>
+						<option value="4">04</option>
+						<option value="5">05</option>
+						<option value="6">06</option>
+						<option value="7">07</option>
+						<option value="8">08</option>
+						<option value="9">09</option>
+						<option value="10">10</option>
+						<option value="11">11</option>
+						<option value="12">12</option>
+					</select>
+					 horas<br>
+					<select name="minutoCCM">
+						<option value="0">00</option>
+						<option value="1">10</option>
+						<option value="2">20</option>
+						<option value="3">30</option>
+						<option value="4">40</option>
+						<option value="5">50</option>
+					</select>
+					 minutos<br>
+					<select name="periodoCCM">
+						<option value="1">am</option>
+						<option value="2" selected="selected">pm</option>
+					</select>
+				</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>			
+			</tr>
+		</table>
+		<p>Marque a seguir os horários normalmente está disponível:	</p>
+		<table id="quadroDisponibilidade">
+			<tr>
+				<td>&nbsp;</td>
+				<td><b>Domingo</b></td>
+				<td><b>Segunda</b></td>
+				<td><b>Terça</b></td>
+				<td><b>Quarta</b></td>
+				<td><b>Quinta</b></td>
+				<td><b>Sexta</b></td>
+				<td><b>Sábado</b></td>			
+			</tr>
+			<tr>
+				<td>Manhã</td>
+				<td><input type="checkbox" value="1" name="manhaDomingo" ></td>						
+				<td><input type="checkbox" value="1" name="manhaSegunda" ></td>
+				<td><input type="checkbox" value="1" name="manhaTerca" ></td>
+				<td><input type="checkbox" value="1" name="manhaQuarta" ></td>
+				<td><input type="checkbox" value="1" name="manhaQuinta" ></td>
+				<td><input type="checkbox" value="1" name="manhaSexta" ></td>
+				<td><input type="checkbox" value="1" name="manhaSabado" ></td>		
+			</tr>
+			<tr>
+				<td>Tarde</td>
+				<td><input type="checkbox" value="1" name="tardeDomingo" ></td>						
+				<td><input type="checkbox" value="1" name="tardeSegunda" ></td>
+				<td><input type="checkbox" value="1" name="tardeTerca" ></td>
+				<td><input type="checkbox" value="1" name="tardeQuarta" ></td>
+				<td><input type="checkbox" value="1" name="tardeQuinta" ></td>
+				<td><input type="checkbox" value="1" name="tardeSexta" ></td>
+				<td><input type="checkbox" value="1" name="tardeSabado" ></td>			
+			</tr>
+			<tr>
+				<td>Noite</td>
+				<td><input type="checkbox" value="1" name="noiteDomingo" ></td>						
+				<td><input type="checkbox" value="1" name="noiteSegunda" ></td>
+				<td><input type="checkbox" value="1" name="noiteTerca" ></td>
+				<td><input type="checkbox" value="1" name="noiteQuarta" ></td>
+				<td><input type="checkbox" value="1" name="noiteQuinta" ></td>
+				<td><input type="checkbox" value="1" name="noiteSexta" ></td>
+				<td><input type="checkbox" value="1" name="noiteSabado" ></td>			
+			</tr>
+		</table>
+		<p>Descreva mais sobre você (disponibilidade/ tarefas extras) com informações que 
+		através deste quadro não conseguiríamos obter.</p>
+		<p>
+			<textarea id="observacao" name="observacao" style="width:960px;height:200px;"></textarea>			
+		</p>
+		<input type="submit" name="submit" value="Enviar" class="btn" style="float:right;" />
+	</form>
+	<div id="rodape">
+		<p style="padding:30px;text-align:center;"><a href="http://www.goobi.com.br" style="color:#333;">&bull; by Gooby &bull;</a></p>
+	</div>
+</div>	

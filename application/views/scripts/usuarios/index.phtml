@@ -1,0 +1,36 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#checkFilterMinisterio").val(getURLParameter("filterMinisterio"));
+		$("#filterMinisterio").click(function(){
+			var ministerio = $("#checkFilterMinisterio").val();
+			if(ministerio != -1){
+				window.location.replace("/usuarios?filterMinisterio=" + ministerio);
+			} else {
+				window.location.replace("/usuarios");
+			}
+			return false;
+		});
+	});
+	function getURLParameter(name) {
+	    return decodeURI(
+	        (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+	    );
+	}
+</script>
+<div style="text-align:center;">
+
+	Filtro por Ministério:	<select id="checkFilterMinisterio">
+								<option selected="selected" value="-1">Todos</option>
+								<option value="-2">Sem ministério</option>
+								<?php 
+									foreach ($this->ministerios as $ministerio){
+										echo "<option value='".$ministerio->getId()."'>".$ministerio->getNome()."</option>";
+									}
+								?>
+							</select>
+							<button id="filterMinisterio" class="btn btn-primary" style="margin-bottom:8px; margin-left:10px;">Filtrar</button>
+
+</div>
+<?php
+	echo $this->crudModalAddAction;
+?>

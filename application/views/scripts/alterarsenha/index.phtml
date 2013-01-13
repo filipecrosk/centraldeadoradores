@@ -1,0 +1,27 @@
+<h1>Alteração de Senha</h1>
+<p style="text-align:center;">Atenção! No próximo acesso a senha atual não terá mais valor.</p>
+<div class="offset3">
+	<form action="/alterarsenha/do" method="post" class="form-horizontal span5">
+		<div class="control-group">
+			<label class="control-label" for="senhaAtual">Senha Atual: </label>
+			<div class="controls">
+				<input type="password" id="senhaAtual" name="senhaAtual" maxlength="50" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="novaSenha">Nova Senha: </label>
+			<div class="controls">
+				<input type="password" id="novaSenha" name="novaSenha" maxlength="50" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="confirmacao">Confirmação Senha: </label>
+			<div class="controls">
+				<input type="password" id="confirmacao" name="confirmacao" maxlength="50" />
+			</div>
+		</div>
+		<div style="float:right;margin-top:10px;">
+			<input class="btn btn-primary" type="submit" value="Alterar"  autocomplete="off" data-loading-text="Alterando, aguarde..." onclick="$(this).button('loading');"  />
+		</div>
+	</form>
+</div>

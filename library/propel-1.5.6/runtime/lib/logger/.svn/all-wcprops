@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/levantamento/!svn/ver/1/runtime/lib/logger
+END
+BasicLogger.php
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/levantamento/!svn/ver/1/runtime/lib/logger/BasicLogger.php
+END
+MojaviLogAdapter.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/levantamento/!svn/ver/1/runtime/lib/logger/MojaviLogAdapter.php
+END

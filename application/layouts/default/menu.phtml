@@ -1,0 +1,127 @@
+				<?php 
+					$userCredentials = new Zend_Session_Namespace('UserCredentials');
+				?>
+				<div class="navbar">
+					<div class="navbar-inner">
+						<div class="container">
+							<ul class="nav">
+								<li style="padding-left:10px; padding-right:10px;">
+									<a class="brand" href="/" style="color:white;">Central de Adoradores</a>
+								</li>
+								<?php 
+									if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+								?>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Cadastro
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/usuarios">Usuários</a>
+										</li>
+										<li>
+											<a href="/bandas">Bandas</a>
+										</li>
+										<li>
+											<a href="/funcoes">Funções</a>
+										</li>
+										<li>
+											<a href="/areas">Áreas</a>
+										</li>
+									</ul>
+								</li>
+								<?php 
+									}
+								?>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Escalas
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/escala">Minhas escalas</a>
+										</li>
+										<?php 
+											if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+										?>
+										<li>
+											<a href="/criarescala">Criar escala</a>
+										</li>
+										<?php 
+											}
+										?>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Kits de Ensaio
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/kitsdeensaio">Baixar</a>
+										</li>
+										<?php 
+											if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+										?>
+										<li>
+											<a href="/uploadkits">Upload</a>
+										</li>
+										<?php 
+											}
+										?>
+									</ul>
+								</li>
+								<?php 
+									if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+								?>
+								<li>
+									<a href="/estatisticas">Estatísticas</a>
+								</li>
+								<?php 
+									}
+								?>
+								<?php 
+									if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+								?>
+								<li>
+									<a href="/envioemail">Envio de E-mails</a>
+								</li>
+								<?php 
+									}
+								?>
+							</ul>
+							<ul class="nav pull-right">
+								<?php 
+									if($userCredentials != null && $userCredentials->nivelPermissao >= 3){
+								?>
+								<li>
+									<a href="/sistemaantigo">Sistema Antigo</a>
+								</li>
+								<?php 
+									}
+								?>
+								 <li class="dropdown">
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+										Configurações
+										<b class="caret"></b>
+									</a>
+									<ul class="dropdown-menu">
+										<li>
+											<a href="/meucadastro">Informações do cadastro</a>
+										</li>
+										<li>
+											<a href="/alterarsenha">Alterar senha</a>
+										</li>
+									</ul>
+								</li>
+								<li class="divider-vertical">&nbsp;</li>
+								<li>
+									<a href="/logout">Logout</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>

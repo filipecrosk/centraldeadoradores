@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 43
+/levantamento/!svn/ver/1/runtime/lib/parser
+END
+PropelCSVParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/levantamento/!svn/ver/1/runtime/lib/parser/PropelCSVParser.php
+END
+PropelParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/levantamento/!svn/ver/1/runtime/lib/parser/PropelParser.php
+END
+PropelXMLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/levantamento/!svn/ver/1/runtime/lib/parser/PropelXMLParser.php
+END
+PropelYAMLParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/levantamento/!svn/ver/1/runtime/lib/parser/PropelYAMLParser.php
+END
+PropelJSONParser.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/levantamento/!svn/ver/1/runtime/lib/parser/PropelJSONParser.php
+END

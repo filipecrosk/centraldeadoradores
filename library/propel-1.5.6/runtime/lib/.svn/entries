@@ -1,0 +1,101 @@
+10
+
+dir
+1
+http://svn.goobi.com.br/levantamento/runtime/lib
+http://svn.goobi.com.br/levantamento
+
+
+
+2012-04-20T23:44:20.516927Z
+1
+pedroxavier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+00740ace-c1ca-4aa6-ba6a-db186017d3cc
+
+connection
+dir
+
+logger
+dir
+
+adapter
+dir
+
+formatter
+dir
+
+config
+dir
+
+query
+dir
+
+validator
+dir
+
+Propel.php
+file
+
+
+
+
+2012-04-21T00:13:48.379130Z
+1b7750874b6aa09dcaf3833aae07dda5
+2012-04-20T23:44:20.516927Z
+1
+pedroxavier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+29685
+
+collection
+dir
+
+om
+dir
+
+parser
+dir
+
+map
+dir
+
+util
+dir
+
+exception
+dir
+

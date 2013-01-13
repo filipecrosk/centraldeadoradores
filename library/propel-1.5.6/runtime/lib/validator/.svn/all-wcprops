@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/levantamento/!svn/ver/1/runtime/lib/validator
+END
+MinLengthValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/levantamento/!svn/ver/1/runtime/lib/validator/MinLengthValidator.php
+END
+UniqueValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/levantamento/!svn/ver/1/runtime/lib/validator/UniqueValidator.php
+END
+MaxLengthValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/levantamento/!svn/ver/1/runtime/lib/validator/MaxLengthValidator.php
+END
+ValidationFailed.php
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/levantamento/!svn/ver/1/runtime/lib/validator/ValidationFailed.php
+END
+MatchValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/levantamento/!svn/ver/1/runtime/lib/validator/MatchValidator.php
+END
+NotMatchValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/validator/NotMatchValidator.php
+END
+ValidValuesValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/levantamento/!svn/ver/1/runtime/lib/validator/ValidValuesValidator.php
+END
+MinValueValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/validator/MinValueValidator.php
+END
+RequiredValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/validator/RequiredValidator.php
+END
+BasicValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/levantamento/!svn/ver/1/runtime/lib/validator/BasicValidator.php
+END
+TypeValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/levantamento/!svn/ver/1/runtime/lib/validator/TypeValidator.php
+END
+MaxValueValidator.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/validator/MaxValueValidator.php
+END

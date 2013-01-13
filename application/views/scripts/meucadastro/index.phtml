@@ -1,0 +1,57 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#aniversario').mask("99/99");
+		$('#telefone').mask("(99)9999-9999");
+		$('#celular').mask("(99)9999-9999");
+	});
+</script>
+<h1>Informações do Cadastro</h1>
+<div class="offset3">
+	<form action="/meucadastro/update" method="post" class="form-horizontal span8">
+		<div class="control-group">
+			<label class="control-label" for="nome">Nome: </label>
+			<div class="controls">
+				<input type="text" id="nome" name="nome" class="span6"  maxlength="50" value="<?php echo $this->nome; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="nome">Apelido: </label>
+			<div class="controls">
+				<input type="text" id="apelido" name="apelido" class="span6"  maxlength="50" value="<?php echo $this->apelido; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="email">E-Mail: </label>
+			<div class="controls">
+				<input type="text" id="email" name="email" class="span6"  maxlength="50" value="<?php echo $this->email; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="endereco">Endereço: </label>
+			<div class="controls">
+				<input type="text" id="endereco" name="endereco" class="span6"  maxlength="100" value="<?php echo $this->endereco; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="telefone">Telefone: </label>
+			<div class="controls">
+				<input type="text" id="telefone" name="telefone" class="input-small" value="<?php echo $this->telefone; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="celular">Celular: </label>
+			<div class="controls">
+				<input type="text" id="celular" name="celular" class="input-small" value="<?php echo $this->celular; ?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="aniversario">Aniversário: </label>
+			<div class="controls">
+				<input type="text" id="aniversario" name="aniversario" class="input-mini" value="<?php echo $this->aniversario; ?>" />
+			</div>
+		</div>
+		<div style="float:right;margin-top:10px;">
+			<input class="btn btn-primary" type="submit" value="Salvar" />
+		</div>
+	</form>
+</div>

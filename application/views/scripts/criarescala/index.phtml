@@ -1,0 +1,381 @@
+<script type="text/javascript">
+	var usuarios = [];
+	var funcoesEnviar = [];
+	$(document).ready(function(){
+		var locais = [];
+		$('#data').datepicker();
+		$.ajax({
+			url: '/ajax/getlocais',
+			dataType: 'json',
+			success: function(data) {
+				jQuery.each(data, function(i, val) {
+					locais.push(val.Nome);
+				});
+				$( "#local" ).autocomplete( "option", "source", locais );
+			}
+		});
+
+		$.ajax({
+			url: '/ajax/getusuarios',
+			dataType: 'json',
+			success: function(data) {
+				jQuery.each(data, function(i, val) {
+					usuarios.push(val.Nome);
+				});
+				$( ".nomeUsuario" ).autocomplete( "option", "source", usuarios );
+				$( "#responsavel" ).autocomplete( "option", "source", usuarios );
+			}
+		});
+		
+		$( "#local" ).autocomplete({
+			source: locais
+		});
+		
+		$( "#responsavel" ).autocomplete({
+			source: usuarios
+		});
+		
+		$( ".nomeUsuario" ).autocomplete({
+			source: usuarios
+		});
+
+		$('#hora').mask("99:99");
+
+		$(".salvar").click(function(){
+			$(this).button('loading');
+			if($("#local").val() != ""){
+				if($("#data").val() != ""){
+					if($("#hora").val() != ""){
+						if($("#responsavel").val() != ""){
+							$.ajax({
+								url: '/ajax/validarnomeusuario',
+								type: 'post',
+								dataType: 'html',
+								data: {"nome":$("#responsavel").val()},
+								success: function(data) {
+									if(data == "true"){
+										$.ajax({
+											url: '/ajax/validarlocal',
+											type: 'post',
+											dataType: 'html',
+											data: {"local":$("#local").val()},
+											success: function(data) {
+												if(data == "false"){
+													$("#"+$("#modalName").val()).modal("show");
+													$(".salvar").button("reset");
+													return false;
+												} else {
+													if($(".nomeUsuario:not(:disabled)").length > 0){
+														$.ajax({
+															url: '/ajax/geterroralert',
+															type: 'post',
+															dataType: 'html',
+															data: {"texto":"Alguns usuários não foram confirmados! Por favor, exclua ou confirme os usuários pendentes."},
+															success: function(data) {
+																$("#alerts").html(data);
+																$(".salvar").button('reset');
+															}
+														});
+														return false;	
+													}
+													
+													var json = '';
+													$(".nomeUsuario:disabled").each(function(){
+														var id = $(this).attr('id');
+														var arrId = id.split("-");
+														if(json != ""){
+															json += ",";
+														}
+														var funcoesEnviar = $("#" + arrId[0] + "-idsFuncoes").val().split(',');
+														json += $(this).val() + ":" + funcoesEnviar.join('-');
+													});
+													$.ajax({
+														url: '/criarescala/nova',
+														type: 'post',
+														dataType: 'html',
+														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val() },
+														success: function(data) {
+															$(".componente").remove();
+															$("#local").val("");
+															$("#data").val("");
+															$("#hora").val("");
+															$("#responsavel").val("");
+															$.ajax({
+																url: '/ajax/getsuccessalert',
+																type: 'post',
+																dataType: 'html',
+																data: {"texto":"Escala gravada com sucesso!"},
+																success: function(data) {
+																	$("#alerts").html(data);
+																	$(".salvar").button('reset');
+																}
+															});
+														},
+														error: function(data){
+															alert(data);
+														}
+													});
+												}
+											}
+										});
+									} else {
+										$.ajax({
+											url: '/ajax/geterroralert',
+											type: 'post',
+											dataType: 'html',
+											data: {"texto":"Por favor, escolha um responsável válido para a escala!"},
+											success: function(data) {
+												$("#alerts").html(data);
+												$(".salvar").button('reset');
+											}
+										});
+									}
+								}
+							});
+						} else {
+							$.ajax({
+								url: '/ajax/geterroralert',
+								type: 'post',
+								dataType: 'html',
+								data: {"texto":"Por favor, escolha um responsável para a escala!"},
+								success: function(data) {
+									$("#alerts").html(data);
+									$(".salvar").button('reset');
+								}
+							});	
+						}
+					} else {
+						$.ajax({
+							url: '/ajax/geterroralert',
+							type: 'post',
+							dataType: 'html',
+							data: {"texto":"Por favor, escolha um horário para a escala!"},
+							success: function(data) {
+								$("#alerts").html(data);
+								$(".salvar").button('reset');
+							}
+						});
+					}
+				} else {
+					$.ajax({
+						url: '/ajax/geterroralert',
+						type: 'post',
+						dataType: 'html',
+						data: {"texto":"Por favor, escolha uma data para a escala!"},
+						success: function(data) {
+							$("#alerts").html(data);
+							$(".salvar").button('reset');
+						}
+					});
+				}
+			} else {
+				$.ajax({
+					url: '/ajax/geterroralert',
+					type: 'post',
+					dataType: 'html',
+					data: {"texto":"Por favor, escolha um local para a escala!"},
+					success: function(data) {
+						$("#alerts").html(data);
+						$(".salvar").button('reset');
+					}
+				});
+			}
+			return false;
+		});
+
+		$(".cancelar").click(function(){
+			$(".componente").remove();
+			$("#local").val("");
+			$("#data").val("");
+			$("#hora").val("");
+			$("#responsavel").val("");
+			return false;
+		});
+		
+		$(".selecionarBanda").click(function(){
+			if($("#banda").val() != ""){
+				$.ajax({
+					url: '/ajax/escalarbanda',
+					dataType: 'html',
+					type: "POST",
+					data: { idBanda: $("#banda").val() },
+					success: function(data) {
+						$("#formulario").append(data);
+
+						$(".remover").each(function(){
+							var id = $(this).attr("id");
+							var chave = id.split("-");
+							$("#" + chave[0] + "-remover").click(function(){
+								$("#" + chave[0] + "-componente").remove();
+								return false;
+							});
+						});
+					},
+					error: function(data){
+						alert("error:"+data);
+					}
+				});
+			}
+			return false;
+		});
+		
+		$(".adicionarIntegrante").click(function(){
+			$(this).button('loading');
+			$.ajax({
+				url: '/ajax/novointegrante',
+				dataType: 'html',
+				success: function(data) {
+					$("#formulario").append(data);
+					$(".adicionarIntegrante").button('reset');
+				}
+			});
+			return false;
+		});
+		$("#dicas").click(function(){
+			$.ajax({
+				url: '/criarescala/getdica',
+				dataType: 'html',
+				type: "POST",
+				data: { 
+						'data': $("#data").val(),
+						'hora': $("#hora").val()
+					  },
+				success: function(data) {
+					$('#<?php echo $this->modalDicalName; ?>').children('.modal-body ').html(data);
+					$('#<?php echo $this->modalDicalName; ?>').modal('show');
+				}
+			});
+			return false; 
+		});
+	});
+	function bindarUsuarios(){
+		$( ".nomeUsuario" ).autocomplete({
+			source: usuarios,
+			change: function(event, ui) {
+				var id = $(this).attr('id');
+				var arrId = id.split('-');
+				$.ajax({
+					url: '/ajax/getfuncaousuario',
+					dataType: 'html',
+					type: "POST",
+					data: { nome: $(this).val() },
+					success: function(data) {
+						$("#" + arrId[0] + "-funcao").val(data);
+						treatButtons(arrId[0]);
+					}
+				});
+			}
+		});
+	}
+	function treatButtons(chave){
+		var funcoesEnviar = [];
+		if($("#" + chave + "-idsFuncoes").val() != ""){
+			funcoesEnviar = $("#" + chave + "-idsFuncoes").val().split(',');
+		}
+		if($("#" + chave + "-nome").val() != "" && funcoesEnviar.length > 0){
+			$("#" + chave + "-confirmar").removeClass("disabled");
+		} else {
+			$("#" + chave + "-confirmar").addClass("disabled");
+		}
+		$("#" + chave + "-confirmar").click(function(){
+			if(!$(this).hasClass("disabled")){
+				$(this).button('loading');
+				$.ajax({
+					url: '/ajax/validarnomeusuario',
+					dataType: 'html',
+					type: "POST",
+					data: { nome: $("#" + chave + "-nome").val() },
+					success: function(data) {
+						if(data == "false"){
+							$("#" + chave + "-alert").html("O nome digitado não foi encontrado no sistema. Por favor, digite um nome válido.");
+							$("#" + chave + "-confirmar").button('reset');
+						} else {
+							$("#" + chave + "-nome").addClass("disabled");
+							$("#" + chave + "-nome").prop('disabled', true);
+							$("#" + chave + "-funcao").addClass("disabled");
+							$("#" + chave + "-funcao").prop('disabled', true);
+							$("#" + chave + "-confirmar").remove();
+							$("#" + chave + "-plusFunction").remove();
+							$("#" + chave + "-alert").html("");
+							$("." + chave + "-funcaoSelecionada").each(function(){
+								$(this).children(".close").remove();
+							});
+						}
+					}
+				});
+			}
+			return false;
+		});
+
+		$("#" + chave + "-remover").click(function(){
+			$("#" + chave + "-componente").remove();
+			return false;
+		});
+	}
+	function addFuncao(id){
+		var funcoesEnviar = [];
+		if($("#"+id+"-idsFuncoes").val() != ""){
+			funcoesEnviar = $("#"+id+"-idsFuncoes").val().split(',');
+		}
+		if(jQuery.inArray($('#'+id+'-funcao').val(), funcoesEnviar) == -1 && $('#'+id+'-funcao').val() != ""){
+			$("#"+id).append("<div title='"+$('#'+id+'-funcao').val()+"' class='dest destUsuario " + id + "-funcaoSelecionada''>"+$('#'+id+'-funcao option:selected').html()+"<span class='close' style='margin-left:3px;' onclick='removeDest($(this).parent())'>×</span></div>");
+			funcoesEnviar.push($('#'+id+'-funcao').val());
+			$("#"+id+"-idsFuncoes").val(funcoesEnviar);
+		}
+		treatButtons(id);
+		$('#'+id+'-funcao').val("");
+	}
+	function removeDest(comp){
+		var arr = $(comp).attr("id").split('-');
+		var funcoesEnviar = $("#" + arr[0] + "-idsFuncoes").val().split(',');
+		funcoesEnviar = jQuery.grep(funcoesEnviar, function(value) {
+			  return value != $(comp).attr("title");
+		});
+		$("#" + arr[0] + "-idsFuncoes").val(funcoesEnviar);
+		treatButtons(arr[0]);
+		$(comp).remove();
+	}
+
+</script>
+<input id="modalName" type="hidden" value="<?php echo $this->modalName; ?>" />
+<h1>Criar nova escala</h1>
+<div class="form-inline">
+	<div class="control-group" style="text-align:center;">
+		<label class="control-label" for="banda">Bandas</label>
+		<select id="banda" name="banda">
+			<option selected="selected"></option>
+			<?php
+				foreach ($this->bandas as $banda){
+					echo "<option value='".$banda->getId()."'>".$banda->getNome()."</option>";
+				}
+			?>
+		</select>
+		<button class="selecionarBanda btn btn-primary">Selecionar banda</button>
+		<span class="help-block">Caso queira escalar uma banda, ou usar seus componentes com ponto de partida para uma escala, selecione a banda aqui.</span>	
+	</div>
+</div>
+<p>&nbsp;</p>
+<div class="hero-unit" style="padding-top:40px;padding-bottom:10px;">
+	<form id="formulario" action="/criarescala/nova" method="post">
+		<div class="form-inline center" style="margin-bottom:20px;" >
+			<div class="control-group">
+				<label class="control-label" for="local">Local: </label>
+				<input type="text" id="local" name="local" style="width:180px;" />
+				<label class="control-label" for="data" style="margin-left:10px;">Data: </label>
+				<input type="text" id="data" name="data" style="width:100px;" />
+				<label class="control-label" for="hora" style="margin-left:10px;">Hora: </label>
+				<input type="text" id="hora" name="hora" style="width:100px;" />
+				<label class="control-label" for="responsavel" style="margin-left:10px;">Responsável: </label>
+				<input type="text" id="responsavel" name="responsavel" style="width:180px;" />
+			</div>
+		</div>
+		<div style="padding-bottom:20px;">
+			<button class="adicionarIntegrante btn" data-loading-text="Adicionando...">Adicionar Integrante</button>
+			<button id="dicas" class="btn" data-loading-text="Adicionando..." >Dicas</button>
+			<div class="pull-right">
+				<button class="salvar btn btn-primary" autocomplete="off" data-loading-text="Salvando...">Salvar</button>
+				<button class="cancelar btn">Cancelar</button>	
+			</div>
+		</div>
+	</form>
+</div>

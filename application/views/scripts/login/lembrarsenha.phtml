@@ -1,0 +1,16 @@
+<h1>Lembrar minha senha</h1>
+<p>Para lembrar sua senha, digite o e-mail cadastrado no sistema no formulario abaixo. Um e-mail será enviado para você com uma nova senha, temporária.</p>
+<p>Esta senha pode ser alterada dentro do sistema.</p>
+<div class="offset1" style="margin-top:30px;">
+	<form action="/login/lembrarsenha" method="post" class="form-horizontal span8">
+		<div class="control-group <?php echo ($this->hasNomeError ==true ? "error" : ""); ?>">
+			<label class="control-label" for="nome">E-mail: </label>
+			<div class="controls">
+				<input type="text" class="span6	" id="email" name="email" maxlength="50" />
+			</div>
+		</div>
+		<div style="float:right;margin-top:10px;">
+			<input class="btn btn-primary" type="submit" value="Enviar"  autocomplete="off" data-loading-text="Enviando, aguarde..." onclick="$(this).button('loading');"  />
+		</div>
+	</form>
+</div>

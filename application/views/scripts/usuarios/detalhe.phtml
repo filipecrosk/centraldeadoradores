@@ -1,0 +1,41 @@
+<div class="row-fluid offset2" style="padding-top:30px;">
+	<div class="span6">
+		<p style="font-size:18px;">Nome: <?php echo $this->nome; ?></p>
+		<p style="font-size:18px;">Apelido: <?php echo $this->apelido; ?></p>
+		<p style="font-size:18px;">Telefone: <?php echo $this->telefone; ?></p>
+		<p style="font-size:18px;">Aniversário: <?php echo $this->aniversario; ?></p>
+	</div>
+	<div class="span6">
+		<p style="font-size:18px;">E-mail: <?php echo $this->email; ?></p>
+		<p style="font-size:18px;">Banda: <?php echo $this->banda; ?></p>
+		<p style="font-size:18px;">Celular: <?php echo $this->celular; ?></p>
+	</div>
+</div>
+<div style="padding-bottom:40px;">
+	<div style="margin-top:60px;margin-bottom:20px;">
+		<a href="#" class="btn btn-primary" style="float:right;" onclick="javascript:<?php echo $this->openMinisterioFunction?>();">Cadastrar área</a>
+		<h3>Áreas cadastradas para este usuário</h3>
+	</div>
+	<?php $this->gridMinisterio->renderGrid(); ?>
+	<div style="margin-top:100px;margin-bottom:20px;">
+		<a href="#" class="btn btn-primary" style="float:right;" onclick="javascript:<?php echo $this->openFuncaoFunction?>();">Cadastrar função</a>
+		<h3>Funções cadastradas para este usuário</h3>
+	</div>
+	<?php $this->gridFuncao->renderGrid(); ?>
+</div>
+<div style="padding-bottom:40px;">
+	<div style="margin-top:60px;margin-bottom:20px;">
+		<h3>Disponibilidade</h3>
+	</div>
+	<div style="padding-bottom:40px;">
+		<?php $this->gridDisponibilidade->renderGrid(); ?>
+	</div>
+	<div class="form-horizontal">
+		<div class="control-group">
+		<label class="control-label" for="observacao">Observação:</label>
+			<div class="controls">
+				<textarea  id="observacao" rows="5" style="width:100%;" disabled ><?php echo trim($this->observacao); ?></textarea>
+			</div>
+		</div>
+	</div>
+</div>

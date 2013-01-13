@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 37
+/levantamento/!svn/ver/1/runtime/pear
+END
+build-pear-package.xml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/levantamento/!svn/ver/1/runtime/pear/build-pear-package.xml
+END
+BuildPropelPEARPackageTask.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/pear/BuildPropelPEARPackageTask.php
+END

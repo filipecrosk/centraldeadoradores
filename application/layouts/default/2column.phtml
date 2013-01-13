@@ -1,0 +1,52 @@
+<!DOCTYPE html>	
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<link rel="stylesheet" type="text/css" href="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/default/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" type="text/css" href="<?php echo Zend_Controller_Front::getInstance()->getBaseUrl();?>/default/style.css" />
+		<?php 
+			$this->headScript()->prependFile(Zend_Controller_Front::getInstance()->getBaseUrl().'/default/bootstrap/js/bootstrap.min.js', 'text/javascript');
+			$this->headScript()->prependFile(Zend_Controller_Front::getInstance()->getBaseUrl().'/default/js/jquery-1.8.0.min.js', 'text/javascript');
+		?>
+		<?php echo $this->headTitle(); ?>
+		<?php echo $this->headMeta(); ?>
+		<?php echo $this->headLink(); ?>
+		<?php echo $this->headScript(); ?>
+		<?php echo $this->inlineScript(); ?>
+		<?php echo $this->headStyle(); ?>
+	</head>
+	<body>
+		<div id="modals">
+			<?php 
+				if($this->modal != null && is_array($this->modal)){
+					foreach ($this->modal as $modal){
+						echo $modal->renderModal();
+					}
+				} else if($this->modal != null){
+					echo $this->modal->renderModal();
+				}
+			?>
+		</div>
+		<div class="container-fluid">
+			<?php 
+				if(Internals_Auth::Check()){
+			?>
+			<div class="row-fluid">
+				<?php include "menu.phtml"; ?>	
+			</div>
+			<?php 
+				}
+				include 'alerts.phtml';
+			?>
+			<div id="alerts"></div>
+			<div class="row-fluid" style="padding-top:20px;">
+				<?php 
+					Internals_SubMenu::PrintSubmenu($this);
+				?>
+				<div class="<?php echo (Internals_SubMenu::HasSubMenu()?"span9":"span12"); ?>">
+					<?php echo $this->layout()->content;?>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

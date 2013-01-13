@@ -1,0 +1,50 @@
+@import url(http://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700);
+body{
+	font-family: 'PT Sans Caption', sans-serif;
+	background-image: url(images/fundo.png);
+	background-repeat: repeat-x;
+	background-color: #d1d1d1;
+	color: #666;	
+}
+#all{
+	margin: auto auto;
+	width: 960px;
+	padding-top: 20px;	
+}h1{
+	font-size: 48px;
+	text-align: center;
+	padding-bottom: 40px;
+	color: #333;	
+	font-weight: normal;
+}
+p{
+	padding-bottom: 13px;
+	line-height: 20px;	
+}
+#formulario{
+	width: 100%;
+	margin-top: 30px;
+	margin-bottom: 30px;	
+}
+#formulario tr{
+	height: 45px;	
+}
+#formulario tr td{
+	padding:5px;
+}
+#quadroDisponibilidade{	
+	margin: auto auto;
+}
+#quadroDisponibilidade tr{
+	height: 30px;
+}
+#quadroDisponibilidade tr td{
+	width: 100px;
+	text-align:center;	
+}
+.estaEmCelula, .eCoordenador, .eDiscipulador, .eLider, .fazCCM{
+	display: none;	
+}
+#rodape{
+	height: 200px;	
+}

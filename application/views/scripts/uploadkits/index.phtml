@@ -1,0 +1,139 @@
+<script>
+	$(document).ready(function(){
+		if(verifyBrowser()){
+			$(".btn").addClass("disabled");
+			$("#arquivo").change(function(){
+				var arquivo = document.getElementById('arquivo');
+				if(arquivo.files[0].size > 8000000){
+					$.ajax({
+						url: '/ajax/geterroralert',
+						type: 'post',
+						dataType: 'html',
+						data: {"texto":"O arquivo para upload deve ser menor que 8MB."},
+						success: function(data) {
+							$("#alerts").html(data);
+							$(".btn").addClass("disabled");
+						}
+					});
+				}
+				else{
+					$("#alerts").html("");
+					$(".btn").removeClass("disabled");
+				}
+			});
+		} else {
+			
+			$("#body").html('<div class="span6 offset1">'+
+								'<h2>Browser desatualizado.</h2>'+
+								'<p>Seu browser não está na ultima versão disponível. E para esta função, precisamos de algumas funcionalidades que'+  
+								'esta versão não contém.</p>'+
+								'<p>Por favor, baixe a ultima versão do seu browser.</p>'+
+								'<div style="text-align:center;">'+
+									'<a target="_blank" href="http://www.google.com/intl/pt-BR/chrome/browser/">'+
+										'<img src="/default/images/chrome256x256.jpg" style="width:126px;height:128px;">'+
+									'</a>'+
+									'<a target="_blank" href="http://br.mozdev.org/firefox/download/">'+
+										'<img src="/default/images/firefox256x256.png" style="width:126px;height:128px;">'+
+									'</a>'+
+									'<a target="_blank" href="http://www.opera.com/download/">'+
+										'<img src="/default/images/opera256x256.png" style="width:126px;height:128px;">'+
+									'</a>'+
+									'<a target="_blank" href="http://support.apple.com/kb/DL1531?viewlocale=pt_BR">'+
+										'<img src="/default/images/safari256x256.png" style="width:126px;height:128px;">'+
+									'</a>'+
+									'<a target="_blank" href="http://windows.microsoft.com/en-US/internet-explorer/downloads/ie-10/worldwide-languages">'+
+										'<img src="/default/images/ie256x256.jpg" style="width:126px;height:128px;">'+
+									'</a>'+
+								'</div>'+
+							'</div>');
+			
+		}
+	});
+	function verifyBrowser(){
+		var userAgent = navigator.userAgent.toLowerCase();
+		var version   = 0;
+		$.browser.chrome = /chrome/.test(navigator.userAgent.toLowerCase());
+		if ($.browser.msie) {
+			userAgent = $.browser.version;
+			userAgent = userAgent.substring(0,userAgent.indexOf('.'));	
+			version = userAgent;
+			if(version < 10){
+				return false;
+			}
+		}
+		if ($.browser.chrome) {
+			userAgent = userAgent.substring(userAgent.indexOf('chrome/') + 7);
+			userAgent = userAgent.substring(0,userAgent.indexOf('.'));	
+			version = userAgent;
+			$.browser.safari = false;
+			if(version < 23){
+				return false;
+			}
+		}
+		if ($.browser.safari) {
+			userAgent = userAgent.substring(userAgent.indexOf('safari/') + 7);	
+			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+			version = userAgent;	
+			if(version < 534){
+				return false;
+			}
+		}
+		if ($.browser.mozilla) {
+			if (navigator.userAgent.toLowerCase().indexOf('firefox') != -1) {
+			userAgent = userAgent.substring(userAgent.indexOf('firefox/') + 8);
+			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+			version = userAgent;
+				if(version < 17){
+					return false;
+				}
+			}
+			else {
+				return false;
+			}
+		}
+		
+		if ($.browser.opera) {
+			userAgent = userAgent.substring(userAgent.indexOf('version/') + 8);
+			userAgent = userAgent.substring(0,userAgent.indexOf('.'));
+			version = userAgent;
+			if(version < 12){
+				return false;
+			}
+		}
+		return true;
+	}
+</script>
+<div id="body" class="offset1">
+	<p style="text-align:center;">Todos os campos são de preenchimento obrigatório!</p>
+	<form class="span7 form-horizontal" action="uploadkits/novo" method="post" enctype="multipart/form-data" style="margin-top:20px;" >
+		<div class="control-group">
+		    <label class="control-label" for="funcao">Função :</label>
+		    <div class="controls">
+				<select id="funcao" class="span5" name="funcao">
+					<option selected="selected"></option>
+					<?php 
+						foreach ($this->funcoes as $funcao)
+						{
+							echo "<option value=\"".$funcao->getId()."\">".$funcao->getNome()."</option>";
+						}
+					?>
+				</select>
+				<span class="help-block">Selecione a qual função este arquivo atende.</span>
+		    </div>
+		</div>
+		<div class="control-group">
+		    <label class="control-label" for="inputEmail">Nome do Arquivo :</label>
+		    <div class="controls">
+		    	<input class="span5" type="text" id="nomeArquivo" name="nomeArquivo" />
+		    </div>
+		</div>
+		<div class="control-group">
+		    <label class="control-label" for="arquivo">Arquivo :</label>
+		    <div class="controls">
+				<input class="span5" type="file" id="arquivo" name="arquivo" />
+			</div>
+		</div>
+		<input class="btn" type="submit" value="Enviar" autocomplete="off" data-loading-text="Enviando, aguarde..." style="float:right;" onclick="$(this).button('loading');" />
+	</form>
+	
+</div>

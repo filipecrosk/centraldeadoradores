@@ -1,0 +1,70 @@
+<form action="login/autenticar" method="post" class="form-horizontal well span6 offset2" style="margin-top:100px;">
+  <fieldset>
+  	<legend>
+  		Central de Adoradores
+  	</legend>
+    <div class="control-group">
+      <label class="control-label" for="Usuario">E-mail</label>
+      <div class="controls">
+        <input type="text" class="input-xlarge" name="Usuario" id="Usuario">
+      </div>
+    </div>
+    <div class="control-group">
+      <label class="control-label" for="Senha">Senha</label>
+      <div class="controls">
+        <input type="password" class="input-xlarge" name="Senha" id="Senha">
+      </div>
+    </div>
+    <div class="control-group">
+      	<a href="/cadastro">Me cadastrar</a>
+      	<a style="margin-left:100px;" href="login/lembrarsenha">Esqueci a minha senha!</a>
+        <input value="Login" type="submit" class="btn" style="float:right;" />
+    </div>
+  </fieldset>
+<?php 
+	if(Internals_Message::hasAlert()){
+?>
+	<div class="alert" style="margin:auto auto;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getAlert() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasError()){
+?>
+	<div class="alert alert-error" style="margin:auto auto;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getError() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasInfo()){
+?>
+	<div class="alert alert-info" style="margin:auto auto;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getInfo() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasSuccess()){
+?>
+	<div class="alert alert-success" style="margin:auto auto;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getSuccess() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	}  
+?>
+</form>

@@ -1,0 +1,145 @@
+<script type="text/javascript">
+	var optionsFuncoes = [];
+	var optionsMinisterios = [];
+	$(document).ready(function(){
+		$('#aniversario').mask("99/99");
+		$('#telefone').mask("(99)9999-9999");
+		$('#celular').mask("(99)9999-9999");
+		$("#funcoes option").each(function(){
+			optionsFuncoes.push($(this).val() + "\\" + $(this).html());
+		});
+		$("#ministerios option").each(function(){
+			optionsMinisterios.push($(this).val() + "\\" + $(this).html());
+		});
+	});
+	function newFuncao(componente){
+		var valores = ""; 
+		$.each(optionsFuncoes, function(key, value) {
+			var arr = value.split('\\'); 
+			valores += "<option value='" + arr[0] + "'>" + arr[1] + "</option>";
+		});
+		var comp = '<div class="control-group">'+
+		'<div class="controls">'+
+			'<select id="funcoes" name="funcoes[]">'+
+			valores+
+			'</select>'+
+			'<a href="#" onclick="javascript:newFuncao(this);" style="margin-left:4px;"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-plus.png"></a>'+
+			'<a href="#" onclick="javascript:removeFuncao(this);"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-minus.png"></a>'+
+			'</div>'+
+		'</div>';
+		$(componente).parent().parent().after(comp);
+	}
+	function newMinisterio(componente){
+		var valores = ""; 
+		$.each(optionsMinisterios, function(key, value) {
+			var arr = value.split('\\'); 
+			valores += "<option value='" + arr[0] + "'>" + arr[1] + "</option>";
+		});
+		
+		var comp = '<div class="control-group">'+
+		'<div class="controls">'+
+			'<select id="ministerios" name="ministerios[]">'+
+			valores+
+			'</select>'+
+			'<a href="#" onclick="javascript:newMinisterio(this);" style="margin-left:4px;"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-plus.png"></a>'+
+			'<a href="#" onclick="javascript:removeFuncao(this);"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-minus.png"></a>'+
+			'</div>'+
+		'</div>';
+		$(componente).parent().parent().after(comp);
+	}
+	function removeFuncao(componente){
+		$(componente).parent().parent().remove();
+	}
+</script>
+<h1>Cadastro Central de Adoradores</h1>
+<div class="offset1">
+	<form action="/cadastro/do" method="post" class="form-horizontal span8">
+		<div class="control-group <?php echo ($this->hasNomeError ==true ? "error" : ""); ?>">
+			<label class="control-label" for="nome">Nome: </label>
+			<div class="controls">
+				<input type="text" class="span6	" id="nome" name="nome" maxlength="50" value="<?php echo $this->nome;?>" />
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="nome">Apelido: </label>
+			<div class="controls">
+				<input type="text" class="span6	" id="apelido" name="apelido" maxlength="50" value="<?php echo $this->apelido;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasEmailError ? "error" : ""); ?>">
+			<label class="control-label" for="email">E-mail: </label>
+			<div class="controls">
+				<input type="text" class="span6	" id="email" name="email" maxlength="50" value="<?php echo $this->email;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasSenhaError ? "error" : ""); ?>">
+			<label class="control-label" for="senha">Senha: </label>
+			<div class="controls">
+				<input type="password" class="span6	" id="senha" name="senha" maxlength="50" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasSenhaError ? "error" : ""); ?>">
+			<label class="control-label" for="confirmacao">Confirmação da Senha: </label>
+			<div class="controls">
+				<input type="password" class="span6	" id="confirmacao" name="confirmacao" maxlength="50" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasEnderecoError ? "error" : ""); ?>">
+			<label class="control-label" for="endereco">Endereço: </label>
+			<div class="controls">
+				<input type="text" class="span6	" id="endereco" name="endereco" maxlength="100" value="<?php echo $this->endereco;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasTelefoneError ? "error" : ""); ?>">
+			<label class="control-label" for="telefone">Telefone: </label>
+			<div class="controls">
+				<input type="text" class="span2" id="telefone" name="telefone" maxlength="13" value="<?php echo $this->telefone;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasCelularError ? "error" : ""); ?>">
+			<label class="control-label" for="celular">Celular: </label>
+			<div class="controls">
+				<input type="text" class="span2" id="celular" name="celular" maxlength="13" value="<?php echo $this->celular;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasAniversarioError ? "error" : ""); ?>">
+			<label class="control-label" for="aniversario">Aniversário: </label>
+			<div class="controls">
+				<input type="text" class="input-mini" id="aniversario" name="aniversario" maxlength="5" value="<?php echo $this->aniversario;?>" />
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasMinisteriosError ? "error" : ""); ?>">
+			<label class="control-label" for="ministerios">Área: </label>
+			<div class="controls">
+				<select id="ministerios" name="ministerios[]">
+				<option selected="selected"></option>
+					<?php 
+						foreach ($this->ministerios as $ministerio){
+							echo "<option value='".$ministerio->getId()."'>".$ministerio->getNome()."</option>";
+						}
+					?>
+				</select>
+				<a href="#" onclick="javascript:newMinisterio(this);"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-plus.png"></a>
+			</div>
+		</div>
+		<div class="control-group <?php echo ($this->hasFuncoesError ? "error" : ""); ?>">
+			<label class="control-label" for="funcoes">Função: </label>
+			<div class="controls">
+				<select id="funcoes" name="funcoes[]">
+				<option selected="selected"></option>
+					<?php 
+						foreach ($this->funcoes as $funcao){
+							echo "<option value='".$funcao->getId()."'>".$funcao->getNome()."</option>";
+						}
+					?>
+				</select>
+				<a href="#" onclick="javascript:newFuncao(this);"><img alt="" src="<?php echo ($this->actionName != "index" ? "../" : "" ); ?>default/images/icone-plus.png"></a>
+			</div>
+		</div>
+      
+		
+		<div style="float:right;margin-top:10px;">
+			<input class="btn btn-primary" type="submit" value="Salvar"  autocomplete="off" data-loading-text="Salvando, aguarde..." onclick="$(this).button('loading');"  />
+		</div>
+	</form>
+</div>

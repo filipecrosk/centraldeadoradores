@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<propel>
+		<datasources default="centraldeadoradores">
+			<datasource id="centraldeadoradores">
+				<adapter>mysql</adapter> <!-- sqlite, mysql, myssql, oracle, or pgsql -->
+				<connection>
+					<settings>
+						<setting id="charset">utf8</setting>
+					</settings>
+					<dsn>mysql:host=localhost;dbname=adoradores</dsn>
+					<user>root</user>
+					<password>supermario</password>
+				</connection>
+			</datasource>
+		</datasources>
+	</propel>
+</config>
+

@@ -1,0 +1,27 @@
+<h1 style="text-align:center;">Relatório de dados colhidos</h1>
+<div class="row-fluid">
+	<div class="span2" style="padding-top: 1px;">
+	</div>
+	<div class="span8" style="padding-top: 1px;">
+		<div class="hero-unit">
+			<h2 style="text-align:center;">Informações sobre o cadastro</h2>
+			<br>
+			<dl class="dl-horizontal">
+				<dt>Total</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->total; ?></strong> pessoas responderam ao formulário</dd>
+				<dt>Membros</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->membro; ?></strong> membros de célula responderam ao formulário <a href="/estatisticas/integrantes?tipo=membro" style="float:right;">Ver Integrantes</a></dd>
+				<dt>Líderes</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->lider; ?></strong> líderes de célula responderam ao formulário <a href="/estatisticas/integrantes?tipo=lider" style="float:right;">Ver Integrantes</a></dd>
+				<dt>Discipulador</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->discipulador; ?></strong> discipuladores responderam ao formulário <a href="/estatisticas/integrantes?tipo=discipulador" style="float:right;">Ver Integrantes</a></dd>
+				<dt>Coordenador</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->coordenador; ?></strong> coordenadores responderam ao formulário <a href="/estatisticas/integrantes?tipo=coordenador" style="float:right;">Ver Integrantes</a></dd>
+				<dt>Sem célula</dt>
+				<dd><strong style="color:#0087cb;"><?php echo $this->semCelula; ?></strong> pessoas sem célula responderam ao formulário <a href="/estatisticas/integrantes?tipo=semCelula" style="float:right;">Ver Integrantes</a></dd>
+			</dl>
+		</div>
+	</div>
+	<div class="span2" style="padding-top: 1px;">
+	</div>
+</div>	

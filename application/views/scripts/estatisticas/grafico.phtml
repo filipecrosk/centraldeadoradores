@@ -1,0 +1,102 @@
+<h1 style="text-align:center;padding-top: 20px;">Relatório de dados colhidos</h1>
+<?php 
+	Internals_Grafico::renderGraphics($this);
+?>    
+    <!-- script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawPorcentagemDisponibilidade);
+      function drawCharts() {
+			drawDisponibilidadeSegunda();
+			drawDisponibilidadeTerca();
+			drawFuncoes();
+			drawPorcentagemDisponibilidade();
+      }
+      function drawDisponibilidadeSegunda(){
+    	  var data = new google.visualization.DataTable(
+   			   {
+   			     cols: [{id: 'turno', label: 'Turno', type: 'string'},
+   			            {id: 'membro', label: 'Membro', type: 'number'},
+      			        {id: 'lider', label: 'Líder', type: 'number'},
+      			        {id: 'discipulador', label: 'Discipulador', type: 'number'},
+      			        {id: 'coordenador', label: 'Coordenador', type: 'number'}],
+   			     rows: [{c:[{v: 'Manhã'}, {v: 10}, {v: 40}, {v: 50}, {v: 50}]},
+   			            {c:[{v: 'Tarde'}, {v: 11}, {v: 46}, {v: 56}, {v: 56}]},
+   			            {c:[{v: 'Noite'}, {v: 66}, {v: 11}, {v: 10}, {v: 10}]}
+   			           ]
+   			   }
+   			)
+
+    	  
+          var options = {
+	          title : 'Disponibilidade diária',
+	          vAxis: {title: "Quantidade de pessoas livre"},
+	          hAxis: {title: "Segunda"},
+	          seriesType: "bars"
+          };
+
+          var chart = new google.visualization.ComboChart(document.getElementById('disponibilidadeSegunda'));
+          chart.draw(data, options);
+      }
+      function drawDisponibilidadeTerca(){
+          var data = google.visualization.arrayToDataTable([
+		      ['Turno', 'Membro', 'Líder', 'Discipulador', 'Coodenador'],
+		      ['Manhã',	10, 40, 50, 50],
+		      ['Tarde',	11, 46, 50, 50],
+		      ['Noite', 66, 11, 50, 50]
+          ]);
+
+          var options = {
+	          title : 'Disponibilidade diária',
+	          vAxis: {title: "Quantidade de pessoas livre"},
+	          hAxis: {title: "Terça"},
+	          seriesType: "bars"
+          };
+
+          var chart = new google.visualization.ComboChart(document.getElementById('disponibilidadeTerca'));
+          chart.draw(data, options);
+      }
+      function drawFuncoes() {
+          var data = google.visualization.arrayToDataTable([
+            ['Função', '%'],
+            ['Sem  Célula', 2],
+            ['Em Célula', 35],
+            ['Líder', 30],
+            ['Discipulador', 20],
+            ['Coordenador', 10]
+          ]);
+
+          var options = {
+            title: 'Porcentagem de pessoas em cada função'
+          };
+
+          var chart = new google.visualization.PieChart(document.getElementById('porcentagemFuncoes'));
+          chart.draw(data, options);
+        }
+      function drawPorcentagemDisponibilidade() {
+          var data = new google.visualization.DataTable({
+   			     cols: [{id: 'disponibilidade', label: 'Disponibilidade', type: 'string'},
+   			            {id: 'porcentagem', label: 'Porcentagem', type: 'number'}],
+   			     rows: [{c:[{v: 'Livre'}, {v: 50}]},
+   			            {c:[{v: 'Não livre'},{v: 50}]}
+   			           ]
+   			   });
+
+          var options = {
+            title: 'Porcentagem de disponibilidade por cargos',
+            vAxis: {maxValue:100}
+          };
+
+          var chart = new google.visualization.PieChart(document.getElementById('porcentagemDisponibilidade'));
+          chart.draw(data, options);
+        }
+    </script>
+    <!-- style type="text/css">
+    	#corpo{
+			width:1020px;
+    		margin:auto auto;
+    	}
+    </style>
+  	<div id="porcentagemFuncoes" style="width: 900px; height: 500px;"></div>
+    <div id="disponibilidadeSegunda" style="width: 900px; height: 500px;"></div>
+    <div id="disponibilidadeTerca" style="width: 900px; height: 500px;"></div>
+    <div id="porcentagemDisponibilidade" style="width: 900px; height: 500px;"></div-->

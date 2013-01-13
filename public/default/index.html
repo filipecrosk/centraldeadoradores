@@ -1,0 +1,1094 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+		<title>Não se Engane</title>	
+		
+		<link rel="stylesheet" type="text/css" href="jqueryui/css/ui-lightness/jquery-ui-1.8.20.custom.css" />
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+		<!--link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-responsive1.css" /-->
+		
+		<link rel="stylesheet" type="text/css" href="dataTable/css/DT_bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="style.css" />
+
+		<script src="js/jquery-1.7.2.js" type="text/javascript"></script>
+		<script src="jqueryui/js/jquery-ui-1.8.20.custom.min.js" type="text/javascript"></script>
+		<script src="bootstrap/js/bootstrap.js" type="text/javascript"></script>
+		
+		<script src="dataTable/js/jquery.dataTables.min.js" type="text/javascript"></script>
+		<script src="dataTable/js/DT_bootstrap.js" type="text/javascript"></script>
+		
+		<script type="text/javascript" >
+			$(document).ready(function(){			
+				$('.dropdown-toggle').dropdown();
+				$('#example').dataTable();
+				$('#searchBoxHeader').focus(function(){
+					if($(this).val() === "Search"){
+						$(this).val("");
+					}				
+				});
+				$('.votarLista').click(function(){
+					if($(this).prev().prev().height() == '0'){
+						$(this).prev().prev().animate({height:'53px'},{duration:1000});
+					}else{
+						$(this).prev().prev().animate({height:'0px'},{duration:1000});
+					}
+					return false;
+				});
+				$(".sliderPontos").slider({
+					value:3,
+					min: 1,
+					max: 5,
+					step: 1,
+					create: function(event, ui){
+						$('.pts').html( "3 pontos");
+					},
+					slide: function(event, ui) {
+						$(this).children('.pts').html(ui.value + " pontos");
+					}
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div id="header">
+			<div id="painel">
+				<ul class="unstyled">
+					<li>
+						Login
+					</li>				
+				</ul>
+			</div>
+			<div id="headerLogo">
+				<div id="headerLogoLeft">
+					<ul id="headerLeftMenu">
+						<li id="headerMenuHome" ><a href="#Home">Home</a></li>
+						<li id="headerMenuProdutos" ><a href="#Produtos">Produtos</a></li>
+						<li id="headerMenuArtigos" ><a href="#Artigos">Artigos</a></li>
+					</ul>				
+				</div>
+				<div id="headerLogoCenter">
+					<a href="#fullLink" class="fullLink"></a>		
+				</div>
+				<div id="headerLogoRight" >
+					<ul id="headerRightMenu">
+						<li id="headerMenuCadastro"><a href="#Cadastro">Cadastro</a></li>
+						<li id="headerMenuRanking"><a href="#Ranking">Ranking</a></li>
+					</ul>		
+					<div id="headerSearch">
+						<form action="#">
+							<input type="text" name="searchBox" value="Search" id="searchBoxHeader" />
+							<input type="submit" name="btnSearch" value="Pesquisar" id="btnSearchHeader"/>
+						</form>					
+					</div>	
+				</div>
+			</div>
+			<div id="ultimosProdutos">
+				<h3 class="left">Últimos produtos revisados</h3>
+				<div class="clear"></div>
+				<ul id="lista" class="unstyled">
+					<li class="produtoRevisado">
+						<img src="images/notebook.jpg" alt="" />
+						<p>Nome do Produto</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>
+									<div class="center votacao" style="">
+										<div class="clear"></div>	
+										<div class="sliderPontos">
+											<h5 class="pts"></h5>									
+										</div>
+									</div>								
+								</li>
+								<li>									
+									<input type="submit" class="btn-small" value="Ok">
+								</li>
+							</ul>
+						</div>					
+					</li>
+					<li class="produtoRevisado">
+						<img src="images/camera.png" alt="" />
+						<p>Camera Digital 1</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>Você precisa estar logado para votar.</li>
+								<li><a href="#">Fazer Login</a></li>
+							</ul>
+						</div>					
+					</li>
+					<li class="produtoRevisado">
+						<img src="images/camera2.png" alt="" />
+						<p>Camera Digital 2</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>
+									<div class="center votacao" style="">
+										<div class="clear"></div>	
+										<div class="sliderPontos">
+											<h5 class="pts"></h5>									
+										</div>
+									</div>								
+								</li>
+								<li>									
+									<input type="submit" class="btn-small" value="Ok">
+								</li>
+							</ul>
+						</div>					
+					</li>
+					<li class="produtoRevisado">
+						<img src="images/celular1.png" alt="" />
+						<p>Celular</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>Você precisa estar logado para votar.</li>
+								<li><a href="#">Fazer Login</a></li>
+							</ul>
+						</div>					
+					</li>
+					<li class="produtoRevisado">
+						<img src="images/celular2.png" alt="" />
+						<p>Smartphone</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>
+									<div class="center votacao" style="">
+										<div class="clear"></div>	
+										<div class="sliderPontos">
+											<h5 class="pts"></h5>									
+										</div>
+									</div>								
+								</li>
+								<li>									
+									<input type="submit" class="btn-small" value="Ok">
+								</li>
+							</ul>
+						</div>					
+					</li>
+					<li class="produtoRevisado">
+						<img src="images/impressora.png" alt="" />
+						<p>Impressora</p>
+						<div class="btn-group pontuacaoProduto">
+							<div class="rounded redPontos left">3.5</div>
+							<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+								VOTAR    							
+    							<span class="caret"></span>
+  							</a>	
+							<ul class="dropdown-menu">
+								<li>Você precisa estar logado para votar.</li>
+								<li><a href="#">Fazer Login</a></li>
+							</ul>
+						</div>					
+					</li>
+				</ul>
+			</div>			
+			<div id="fimHeader">
+				<img src="images/faixa_amarela.png" alt="" />			
+			</div>
+		</div>
+		<div id="corpo" class="container-fluid">
+			<div class="row-fluid">
+				<div id="column1" class="span3">
+					<div class="imagemSelavel">
+						<img class="span3" style="margin-left:0px;" src="images/maquina de escrever.png" alt="" >
+					</div>
+					<div class="imagemSelavel">
+						<img class="span3" style="margin-left:0px;" src="images/maquina de escrever.png" alt="" >
+					</div>
+					<div class="imagemSelavel">
+						<img class="span3" style="margin-left:0px;" src="images/maquina de escrever.png" alt="" >
+					</div>
+				</div>
+				<div id="column2" class="span9">
+					<h1>2 columns layout</h1>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+				</div>			
+			</div>
+			<hr/>
+			<div class="row-fluid">
+				<div id="column1" class="span9">					
+					<h1>Reverse 2 columns layout</h1>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+				</div>
+				<div id="column2" class="span3">
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+					<p>Coluna 1</p>
+				</div>			
+			</div>
+			<hr/>
+			<div class="row-fluid">
+				<div id="column1" class="span12">
+					<h1>1 column layout</h1>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>
+					<p>
+						Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando 
+						meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto. Este é um parágrafo de teste. 
+						Estou testando meu estilo de texto. Este é um parágrafo de teste. Estou testando meu estilo de texto.
+					</p>				
+				</div>
+			</div>
+			<hr/>
+			<div class="row-fluid">
+				<div id="column1" class="span12">
+					<h1>Grid Style</h1>
+						<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example">
+							<thead>
+								<tr>
+									<th>Produto</th>
+									<th>Preço</th>
+									<th>Premios do Site</th>
+									<th>Nota não se Engane</th>
+									<th>Nota do Público</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										Notebook XXX									
+									</td>
+									<td>
+										R$1500,00									
+									</td>		
+									<td>
+									<span class="hide">3</span>
+										<div class="center">	
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">5.0</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">5.0</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Celular YYY									
+									</td>
+									<td>
+										R$850,00									
+									</td>		
+									<td>
+									<span class="hide">2</span>
+										<div class="center">
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">4.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">4.5</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Pacote de viagens ZZZ									
+									</td>
+									<td>
+										R$3000,00									
+									</td>		
+									<td>
+									<span class="hide">1</span>
+										<div class="center">
+											<img width="35" src="images/selo ouro.png" alt="Selo de Ouro" >							
+										</div>						
+									</td>		
+									<td>
+										<div class="yellowPontos center">3.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">3.5</div>	
+									</td>													
+								</tr><tr>
+									<td>
+										Notebook XXX									
+									</td>
+									<td>
+										R$1500,00									
+									</td>		
+									<td>
+									<span class="hide">3</span>
+										<div class="center">	
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">5.0</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">5.0</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Celular YYY									
+									</td>
+									<td>
+										R$850,00									
+									</td>		
+									<td>
+									<span class="hide">2</span>
+										<div class="center">
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">4.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">4.5</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Pacote de viagens ZZZ									
+									</td>
+									<td>
+										R$3000,00									
+									</td>		
+									<td>
+									<span class="hide">1</span>
+										<div class="center">
+											<img width="35" src="images/selo ouro.png" alt="Selo de Ouro" >							
+										</div>						
+									</td>		
+									<td>
+										<div class="yellowPontos center">3.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">3.5</div>	
+									</td>													
+								</tr><tr>
+									<td>
+										Notebook XXX									
+									</td>
+									<td>
+										R$1500,00									
+									</td>		
+									<td>
+									<span class="hide">3</span>
+										<div class="center">	
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">5.0</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">5.0</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Celular YYY									
+									</td>
+									<td>
+										R$850,00									
+									</td>		
+									<td>
+									<span class="hide">2</span>
+										<div class="center">
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">4.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">4.5</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Pacote de viagens ZZZ									
+									</td>
+									<td>
+										R$3000,00									
+									</td>		
+									<td>
+									<span class="hide">1</span>
+										<div class="center">
+											<img width="35" src="images/selo ouro.png" alt="Selo de Ouro" >							
+										</div>						
+									</td>		
+									<td>
+										<div class="yellowPontos center">3.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">3.5</div>	
+									</td>													
+								</tr><tr>
+									<td>
+										Notebook XXX									
+									</td>
+									<td>
+										R$1500,00									
+									</td>		
+									<td>
+									<span class="hide">3</span>
+										<div class="center">	
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">5.0</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">5.0</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Celular YYY									
+									</td>
+									<td>
+										R$850,00									
+									</td>		
+									<td>
+									<span class="hide">2</span>
+										<div class="center">
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">4.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">4.5</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Pacote de viagens ZZZ									
+									</td>
+									<td>
+										R$3000,00									
+									</td>		
+									<td>
+									<span class="hide">1</span>
+										<div class="center">
+											<img width="35" src="images/selo ouro.png" alt="Selo de Ouro" >							
+										</div>						
+									</td>		
+									<td>
+										<div class="yellowPontos center">3.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">3.5</div>	
+									</td>													
+								</tr><tr>
+									<td>
+										Notebook XXX									
+									</td>
+									<td>
+										R$1500,00									
+									</td>		
+									<td>
+									<span class="hide">3</span>
+										<div class="center">	
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">5.0</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">5.0</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Celular YYY									
+									</td>
+									<td>
+										R$850,00									
+									</td>		
+									<td>
+									<span class="hide">2</span>
+										<div class="center">
+											<img width="35" src="images/selo bronze.png" alt="Selo de Bronze" >
+											<img width="40" src="images/selofaca.png" alt="Selo Facada" >										
+										</div>						
+									</td>	
+									<td>
+										<div class="yellowPontos center">4.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">4.5</div>	
+									</td>													
+								</tr>
+								<tr>
+									<td>
+										Pacote de viagens ZZZ									
+									</td>
+									<td>
+										R$3000,00									
+									</td>		
+									<td>
+									<span class="hide">1</span>
+										<div class="center">
+											<img width="35" src="images/selo ouro.png" alt="Selo de Ouro" >							
+										</div>						
+									</td>		
+									<td>
+										<div class="yellowPontos center">3.5</div>	
+									</td>		
+									<td>
+										<div class="redPontos center">3.5</div>	
+									</td>													
+								</tr>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td>Produto</td>
+									<td>Preço</td>
+									<td>Premios do Site</td>
+									<td>Nota não se Engane</td>
+									<td>Nota do Público</td>
+								</tr>
+							</tfoot>
+						</table>				
+				</div>
+			</div>
+			<hr/>
+			<h1 class="span12">Listas</h1>
+			<div class="row-fluid">			
+				<div class="span5">
+					<div class="listaNumerada">
+						<div class="topListGreen border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">1.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="clear"></div>
+								<div class="btn-group right votarLista">
+									<a class="yellowBtn btn dropdown-toggle" data-toggle="dropdown" href="#">
+										VOTAR    							
+   										<span class="caret"></span>
+									</a>	
+									<ul class="dropdown-menu">
+										<li style="width:100px;">								
+											<div class="center votacao">
+												<div class="clear"></div>	
+												<div class="sliderPontos">
+													<h3 class="pts"></h3>									
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>	
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListGreen border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">2.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListGreen border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">3.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListGreen border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">4.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListGreen border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">5.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+				</div>
+				<div class="span2">&nbsp;</div>
+				<div class="span5">
+				<div class="listaNumerada">
+						<div class="topListRed border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">1.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao" style="">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListRed border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">2.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListRed border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">3.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListRed border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">4.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+					<div class="listaNumerada">
+						<div class="topListRed border"></div>
+						<div class="row-fluid">
+							<div class="span5">							
+								<h3 class="left zipped">5.</h3>								
+								<img src="images/notebook.jpg" alt="" >
+							</div>
+							<div class="span7 center">
+								<h3 class="zipped">Notebook num sei o que lá das quantas</h3>
+								<h3 class="zipped">Links para review</h3>
+								<div class="notasLista right" style="width:190px;">
+									Nota Não se Engane <div class="yellowPontos right">5.0</div>
+								</div>
+								<div class="notasLista right" style="width:170px;">
+									Nota do Público <div class="redPontos right">5.0</div>
+								</div>
+								<div class="center votacao">
+									<div class="clear"></div>	
+									<div class="sliderPontos">
+										<h3 class="pts"></h3>									
+									</div>
+								</div>
+								<div class="clear"></div>
+								<a href="#" class="btn yellowBtn votarLista" >Votar</a>
+							</div>				
+						</div>
+					</div>
+				</div>
+			</div>
+			<hr/>
+			<h1>Formulário de Login</h1>
+			<div id="loginForm" class="row-fluid">
+				<div class="span5">
+					<form class="">
+  						<fieldset>
+    						<legend>Fazer login</legend>
+    						<div class="control-group">
+      						<label class="control-label" for="input01">E-mail</label>
+      						<div class="controls">
+       							<input type="text" class="span5" id="input01">
+        							<p class="help-block">&nbsp;</p>
+      						</div>
+								</div>
+      					<div class="control-group error">
+      						<label class="control-label" for="input01">Senha</label>
+      						<div class="controls">
+       							<input type="text" class="span5" id="input01">
+        							<p class="help-block">Senha incorreta!</p>
+      						</div>
+    						</div>
+				           <input type="submit" class="btn yellowBtn" value="Entrar">
+  						</fieldset>
+					</form>				
+				</div>
+				<div class="span2">
+					<div class="verticalLine center"></div>				
+				</div>
+				<div class="span5">
+					<form class="">
+  						<fieldset>
+    						<legend>Não sou Cadastrado</legend>
+      					<div class="control-group">
+      						<label class="control-label" for="input01">Nome</label>
+      						<div class="controls">
+       							<input type="text" class="span5" id="input01">
+        							<p class="help-block">&nbsp;</p>
+      						</div>
+    						</div>
+    						<div class="control-group error">
+      						<label class="control-label" for="input01">E-mail</label>
+      						<div class="controls">
+       							<input type="text" class="span5" id="input01">
+        							<p class="help-block">E-mail já cadastrado!</p>
+      						</div>
+							</div>
+				           <input type="submit" class="btn yellowBtn" value="Cadastrar">
+  						</fieldset>
+					</form>	
+				</div>
+			</div>	
+			<div class="row-fluid">
+
+			</div>		
+			<br><br><br><br><br><br><br><br>
+		</div>
+	</body>
+</html>

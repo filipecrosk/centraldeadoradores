@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/levantamento/!svn/ver/1/runtime/lib/adapter/MSSQL
+END
+MssqlDebugPDO.php
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/levantamento/!svn/ver/1/runtime/lib/adapter/MSSQL/MssqlDebugPDO.php
+END
+MssqlPropelPDO.php
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/levantamento/!svn/ver/1/runtime/lib/adapter/MSSQL/MssqlPropelPDO.php
+END

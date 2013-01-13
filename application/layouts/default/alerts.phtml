@@ -1,0 +1,46 @@
+<?php 
+	if(Internals_Message::hasAlert()){
+?>
+	<div class="alert" style="margin:auto auto; margin-bottom:15px;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getAlert() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasError()){
+?>
+	<div class="alert alert-error" style="margin:auto auto; margin-bottom:15px;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getError() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasInfo()){
+?>
+	<div class="alert alert-info" style="margin:auto auto; margin-bottom:15px;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getInfo() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	} 
+	if(Internals_Message::hasSuccess()){
+?>
+	<div class="alert alert-success" style="margin:auto auto; margin-bottom:15px;">
+	<a class="close" data-dismiss="alert" href="#">×</a>
+		<?php 
+		foreach (Internals_Message::getSuccess() as $mensagem)
+			echo $mensagem;
+		?>
+	</div>
+<?php 
+  	}  
+?>
