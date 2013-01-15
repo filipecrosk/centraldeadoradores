@@ -98,6 +98,19 @@ class Internals_Util {
 		return $number;
 	}
 
+	public static function getPartDay($hour){
+		$arr = split(":", $hour);
+		if($arr[0] >= "00" && $arr[0] < "06"){
+			return "Madrugada";
+		} else if($arr[0] >= "06" && $arr[0] < "12"){
+			return "Manhã";
+		} else if($arr[0] >= "12" && $arr[0] < "18"){
+			return "Tarde";
+		} else if($arr[0] >= "18" && $arr[0] < "00"){
+			return "Noite";
+		}
+	}
+	
 }
 
 ?>

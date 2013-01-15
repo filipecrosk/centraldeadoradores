@@ -15,8 +15,9 @@ class EscalaController extends Internals_Controller_CloseAction {
 	public function indexAction() {
 		$userCredentials = new Zend_Session_Namespace('UserCredentials');
 		$escalasPendentes = EscalaPessoaQuery::create()->filterByIdUsuario($userCredentials->id)
-		->filterByIdStatusEscala(1)->
-		filterByData(array("min"=>date("Y-m-d H:i:s")))->count();
+			->filterByIdStatusEscala(1)
+			->filterByData(array("min"=>date("Y-m-d H:i:s")))
+			->count();
 		if($this->nivelPermissao != 3){
 			if($escalasPendentes > 0){ 
 				$this->_redirect("escala/aconfirmar");
@@ -40,6 +41,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
 		$this->view->grid->setShowWeekDay();
+		$this->view->grid->setShowDayPart();
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
   																	 LocalPeer::OM_CLASS=>LocalPeer::ID));
 	 	$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
@@ -94,6 +96,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
+		$this->view->grid->setShowWeekDay();
+		$this->view->grid->setShowDayPart();
 		
 		$criterio = array(array("<img alt='recusar' src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Cancelar",$criterio);
@@ -120,14 +124,24 @@ class EscalaController extends Internals_Controller_CloseAction {
 				var link = $(this);
 				$('#textAreaMotivo').val('');
 				$('#".$modalMotivo->getModalName()."').modal('show');
+				$('.".$modalMotivo->getModalName()."Save').addClass('disabled');
+				$('#textAreaMotivo').change(function(){
+					if($('#textAreaMotivo').val() != ''){
+						$('.".$modalMotivo->getModalName()."Save').removeClass('disabled');
+					} else {
+						$('.".$modalMotivo->getModalName()."Save').addClass('disabled');
+					}
+				});
 				$('.".$modalMotivo->getModalName()."Save').click(function(){
-					$('#".$modalMotivo->getModalName()."').modal('hide');
-					$(this).button('reset');
-					$('#".$modalRecusar->getModalName()."').modal('show');
-					$('.".$modalRecusar->getModalName()."Yes').click(function(){
-						$(this).button('loading');
-						$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
-					});
+					if($('#textAreaMotivo').val() != ''){
+						$('#".$modalMotivo->getModalName()."').modal('hide');
+						$(this).button('reset');
+						$('#".$modalRecusar->getModalName()."').modal('show');
+						$('.".$modalRecusar->getModalName()."Yes').click(function(){
+							$(this).button('loading');
+							$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+						});
+					}
 				});
 			return false;
 			});
@@ -166,6 +180,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
 		$this->view->grid->addColumn("Funcoes", "Funções", null, false);
+		$this->view->grid->setShowWeekDay();
+		$this->view->grid->setShowDayPart();
 		
 		$criterio = array(array("<img alt='confirmar' src='/default/images/icone-positivo.png' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Confirmar",$criterio);
@@ -209,14 +225,24 @@ class EscalaController extends Internals_Controller_CloseAction {
 					} else {
 						$('#textAreaMotivo').val('');
 						$('#".$modalMotivo->getModalName()."').modal('show');
+						$('.".$modalMotivo->getModalName()."Save').addClass('disabled');
+						$('#textAreaMotivo').change(function(){
+							if($('#textAreaMotivo').val() != ''){
+								$('.".$modalMotivo->getModalName()."Save').removeClass('disabled');
+							} else {
+								$('.".$modalMotivo->getModalName()."Save').addClass('disabled');
+							}
+						});
 						$('.".$modalMotivo->getModalName()."Save').click(function(){
-							$('#".$modalMotivo->getModalName()."').modal('hide');
-							$(this).button('reset');
-							$('#".$modalRecusar->getModalName()."').modal('show');
-							$('.".$modalRecusar->getModalName()."Yes').click(function(){
-								$(this).button('loading');
-								$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
-							});
+							if($('#textAreaMotivo').val() != ''){
+								$('#".$modalMotivo->getModalName()."').modal('hide');
+								$(this).button('reset');
+								$('#".$modalRecusar->getModalName()."').modal('show');
+								$('.".$modalRecusar->getModalName()."Yes').click(function(){
+									$(this).button('loading');
+									$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+								});
+							}
 						});
 					}
 					return false;
@@ -287,6 +313,40 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$idEscala = $this->getRequest()->getParam('idEscala', null);
 		$motivo = $this->getRequest()->getParam('motivo', null);
 		$escala = EscalaPessoaQuery::create()->findPk($idEscala);
+		$usuario = $escala->getUsuarioRelatedByIdUsuario();
+		$local = $escala->getLocal();
+		
+		$email = new EmailHeader();
+		$email->setAssunto("Cancelamento de Escala");
+		$email->setIdUsuario ( $usuario->getId() );
+		$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
+		$email->setCorpoMensagem("
+		<h2 style=\"text-align: center; \">
+			<em><strong>Escala cancelada!</strong></em>
+		</h2>
+		<p>
+			O usu&acute;rio " . $usuario->getNome() . " cancelou a escala para o dia " . str_replace("à", "&agrave;", $escala->getData('d/m/Y à\s H:i')) . " 		
+			no local " . $local->getNome() . ".
+		</p>
+		<p>
+			Confira a escala <a href=\"http://v2.centraldeadoradores.com.br/escala/detalhes?data=" . str_replace(" ", "%20", $escala->getData('Y-m-d H:i:s')) . "&idLocal=" . $local->getId() . "\">clicando aqui.</a>
+		</p>
+		");
+		$destinatarios = UsuarioQuery::create()
+			->filterByNivelpermissao(3)
+			->find();
+		foreach ( $destinatarios as $destinatario ) {
+			try {
+				$alertEmail = new EmailDetail();
+				$alertEmail->setEmailHeader($email);
+				$alertEmail->setUsuario($destinatario);
+				$alertEmail->save();
+			} catch ( Exception $ex ) {
+				echo "Ocorreu um erro. ".$ex;
+				return;
+			}
+		}
+		
 		$escala->setIdStatusEscala(3);
 		$escala->setMotivoRecusa($motivo);
 		$escala->save();

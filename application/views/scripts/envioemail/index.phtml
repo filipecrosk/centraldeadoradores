@@ -152,10 +152,17 @@
 			<label class="control-label" for="assunto">Assunto: </label>
 			<input id="assunto" type="text" class="input-xxlarge">
 		</div>
+		<div class="control-group">
+		    <label class="control-label" for="arquivo">Anexo :</label>
+			<input class="span5" type="file" id="arquivo" name="arquivo" />
+			<span class="help-block" style="color:red;">Por favor, por enquanto só use o anexo para testes. Esta funcionalidade esta em "BETA".</span>
+		</div>
 		<div class="control-group" >
 			<label class="control-label" for="assunto">Mensagem: </label>
 			<textarea class="ckeditor" id="corpoMensagem" name="corpoMensagem"></textarea>
 		</div>
-		<button id="enviar" class="btn btn-primary" autocomplete="off" data-loading-text="Enviando..." style="float:right;margin-right:30px;margin-top:15px;margin-bottom:30px;">Enviar</button>
+		<div class="form-actions">
+			<button id="enviar" class="btn btn-primary pull-right" autocomplete="off" data-loading-text="Enviando..." >Enviar</button>
+		</div>
 	</div>
 </form>
