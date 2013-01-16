@@ -60,6 +60,17 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
     protected $corpo_mensagem;
 
     /**
+     * The value for the id_arquivo field.
+     * @var        int
+     */
+    protected $id_arquivo;
+
+    /**
+     * @var        Arquivo
+     */
+    protected $aArquivo;
+
+    /**
      * @var        Usuario
      */
     protected $aUsuario;
@@ -165,6 +176,16 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
     public function getCorpoMensagem()
     {
         return $this->corpo_mensagem;
+    }
+
+    /**
+     * Get the [id_arquivo] column value.
+     *
+     * @return int
+     */
+    public function getIdArquivo()
+    {
+        return $this->id_arquivo;
     }
 
     /**
@@ -279,6 +300,31 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
     } // setCorpoMensagem()
 
     /**
+     * Set the value of [id_arquivo] column.
+     *
+     * @param int $v new value
+     * @return EmailHeader The current object (for fluent API support)
+     */
+    public function setIdArquivo($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_arquivo !== $v) {
+            $this->id_arquivo = $v;
+            $this->modifiedColumns[] = EmailHeaderPeer::ID_ARQUIVO;
+        }
+
+        if ($this->aArquivo !== null && $this->aArquivo->getId() !== $v) {
+            $this->aArquivo = null;
+        }
+
+
+        return $this;
+    } // setIdArquivo()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -315,6 +361,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             $this->data_cadastro = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
             $this->assunto = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
             $this->corpo_mensagem = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+            $this->id_arquivo = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -323,7 +370,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = EmailHeaderPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = EmailHeaderPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating EmailHeader object", $e);
@@ -348,6 +395,9 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
 
         if ($this->aUsuario !== null && $this->id_usuario !== $this->aUsuario->getId()) {
             $this->aUsuario = null;
+        }
+        if ($this->aArquivo !== null && $this->id_arquivo !== $this->aArquivo->getId()) {
+            $this->aArquivo = null;
         }
     } // ensureConsistency
 
@@ -388,6 +438,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aArquivo = null;
             $this->aUsuario = null;
             $this->collEmailDetails = null;
 
@@ -509,6 +560,13 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aArquivo !== null) {
+                if ($this->aArquivo->isModified() || $this->aArquivo->isNew()) {
+                    $affectedRows += $this->aArquivo->save($con);
+                }
+                $this->setArquivo($this->aArquivo);
+            }
+
             if ($this->aUsuario !== null) {
                 if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
                     $affectedRows += $this->aUsuario->save($con);
@@ -585,6 +643,9 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         if ($this->isColumnModified(EmailHeaderPeer::CORPO_MENSAGEM)) {
             $modifiedColumns[':p' . $index++]  = '`CORPO_MENSAGEM`';
         }
+        if ($this->isColumnModified(EmailHeaderPeer::ID_ARQUIVO)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_ARQUIVO`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `email_header` (%s) VALUES (%s)',
@@ -610,6 +671,9 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
                         break;
                     case '`CORPO_MENSAGEM`':
                         $stmt->bindValue($identifier, $this->corpo_mensagem, PDO::PARAM_STR);
+                        break;
+                    case '`ID_ARQUIVO`':
+                        $stmt->bindValue($identifier, $this->id_arquivo, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -710,6 +774,12 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aArquivo !== null) {
+                if (!$this->aArquivo->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aArquivo->getValidationFailures());
+                }
+            }
+
             if ($this->aUsuario !== null) {
                 if (!$this->aUsuario->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aUsuario->getValidationFailures());
@@ -780,6 +850,9 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             case 4:
                 return $this->getCorpoMensagem();
                 break;
+            case 5:
+                return $this->getIdArquivo();
+                break;
             default:
                 return null;
                 break;
@@ -814,8 +887,12 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             $keys[2] => $this->getDataCadastro(),
             $keys[3] => $this->getAssunto(),
             $keys[4] => $this->getCorpoMensagem(),
+            $keys[5] => $this->getIdArquivo(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->aArquivo) {
+                $result['Arquivo'] = $this->aArquivo->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aUsuario) {
                 $result['Usuario'] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -871,6 +948,9 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             case 4:
                 $this->setCorpoMensagem($value);
                 break;
+            case 5:
+                $this->setIdArquivo($value);
+                break;
         } // switch()
     }
 
@@ -900,6 +980,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         if (array_key_exists($keys[2], $arr)) $this->setDataCadastro($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setAssunto($arr[$keys[3]]);
         if (array_key_exists($keys[4], $arr)) $this->setCorpoMensagem($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setIdArquivo($arr[$keys[5]]);
     }
 
     /**
@@ -916,6 +997,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         if ($this->isColumnModified(EmailHeaderPeer::DATA_CADASTRO)) $criteria->add(EmailHeaderPeer::DATA_CADASTRO, $this->data_cadastro);
         if ($this->isColumnModified(EmailHeaderPeer::ASSUNTO)) $criteria->add(EmailHeaderPeer::ASSUNTO, $this->assunto);
         if ($this->isColumnModified(EmailHeaderPeer::CORPO_MENSAGEM)) $criteria->add(EmailHeaderPeer::CORPO_MENSAGEM, $this->corpo_mensagem);
+        if ($this->isColumnModified(EmailHeaderPeer::ID_ARQUIVO)) $criteria->add(EmailHeaderPeer::ID_ARQUIVO, $this->id_arquivo);
 
         return $criteria;
     }
@@ -983,6 +1065,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         $copyObj->setDataCadastro($this->getDataCadastro());
         $copyObj->setAssunto($this->getAssunto());
         $copyObj->setCorpoMensagem($this->getCorpoMensagem());
+        $copyObj->setIdArquivo($this->getIdArquivo());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1045,6 +1128,57 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a Arquivo object.
+     *
+     * @param             Arquivo $v
+     * @return EmailHeader The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setArquivo(Arquivo $v = null)
+    {
+        if ($v === null) {
+            $this->setIdArquivo(NULL);
+        } else {
+            $this->setIdArquivo($v->getId());
+        }
+
+        $this->aArquivo = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Arquivo object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEmailHeader($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Arquivo object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @return Arquivo The associated Arquivo object.
+     * @throws PropelException
+     */
+    public function getArquivo(PropelPDO $con = null)
+    {
+        if ($this->aArquivo === null && ($this->id_arquivo !== null)) {
+            $this->aArquivo = ArquivoQuery::create()->findPk($this->id_arquivo, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aArquivo->addEmailHeaders($this);
+             */
+        }
+
+        return $this->aArquivo;
     }
 
     /**
@@ -1356,6 +1490,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
         $this->data_cadastro = null;
         $this->assunto = null;
         $this->corpo_mensagem = null;
+        $this->id_arquivo = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -1387,6 +1522,7 @@ abstract class BaseEmailHeader extends BaseObject implements Persistent
             $this->collEmailDetails->clearIterator();
         }
         $this->collEmailDetails = null;
+        $this->aArquivo = null;
         $this->aUsuario = null;
     }
 

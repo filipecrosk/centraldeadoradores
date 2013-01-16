@@ -15,6 +15,7 @@
 						$(document).scrollTop(0);
 					}
 				});
+				return false;
 			} else if($("#assunto").val() == ""){
 				$.ajax({
 					url: '/ajax/geterroralert',
@@ -26,6 +27,7 @@
 						$(document).scrollTop(0);
 					}
 				});
+				return false;
 			} else if(oEditor.getData() == ""){
 				$.ajax({
 					url: '/ajax/geterroralert',
@@ -37,45 +39,17 @@
 						$(document).scrollTop(0);
 					}
 				});
+				return false;
 			} else {
 				//Marcar mensagem para envio
 				$("#destinatario").prop('disabled', true);
 				$("#assunto").prop('disabled', true);
 				oEditor.setReadOnly(true);
-				$("#enviar").button('loading');
-				$.ajax({
-					url: '/envioemail/marcarenvio',
-					type: 'post',
-					dataType: 'html',
-					data: {
-							'destinatarios':toSend,
-							'assunto':$("#assunto").val(),
-							'corpoMensagem': oEditor.getData()
-						  },
-					success: function(data) {
-						$("#destinatario").prop('disabled', false);
-						$("#destinatario").val("");
-						$("#assunto").prop('disabled', false);
-						$("#assunto").val("");
-						oEditor.setReadOnly(false);
-						oEditor.setData("");
-						$("#enviar").button('reset');
-						toSend = [];
-						$("#selecionados").html('');
-						$.ajax({
-							url: '/ajax/getsuccessalert',
-							type: 'post',
-							dataType: 'html',
-							data: {"texto":"Mensagens marcadas para envio com sucesso!"},
-							success: function(data) {
-								$("#alerts").html(data);
-								$(document).scrollTop(0);
-							}
-						});
-					}
-				});	
+				$("#enviar").button('loading');	
+				jQuery.each(toSend, function(i, val) {
+					$("#envioemailform").append("<input type='hidden' id='destinatarios[]' name='destinatarios[]' value='" + val + "' />");
+				});
 			}
-			return false;
 		});
 		$("#destinatario").after("<div id='selecionados'></div>");
 		$.ajax({
@@ -103,6 +77,30 @@
 				}
 			});
 		});
+		if(verifyBrowser()){
+			$(".btn").addClass("disabled");
+			$("#arquivo").change(function(){
+				var arquivo = document.getElementById('arquivo');
+				if(arquivo.files[0].size > 8000000){
+					$.ajax({
+						url: '/ajax/geterroralert',
+						type: 'post',
+						dataType: 'html',
+						data: {"texto":"O arquivo para upload deve ser menor que 8MB."},
+						success: function(data) {
+							$("#alerts").html(data);
+							$(".btn").addClass("disabled");
+						}
+					});
+				}
+				else{
+					$("#alerts").html("");
+					$(".btn").removeClass("disabled");
+				}
+			});
+		} else {
+						
+		}
 	});
 	function adicionarDestinatario(destinatario){
 		if(jQuery.inArray($(destinatario).val(), toSend) == -1){
@@ -139,7 +137,7 @@
 </script>
 <div id="teste"></div>
 <h3>Enviar E-mail</h3>
-<form id="envioemailform" method="post" action="/envioemail/enviar">
+<form id="envioemailform" method="post" action="/envioemail/marcarenvio"  enctype="multipart/form-data">
 	<div class="form-inline">
 		<div class="control-group" >
 			<span class="help-block">Digite o nome dos usuários que serão os destinatários do e-mail ou 'Banda' para escolher uma Banda,

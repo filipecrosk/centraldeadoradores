@@ -17,20 +17,53 @@ class EnvioemailController extends Internals_Controller_CloseAction {
 	}
 	
 	public function marcarenvioAction() {
-		$this->_helper->layout ()->disableLayout ();
-		$this->_helper->viewRenderer->setNoRender ();
-		
-		$destinatarios = $this->getRequest ()->getPost ( 'destinatarios', null );
-		$assunto = $this->getRequest ()->getPost ( 'assunto', null );
-		$corpoMensagem = $this->getRequest ()->getPost ( 'corpoMensagem', null );
-		$email = new EmailHeader ();
-		$email->setAssunto ( $assunto );
-		$email->setCorpoMensagem ( $corpoMensagem );
-		$email->setIdUsuario ( $this->userId );
-		$now = date ( 'Y-m-d H:i:s' );
-		$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
-		$email->save ();
-		$this->separarDestinatarios ( $email->getIdEmail (), $destinatarios );
+		try {
+			$this->_helper->layout ()->disableLayout ();
+			$this->_helper->viewRenderer->setNoRender ();
+			
+			$destinatarios = $this->getRequest ()->getPost ( 'destinatarios', null );
+			$assunto = $this->getRequest ()->getPost ( 'assunto', null );
+			$corpoMensagem = $this->getRequest ()->getPost ( 'corpoMensagem', null );
+			$arquivo = null;
+			if(isset($_FILES) && $_FILES['arquivo']['size'] > 0){
+				$fileName = $_FILES['arquivo']['name'];
+				$tmpName  = $_FILES['arquivo']['tmp_name'];
+				$fileSize = $_FILES['arquivo']['size'];
+				$fileType = $_FILES['arquivo']['type'];
+				
+				$fp      = fopen($tmpName, 'r');
+				$content = fread($fp, filesize($tmpName));
+				
+				fclose($fp);
+				
+				if(!get_magic_quotes_gpc())
+				{
+				    $fileName = addslashes($fileName);
+				}
+				$arquivo = new Arquivo();
+				$arquivo->setNome($fileName);
+				$arquivo->setMime($fileType);
+				$arquivo->setTamanho($fileSize);
+				$arquivo->setConteudo($content);
+				$arquivo->save();
+			}
+			
+			$email = new EmailHeader ();
+			$email->setAssunto ( $assunto );
+			$email->setCorpoMensagem ( $corpoMensagem );
+			$email->setIdUsuario ( $this->userId );
+			$now = date ( 'Y-m-d H:i:s' );
+			$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
+			$email->setArquivo($arquivo);
+			$email->save ();
+			$this->separarDestinatarios ( $email->getIdEmail (), $destinatarios );
+			Internals_Message::success("E-mails marcados para envio com sucesso!");
+			$this->_redirect("envioemail");
+		}
+		catch (Exception $ex){
+			Internals_Message::error("Ocorreu um erro!");
+			$this->_redirect("envioemail");
+		}
 	}
 	
 	private function separarDestinatarios($idEmail, $destinatarios) {

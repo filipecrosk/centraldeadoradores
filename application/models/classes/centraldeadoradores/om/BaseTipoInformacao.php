@@ -1110,10 +1110,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|AlteracaoInformacaoUsuario[] List of AlteracaoInformacaoUsuario objects
      */
-    public function getAlteracaoInformacaoUsuariosJoinUsuario($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getAlteracaoInformacaoUsuariosJoinToken($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = AlteracaoInformacaoUsuarioQuery::create(null, $criteria);
-        $query->joinWith('Usuario', $join_behavior);
+        $query->joinWith('Token', $join_behavior);
 
         return $this->getAlteracaoInformacaoUsuarios($query, $con);
     }
@@ -1135,10 +1135,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return PropelObjectCollection|AlteracaoInformacaoUsuario[] List of AlteracaoInformacaoUsuario objects
      */
-    public function getAlteracaoInformacaoUsuariosJoinToken($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getAlteracaoInformacaoUsuariosJoinUsuario($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $query = AlteracaoInformacaoUsuarioQuery::create(null, $criteria);
-        $query->joinWith('Token', $join_behavior);
+        $query->joinWith('Usuario', $join_behavior);
 
         return $this->getAlteracaoInformacaoUsuarios($query, $con);
     }
