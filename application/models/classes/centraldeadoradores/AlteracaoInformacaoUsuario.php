@@ -15,26 +15,4 @@
  */
 class AlteracaoInformacaoUsuario extends BaseAlteracaoInformacaoUsuario
 {
-	
-	public function setIdTipoInformacaoId($v){
-		parent::setIdTipoInformacaoId($v);
-		if($this->isNew()){
-			$tipo = TipoInformacaoQuery::create()->findPk($v);
-			if($tipo!= null && $tipo->getRequerConfirmacao() == 1){
-				$token = new Token();
-				$token->fill();
-				$this->setToken($token);
-			}
-		}
-	}
-	
-	public function setTipoInformacao(TipoInformacao $v = null){		
-		parent::setTipoInformacao($v);
-		if($this->isNew() && $v->getRequerConfirmacao() == 1){
-			$token = new Token();
-			$token->fill();
-			$this->setToken($token);
-		}
-	}
-	
 }

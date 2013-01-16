@@ -3,7 +3,7 @@
 
 
 /**
- * Skeleton subclass for representing a row from the 'token' table.
+ * Skeleton subclass for representing a row from the 'arquivo_email' table.
  *
  *
  *
@@ -13,6 +13,6 @@
  *
  * @package    propel.generator.centraldeadoradores
  */
-class Token extends BaseToken
+class ArquivoEmail extends BaseArquivoEmail
 {
 }

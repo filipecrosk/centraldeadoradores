@@ -60,10 +60,10 @@ abstract class BaseArquivo extends BaseObject implements Persistent
     protected $conteudo;
 
     /**
-     * @var        PropelObjectCollection|EmailHeader[] Collection to store aggregation of EmailHeader objects.
+     * @var        PropelObjectCollection|ArquivoEmail[] Collection to store aggregation of ArquivoEmail objects.
      */
-    protected $collEmailHeaders;
-    protected $collEmailHeadersPartial;
+    protected $collArquivoEmails;
+    protected $collArquivoEmailsPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -83,7 +83,7 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      * An array of objects scheduled for deletion.
      * @var		PropelObjectCollection
      */
-    protected $emailHeadersScheduledForDeletion = null;
+    protected $arquivoEmailsScheduledForDeletion = null;
 
     /**
      * Get the [id] column value.
@@ -356,7 +356,7 @@ abstract class BaseArquivo extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collEmailHeaders = null;
+            $this->collArquivoEmails = null;
 
         } // if (deep)
     }
@@ -487,18 +487,17 @@ abstract class BaseArquivo extends BaseObject implements Persistent
                 $this->resetModified();
             }
 
-            if ($this->emailHeadersScheduledForDeletion !== null) {
-                if (!$this->emailHeadersScheduledForDeletion->isEmpty()) {
-                    foreach ($this->emailHeadersScheduledForDeletion as $emailHeader) {
-                        // need to save related object because we set the relation to null
-                        $emailHeader->save($con);
-                    }
-                    $this->emailHeadersScheduledForDeletion = null;
+            if ($this->arquivoEmailsScheduledForDeletion !== null) {
+                if (!$this->arquivoEmailsScheduledForDeletion->isEmpty()) {
+                    ArquivoEmailQuery::create()
+                        ->filterByPrimaryKeys($this->arquivoEmailsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->arquivoEmailsScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collEmailHeaders !== null) {
-                foreach ($this->collEmailHeaders as $referrerFK) {
+            if ($this->collArquivoEmails !== null) {
+                foreach ($this->collArquivoEmails as $referrerFK) {
                     if (!$referrerFK->isDeleted()) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -674,8 +673,8 @@ abstract class BaseArquivo extends BaseObject implements Persistent
             }
 
 
-                if ($this->collEmailHeaders !== null) {
-                    foreach ($this->collEmailHeaders as $referrerFK) {
+                if ($this->collArquivoEmails !== null) {
+                    foreach ($this->collArquivoEmails as $referrerFK) {
                         if (!$referrerFK->validate($columns)) {
                             $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
                         }
@@ -768,8 +767,8 @@ abstract class BaseArquivo extends BaseObject implements Persistent
             $keys[4] => $this->getConteudo(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->collEmailHeaders) {
-                $result['EmailHeaders'] = $this->collEmailHeaders->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->collArquivoEmails) {
+                $result['ArquivoEmails'] = $this->collArquivoEmails->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -940,9 +939,9 @@ abstract class BaseArquivo extends BaseObject implements Persistent
             // store object hash to prevent cycle
             $this->startCopy = true;
 
-            foreach ($this->getEmailHeaders() as $relObj) {
+            foreach ($this->getArquivoEmails() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addEmailHeader($relObj->copy($deepCopy));
+                    $copyObj->addArquivoEmail($relObj->copy($deepCopy));
                 }
             }
 
@@ -1007,40 +1006,40 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      */
     public function initRelation($relationName)
     {
-        if ('EmailHeader' == $relationName) {
-            $this->initEmailHeaders();
+        if ('ArquivoEmail' == $relationName) {
+            $this->initArquivoEmails();
         }
     }
 
     /**
-     * Clears out the collEmailHeaders collection
+     * Clears out the collArquivoEmails collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addEmailHeaders()
+     * @see        addArquivoEmails()
      */
-    public function clearEmailHeaders()
+    public function clearArquivoEmails()
     {
-        $this->collEmailHeaders = null; // important to set this to null since that means it is uninitialized
-        $this->collEmailHeadersPartial = null;
+        $this->collArquivoEmails = null; // important to set this to null since that means it is uninitialized
+        $this->collArquivoEmailsPartial = null;
     }
 
     /**
-     * reset is the collEmailHeaders collection loaded partially
+     * reset is the collArquivoEmails collection loaded partially
      *
      * @return void
      */
-    public function resetPartialEmailHeaders($v = true)
+    public function resetPartialArquivoEmails($v = true)
     {
-        $this->collEmailHeadersPartial = $v;
+        $this->collArquivoEmailsPartial = $v;
     }
 
     /**
-     * Initializes the collEmailHeaders collection.
+     * Initializes the collArquivoEmails collection.
      *
-     * By default this just sets the collEmailHeaders collection to an empty array (like clearcollEmailHeaders());
+     * By default this just sets the collArquivoEmails collection to an empty array (like clearcollArquivoEmails());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1049,17 +1048,17 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      *
      * @return void
      */
-    public function initEmailHeaders($overrideExisting = true)
+    public function initArquivoEmails($overrideExisting = true)
     {
-        if (null !== $this->collEmailHeaders && !$overrideExisting) {
+        if (null !== $this->collArquivoEmails && !$overrideExisting) {
             return;
         }
-        $this->collEmailHeaders = new PropelObjectCollection();
-        $this->collEmailHeaders->setModel('EmailHeader');
+        $this->collArquivoEmails = new PropelObjectCollection();
+        $this->collArquivoEmails->setModel('ArquivoEmail');
     }
 
     /**
-     * Gets an array of EmailHeader objects which contain a foreign key that references this object.
+     * Gets an array of ArquivoEmail objects which contain a foreign key that references this object.
      *
      * If the $criteria is not null, it is used to always fetch the results from the database.
      * Otherwise the results are fetched from the database the first time, then cached.
@@ -1069,98 +1068,98 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      *
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|EmailHeader[] List of EmailHeader objects
+     * @return PropelObjectCollection|ArquivoEmail[] List of ArquivoEmail objects
      * @throws PropelException
      */
-    public function getEmailHeaders($criteria = null, PropelPDO $con = null)
+    public function getArquivoEmails($criteria = null, PropelPDO $con = null)
     {
-        $partial = $this->collEmailHeadersPartial && !$this->isNew();
-        if (null === $this->collEmailHeaders || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collEmailHeaders) {
+        $partial = $this->collArquivoEmailsPartial && !$this->isNew();
+        if (null === $this->collArquivoEmails || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collArquivoEmails) {
                 // return empty collection
-                $this->initEmailHeaders();
+                $this->initArquivoEmails();
             } else {
-                $collEmailHeaders = EmailHeaderQuery::create(null, $criteria)
+                $collArquivoEmails = ArquivoEmailQuery::create(null, $criteria)
                     ->filterByArquivo($this)
                     ->find($con);
                 if (null !== $criteria) {
-                    if (false !== $this->collEmailHeadersPartial && count($collEmailHeaders)) {
-                      $this->initEmailHeaders(false);
+                    if (false !== $this->collArquivoEmailsPartial && count($collArquivoEmails)) {
+                      $this->initArquivoEmails(false);
 
-                      foreach($collEmailHeaders as $obj) {
-                        if (false == $this->collEmailHeaders->contains($obj)) {
-                          $this->collEmailHeaders->append($obj);
+                      foreach($collArquivoEmails as $obj) {
+                        if (false == $this->collArquivoEmails->contains($obj)) {
+                          $this->collArquivoEmails->append($obj);
                         }
                       }
 
-                      $this->collEmailHeadersPartial = true;
+                      $this->collArquivoEmailsPartial = true;
                     }
 
-                    return $collEmailHeaders;
+                    return $collArquivoEmails;
                 }
 
-                if($partial && $this->collEmailHeaders) {
-                    foreach($this->collEmailHeaders as $obj) {
+                if($partial && $this->collArquivoEmails) {
+                    foreach($this->collArquivoEmails as $obj) {
                         if($obj->isNew()) {
-                            $collEmailHeaders[] = $obj;
+                            $collArquivoEmails[] = $obj;
                         }
                     }
                 }
 
-                $this->collEmailHeaders = $collEmailHeaders;
-                $this->collEmailHeadersPartial = false;
+                $this->collArquivoEmails = $collArquivoEmails;
+                $this->collArquivoEmailsPartial = false;
             }
         }
 
-        return $this->collEmailHeaders;
+        return $this->collArquivoEmails;
     }
 
     /**
-     * Sets a collection of EmailHeader objects related by a one-to-many relationship
+     * Sets a collection of ArquivoEmail objects related by a one-to-many relationship
      * to the current object.
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param PropelCollection $emailHeaders A Propel collection.
+     * @param PropelCollection $arquivoEmails A Propel collection.
      * @param PropelPDO $con Optional connection object
      */
-    public function setEmailHeaders(PropelCollection $emailHeaders, PropelPDO $con = null)
+    public function setArquivoEmails(PropelCollection $arquivoEmails, PropelPDO $con = null)
     {
-        $this->emailHeadersScheduledForDeletion = $this->getEmailHeaders(new Criteria(), $con)->diff($emailHeaders);
+        $this->arquivoEmailsScheduledForDeletion = $this->getArquivoEmails(new Criteria(), $con)->diff($arquivoEmails);
 
-        foreach ($this->emailHeadersScheduledForDeletion as $emailHeaderRemoved) {
-            $emailHeaderRemoved->setArquivo(null);
+        foreach ($this->arquivoEmailsScheduledForDeletion as $arquivoEmailRemoved) {
+            $arquivoEmailRemoved->setArquivo(null);
         }
 
-        $this->collEmailHeaders = null;
-        foreach ($emailHeaders as $emailHeader) {
-            $this->addEmailHeader($emailHeader);
+        $this->collArquivoEmails = null;
+        foreach ($arquivoEmails as $arquivoEmail) {
+            $this->addArquivoEmail($arquivoEmail);
         }
 
-        $this->collEmailHeaders = $emailHeaders;
-        $this->collEmailHeadersPartial = false;
+        $this->collArquivoEmails = $arquivoEmails;
+        $this->collArquivoEmailsPartial = false;
     }
 
     /**
-     * Returns the number of related EmailHeader objects.
+     * Returns the number of related ArquivoEmail objects.
      *
      * @param Criteria $criteria
      * @param boolean $distinct
      * @param PropelPDO $con
-     * @return int             Count of related EmailHeader objects.
+     * @return int             Count of related ArquivoEmail objects.
      * @throws PropelException
      */
-    public function countEmailHeaders(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+    public function countArquivoEmails(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
     {
-        $partial = $this->collEmailHeadersPartial && !$this->isNew();
-        if (null === $this->collEmailHeaders || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collEmailHeaders) {
+        $partial = $this->collArquivoEmailsPartial && !$this->isNew();
+        if (null === $this->collArquivoEmails || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collArquivoEmails) {
                 return 0;
             } else {
                 if($partial && !$criteria) {
-                    return count($this->getEmailHeaders());
+                    return count($this->getArquivoEmails());
                 }
-                $query = EmailHeaderQuery::create(null, $criteria);
+                $query = ArquivoEmailQuery::create(null, $criteria);
                 if ($distinct) {
                     $query->distinct();
                 }
@@ -1170,52 +1169,52 @@ abstract class BaseArquivo extends BaseObject implements Persistent
                     ->count($con);
             }
         } else {
-            return count($this->collEmailHeaders);
+            return count($this->collArquivoEmails);
         }
     }
 
     /**
-     * Method called to associate a EmailHeader object to this object
-     * through the EmailHeader foreign key attribute.
+     * Method called to associate a ArquivoEmail object to this object
+     * through the ArquivoEmail foreign key attribute.
      *
-     * @param    EmailHeader $l EmailHeader
+     * @param    ArquivoEmail $l ArquivoEmail
      * @return Arquivo The current object (for fluent API support)
      */
-    public function addEmailHeader(EmailHeader $l)
+    public function addArquivoEmail(ArquivoEmail $l)
     {
-        if ($this->collEmailHeaders === null) {
-            $this->initEmailHeaders();
-            $this->collEmailHeadersPartial = true;
+        if ($this->collArquivoEmails === null) {
+            $this->initArquivoEmails();
+            $this->collArquivoEmailsPartial = true;
         }
-        if (!$this->collEmailHeaders->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddEmailHeader($l);
+        if (!$this->collArquivoEmails->contains($l)) { // only add it if the **same** object is not already associated
+            $this->doAddArquivoEmail($l);
         }
 
         return $this;
     }
 
     /**
-     * @param	EmailHeader $emailHeader The emailHeader object to add.
+     * @param	ArquivoEmail $arquivoEmail The arquivoEmail object to add.
      */
-    protected function doAddEmailHeader($emailHeader)
+    protected function doAddArquivoEmail($arquivoEmail)
     {
-        $this->collEmailHeaders[]= $emailHeader;
-        $emailHeader->setArquivo($this);
+        $this->collArquivoEmails[]= $arquivoEmail;
+        $arquivoEmail->setArquivo($this);
     }
 
     /**
-     * @param	EmailHeader $emailHeader The emailHeader object to remove.
+     * @param	ArquivoEmail $arquivoEmail The arquivoEmail object to remove.
      */
-    public function removeEmailHeader($emailHeader)
+    public function removeArquivoEmail($arquivoEmail)
     {
-        if ($this->getEmailHeaders()->contains($emailHeader)) {
-            $this->collEmailHeaders->remove($this->collEmailHeaders->search($emailHeader));
-            if (null === $this->emailHeadersScheduledForDeletion) {
-                $this->emailHeadersScheduledForDeletion = clone $this->collEmailHeaders;
-                $this->emailHeadersScheduledForDeletion->clear();
+        if ($this->getArquivoEmails()->contains($arquivoEmail)) {
+            $this->collArquivoEmails->remove($this->collArquivoEmails->search($arquivoEmail));
+            if (null === $this->arquivoEmailsScheduledForDeletion) {
+                $this->arquivoEmailsScheduledForDeletion = clone $this->collArquivoEmails;
+                $this->arquivoEmailsScheduledForDeletion->clear();
             }
-            $this->emailHeadersScheduledForDeletion[]= $emailHeader;
-            $emailHeader->setArquivo(null);
+            $this->arquivoEmailsScheduledForDeletion[]= $arquivoEmail;
+            $arquivoEmail->setArquivo(null);
         }
     }
 
@@ -1225,7 +1224,7 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      * an identical criteria, it returns the collection.
      * Otherwise if this Arquivo is new, it will return
      * an empty collection; or if this Arquivo has previously
-     * been saved, it will retrieve related EmailHeaders from storage.
+     * been saved, it will retrieve related ArquivoEmails from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1234,14 +1233,14 @@ abstract class BaseArquivo extends BaseObject implements Persistent
      * @param Criteria $criteria optional Criteria object to narrow the query
      * @param PropelPDO $con optional connection object
      * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|EmailHeader[] List of EmailHeader objects
+     * @return PropelObjectCollection|ArquivoEmail[] List of ArquivoEmail objects
      */
-    public function getEmailHeadersJoinUsuario($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getArquivoEmailsJoinEmailHeader($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
-        $query = EmailHeaderQuery::create(null, $criteria);
-        $query->joinWith('Usuario', $join_behavior);
+        $query = ArquivoEmailQuery::create(null, $criteria);
+        $query->joinWith('EmailHeader', $join_behavior);
 
-        return $this->getEmailHeaders($query, $con);
+        return $this->getArquivoEmails($query, $con);
     }
 
     /**
@@ -1274,17 +1273,17 @@ abstract class BaseArquivo extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collEmailHeaders) {
-                foreach ($this->collEmailHeaders as $o) {
+            if ($this->collArquivoEmails) {
+                foreach ($this->collArquivoEmails as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        if ($this->collEmailHeaders instanceof PropelCollection) {
-            $this->collEmailHeaders->clearIterator();
+        if ($this->collArquivoEmails instanceof PropelCollection) {
+            $this->collArquivoEmails->clearIterator();
         }
-        $this->collEmailHeaders = null;
+        $this->collArquivoEmails = null;
     }
 
     /**

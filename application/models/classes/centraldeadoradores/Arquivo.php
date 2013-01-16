@@ -15,4 +15,9 @@
  */
 class Arquivo extends BaseArquivo
 {
+	public function getArquivoEmail(){
+		$ligacao = new ArquivoEmail();
+		$ligacao->setArquivo($this);
+		return $ligacao;
+	} 
 }

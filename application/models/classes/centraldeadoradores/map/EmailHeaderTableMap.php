@@ -43,7 +43,6 @@ class EmailHeaderTableMap extends TableMap
         $this->addColumn('DATA_CADASTRO', 'DataCadastro', 'TIMESTAMP', true, null, null);
         $this->addColumn('ASSUNTO', 'Assunto', 'VARCHAR', true, 50, null);
         $this->addColumn('CORPO_MENSAGEM', 'CorpoMensagem', 'CLOB', true, null, null);
-        $this->addForeignKey('ID_ARQUIVO', 'IdArquivo', 'INTEGER', 'arquivo', 'ID', false, null, null);
         // validators
     } // initialize()
 
@@ -52,8 +51,8 @@ class EmailHeaderTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('Arquivo', 'Arquivo', RelationMap::MANY_TO_ONE, array('Id_Arquivo' => 'Id', ), 'CASCADE', 'CASCADE');
         $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('Id_Usuario' => 'Id', ), null, null);
+        $this->addRelation('ArquivoEmail', 'ArquivoEmail', RelationMap::ONE_TO_MANY, array('Id_Email' => 'Id_Email', ), 'CASCADE', 'CASCADE', 'ArquivoEmails');
         $this->addRelation('EmailDetail', 'EmailDetail', RelationMap::ONE_TO_MANY, array('Id_Email' => 'Id_Email', ), 'CASCADE', 'CASCADE', 'EmailDetails');
     } // buildRelations()
 

@@ -53,9 +53,9 @@ class AlteracaoInformacaoUsuarioTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('Id_Usuario' => 'Id', ), null, null);
         $this->addRelation('TipoInformacao', 'TipoInformacao', RelationMap::MANY_TO_ONE, array('Id_Tipo_Informacao_Id' => 'Id', ), null, null);
         $this->addRelation('Token', 'Token', RelationMap::MANY_TO_ONE, array('Id_Token' => 'Id', ), null, null);
-        $this->addRelation('Usuario', 'Usuario', RelationMap::MANY_TO_ONE, array('Id_Usuario' => 'Id', ), null, null);
     } // buildRelations()
 
 } // AlteracaoInformacaoUsuarioTableMap

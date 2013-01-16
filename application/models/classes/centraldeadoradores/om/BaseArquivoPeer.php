@@ -370,9 +370,9 @@ abstract class BaseArquivoPeer
      */
     public static function clearRelatedInstancePool()
     {
-        // Invalidate objects in EmailHeaderPeer instance pool,
+        // Invalidate objects in ArquivoEmailPeer instance pool,
         // since one or more of them may be deleted by ON DELETE CASCADE/SETNULL rule.
-        EmailHeaderPeer::clearInstancePool();
+        ArquivoEmailPeer::clearInstancePool();
     }
 
     /**
@@ -707,11 +707,11 @@ abstract class BaseArquivoPeer
         foreach ($objects as $obj) {
 
 
-            // delete related EmailHeader objects
-            $criteria = new Criteria(EmailHeaderPeer::DATABASE_NAME);
+            // delete related ArquivoEmail objects
+            $criteria = new Criteria(ArquivoEmailPeer::DATABASE_NAME);
 
-            $criteria->add(EmailHeaderPeer::ID_ARQUIVO, $obj->getId());
-            $affectedRows += EmailHeaderPeer::doDelete($criteria, $con);
+            $criteria->add(ArquivoEmailPeer::ID_ARQUIVO, $obj->getId());
+            $affectedRows += ArquivoEmailPeer::doDelete($criteria, $con);
         }
 
         return $affectedRows;

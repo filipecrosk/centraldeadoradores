@@ -22,9 +22,9 @@
  * @method ArquivoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method ArquivoQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method ArquivoQuery leftJoinEmailHeader($relationAlias = null) Adds a LEFT JOIN clause to the query using the EmailHeader relation
- * @method ArquivoQuery rightJoinEmailHeader($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EmailHeader relation
- * @method ArquivoQuery innerJoinEmailHeader($relationAlias = null) Adds a INNER JOIN clause to the query using the EmailHeader relation
+ * @method ArquivoQuery leftJoinArquivoEmail($relationAlias = null) Adds a LEFT JOIN clause to the query using the ArquivoEmail relation
+ * @method ArquivoQuery rightJoinArquivoEmail($relationAlias = null) Adds a RIGHT JOIN clause to the query using the ArquivoEmail relation
+ * @method ArquivoQuery innerJoinArquivoEmail($relationAlias = null) Adds a INNER JOIN clause to the query using the ArquivoEmail relation
  *
  * @method Arquivo findOne(PropelPDO $con = null) Return the first Arquivo matching the query
  * @method Arquivo findOneOrCreate(PropelPDO $con = null) Return the first Arquivo matching the query, or a new Arquivo object populated from the query conditions when no match is found
@@ -359,41 +359,41 @@ abstract class BaseArquivoQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related EmailHeader object
+     * Filter the query by a related ArquivoEmail object
      *
-     * @param   EmailHeader|PropelObjectCollection $emailHeader  the related object to use as filter
+     * @param   ArquivoEmail|PropelObjectCollection $arquivoEmail  the related object to use as filter
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return   ArquivoQuery The current query, for fluid interface
      * @throws   PropelException - if the provided filter is invalid.
      */
-    public function filterByEmailHeader($emailHeader, $comparison = null)
+    public function filterByArquivoEmail($arquivoEmail, $comparison = null)
     {
-        if ($emailHeader instanceof EmailHeader) {
+        if ($arquivoEmail instanceof ArquivoEmail) {
             return $this
-                ->addUsingAlias(ArquivoPeer::ID, $emailHeader->getIdArquivo(), $comparison);
-        } elseif ($emailHeader instanceof PropelObjectCollection) {
+                ->addUsingAlias(ArquivoPeer::ID, $arquivoEmail->getIdArquivo(), $comparison);
+        } elseif ($arquivoEmail instanceof PropelObjectCollection) {
             return $this
-                ->useEmailHeaderQuery()
-                ->filterByPrimaryKeys($emailHeader->getPrimaryKeys())
+                ->useArquivoEmailQuery()
+                ->filterByPrimaryKeys($arquivoEmail->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByEmailHeader() only accepts arguments of type EmailHeader or PropelCollection');
+            throw new PropelException('filterByArquivoEmail() only accepts arguments of type ArquivoEmail or PropelCollection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the EmailHeader relation
+     * Adds a JOIN clause to the query using the ArquivoEmail relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ArquivoQuery The current query, for fluid interface
      */
-    public function joinEmailHeader($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinArquivoEmail($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('EmailHeader');
+        $relationMap = $tableMap->getRelation('ArquivoEmail');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -408,14 +408,14 @@ abstract class BaseArquivoQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'EmailHeader');
+            $this->addJoinObject($join, 'ArquivoEmail');
         }
 
         return $this;
     }
 
     /**
-     * Use the EmailHeader relation EmailHeader object
+     * Use the ArquivoEmail relation ArquivoEmail object
      *
      * @see       useQuery()
      *
@@ -423,13 +423,13 @@ abstract class BaseArquivoQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   EmailHeaderQuery A secondary query class using the current class as primary query
+     * @return   ArquivoEmailQuery A secondary query class using the current class as primary query
      */
-    public function useEmailHeaderQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useArquivoEmailQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinEmailHeader($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'EmailHeader', 'EmailHeaderQuery');
+            ->joinArquivoEmail($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'ArquivoEmail', 'ArquivoEmailQuery');
     }
 
     /**

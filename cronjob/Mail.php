@@ -42,6 +42,7 @@ class Cronjob_Mail {
 											            email_header.Id_Usuario as remetenteId,
 											            email_header.Assunto,
 											            email_header.Corpo_Mensagem,
+														email_header.Id as IdHeader
 											            usuario.Id,
 											            usuario.Nome,
 											            usuario.Email
@@ -58,7 +59,8 @@ class Cronjob_Mail {
 				if ($this->contaEmail [0] ["Emails_Enviados"] >= 80) {
 					break;
 				}
-				$this->sendMail ( $enviar ['Email'], $enviar ['Nome'], $enviar ['Assunto'], $enviar ['Corpo_Mensagem'], $enviar ['Remetente'] );
+				$anexos = $this->getAttachments($enviar ['IdHeader']);
+				$this->sendMail ( $enviar ['Email'], $enviar ['Nome'], $enviar ['Assunto'], $enviar ['Corpo_Mensagem'], $anexos,$enviar ['Remetente'] );
 				$this->updateEmailEnviado ( $enviar ["Id_Email_Enviado"] );
 				//$this->reset($enviar["Id_Email_Enviado"]);
 				$this->contaEmail [0] ["Emails_Enviados"] ++;
@@ -72,7 +74,7 @@ class Cronjob_Mail {
 		echo "Enviados".$this->contaEmail [0] ["Emails_Enviados"];
 	}
 	
-	private function sendMail($to, $nome, $assunto, $corpo, $remetente) {
+	private function sendMail($to, $nome, $assunto, $corpo, $anexos, $remetente) {
 		$settings = array ('ssl' => 'ssl', 'port' => 465, 'auth' => 'login', 'username' => $this->contaEmail [0] ["UserName"], 'password' => $this->contaEmail [0] ["Password"] );
 		$transport = new Zend_Mail_Transport_Smtp ( 'smtp.gmail.com', $settings );
 		$email_from = "centraldeadoradores@centraldeadoradores.com.br";
@@ -85,7 +87,25 @@ class Cronjob_Mail {
 		$mail->addTo ( $email_to, $name_to );
 		$mail->setSubject ( Internals_Util::removeSpecial ( $assunto ) );
 		$mail->setBodyHtml ( "<div style='width:700px;'>" . $corpo . "<p>" . $remetente . "</p></div>", "UTF-8" );
+		$mail = $this->addAttachments($mail, $anexos);
 		$mail->send ( $transport );
+	}
+	
+	private function getAttachments($IdHeader){
+		$arquivos = $this->pdo->query ( "
+											SELECT * 
+											FROM arquivo_email
+											INNER JOIN arquivo on arquivo.Id = arquivo_email.Id_Arquivo
+											WHERE Id_Email = " . $IdHeader . "
+											" )->fetchAll ();
+		return $arquivos;
+	}
+	
+	private function addAttachments($mail, $anexos){
+		if($anexos != null){
+			$mail->createAttachment(stream_get_contents($anexos[0]["Conteudo"], -1, 0), $anexos[0]["Mime"], Zend_Mime::DISPOSITION_INLINE, Zend_Mime::ENCODING_BASE64, $anexos[0]["Nome"]);
+		}
+		return $mail;
 	}
 	
 	private function updateEmailEnviado($idEmailEnviado) {

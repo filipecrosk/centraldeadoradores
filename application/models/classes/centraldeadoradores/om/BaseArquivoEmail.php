@@ -2,24 +2,24 @@
 
 
 /**
- * Base class that represents a row from the 'tipo_informacao' table.
+ * Base class that represents a row from the 'arquivo_email' table.
  *
  *
  *
  * @package    propel.generator.centraldeadoradores.om
  */
-abstract class BaseTipoInformacao extends BaseObject implements Persistent
+abstract class BaseArquivoEmail extends BaseObject implements Persistent
 {
     /**
      * Peer class name
      */
-    const PEER = 'TipoInformacaoPeer';
+    const PEER = 'ArquivoEmailPeer';
 
     /**
      * The Peer class.
      * Instance provides a convenient way of calling static methods on a class
      * that calling code may not be able to identify.
-     * @var        TipoInformacaoPeer
+     * @var        ArquivoEmailPeer
      */
     protected static $peer;
 
@@ -36,22 +36,26 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     protected $id;
 
     /**
-     * The value for the nome field.
-     * @var        string
+     * The value for the id_arquivo field.
+     * @var        int
      */
-    protected $nome;
+    protected $id_arquivo;
 
     /**
-     * The value for the requer_confirmacao field.
-     * @var        string
+     * The value for the id_email field.
+     * @var        int
      */
-    protected $requer_confirmacao;
+    protected $id_email;
 
     /**
-     * @var        PropelObjectCollection|AlteracaoInformacaoUsuario[] Collection to store aggregation of AlteracaoInformacaoUsuario objects.
+     * @var        Arquivo
      */
-    protected $collAlteracaoInformacaoUsuarios;
-    protected $collAlteracaoInformacaoUsuariosPartial;
+    protected $aArquivo;
+
+    /**
+     * @var        EmailHeader
+     */
+    protected $aEmailHeader;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -68,12 +72,6 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     protected $alreadyInValidation = false;
 
     /**
-     * An array of objects scheduled for deletion.
-     * @var		PropelObjectCollection
-     */
-    protected $alteracaoInformacaoUsuariosScheduledForDeletion = null;
-
-    /**
      * Get the [id] column value.
      *
      * @return int
@@ -84,30 +82,30 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     }
 
     /**
-     * Get the [nome] column value.
+     * Get the [id_arquivo] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getNome()
+    public function getIdArquivo()
     {
-        return $this->nome;
+        return $this->id_arquivo;
     }
 
     /**
-     * Get the [requer_confirmacao] column value.
+     * Get the [id_email] column value.
      *
-     * @return string
+     * @return int
      */
-    public function getRequerConfirmacao()
+    public function getIdEmail()
     {
-        return $this->requer_confirmacao;
+        return $this->id_email;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param int $v new value
-     * @return TipoInformacao The current object (for fluent API support)
+     * @return ArquivoEmail The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -117,7 +115,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[] = TipoInformacaoPeer::ID;
+            $this->modifiedColumns[] = ArquivoEmailPeer::ID;
         }
 
 
@@ -125,46 +123,54 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     } // setId()
 
     /**
-     * Set the value of [nome] column.
+     * Set the value of [id_arquivo] column.
      *
-     * @param string $v new value
-     * @return TipoInformacao The current object (for fluent API support)
+     * @param int $v new value
+     * @return ArquivoEmail The current object (for fluent API support)
      */
-    public function setNome($v)
+    public function setIdArquivo($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->nome !== $v) {
-            $this->nome = $v;
-            $this->modifiedColumns[] = TipoInformacaoPeer::NOME;
+        if ($this->id_arquivo !== $v) {
+            $this->id_arquivo = $v;
+            $this->modifiedColumns[] = ArquivoEmailPeer::ID_ARQUIVO;
+        }
+
+        if ($this->aArquivo !== null && $this->aArquivo->getId() !== $v) {
+            $this->aArquivo = null;
         }
 
 
         return $this;
-    } // setNome()
+    } // setIdArquivo()
 
     /**
-     * Set the value of [requer_confirmacao] column.
+     * Set the value of [id_email] column.
      *
-     * @param string $v new value
-     * @return TipoInformacao The current object (for fluent API support)
+     * @param int $v new value
+     * @return ArquivoEmail The current object (for fluent API support)
      */
-    public function setRequerConfirmacao($v)
+    public function setIdEmail($v)
     {
         if ($v !== null) {
-            $v = (string) $v;
+            $v = (int) $v;
         }
 
-        if ($this->requer_confirmacao !== $v) {
-            $this->requer_confirmacao = $v;
-            $this->modifiedColumns[] = TipoInformacaoPeer::REQUER_CONFIRMACAO;
+        if ($this->id_email !== $v) {
+            $this->id_email = $v;
+            $this->modifiedColumns[] = ArquivoEmailPeer::ID_EMAIL;
+        }
+
+        if ($this->aEmailHeader !== null && $this->aEmailHeader->getIdEmail() !== $v) {
+            $this->aEmailHeader = null;
         }
 
 
         return $this;
-    } // setRequerConfirmacao()
+    } // setIdEmail()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -199,8 +205,8 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         try {
 
             $this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-            $this->nome = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-            $this->requer_confirmacao = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+            $this->id_arquivo = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+            $this->id_email = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -209,10 +215,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = TipoInformacaoPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = ArquivoEmailPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating TipoInformacao object", $e);
+            throw new PropelException("Error populating ArquivoEmail object", $e);
         }
     }
 
@@ -232,6 +238,12 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     public function ensureConsistency()
     {
 
+        if ($this->aArquivo !== null && $this->id_arquivo !== $this->aArquivo->getId()) {
+            $this->aArquivo = null;
+        }
+        if ($this->aEmailHeader !== null && $this->id_email !== $this->aEmailHeader->getIdEmail()) {
+            $this->aEmailHeader = null;
+        }
     } // ensureConsistency
 
     /**
@@ -255,13 +267,13 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TipoInformacaoPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+            $con = Propel::getConnection(ArquivoEmailPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $stmt = TipoInformacaoPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+        $stmt = ArquivoEmailPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
         $row = $stmt->fetch(PDO::FETCH_NUM);
         $stmt->closeCursor();
         if (!$row) {
@@ -271,8 +283,8 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collAlteracaoInformacaoUsuarios = null;
-
+            $this->aArquivo = null;
+            $this->aEmailHeader = null;
         } // if (deep)
     }
 
@@ -293,12 +305,12 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TipoInformacaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ArquivoEmailPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = TipoInformacaoQuery::create()
+            $deleteQuery = ArquivoEmailQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -336,7 +348,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         }
 
         if ($con === null) {
-            $con = Propel::getConnection(TipoInformacaoPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+            $con = Propel::getConnection(ArquivoEmailPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
         }
 
         $con->beginTransaction();
@@ -356,7 +368,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                TipoInformacaoPeer::addInstanceToPool($this);
+                ArquivoEmailPeer::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -386,6 +398,25 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
 
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aArquivo !== null) {
+                if ($this->aArquivo->isModified() || $this->aArquivo->isNew()) {
+                    $affectedRows += $this->aArquivo->save($con);
+                }
+                $this->setArquivo($this->aArquivo);
+            }
+
+            if ($this->aEmailHeader !== null) {
+                if ($this->aEmailHeader->isModified() || $this->aEmailHeader->isNew()) {
+                    $affectedRows += $this->aEmailHeader->save($con);
+                }
+                $this->setEmailHeader($this->aEmailHeader);
+            }
+
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
                 if ($this->isNew()) {
@@ -395,23 +426,6 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                 }
                 $affectedRows += 1;
                 $this->resetModified();
-            }
-
-            if ($this->alteracaoInformacaoUsuariosScheduledForDeletion !== null) {
-                if (!$this->alteracaoInformacaoUsuariosScheduledForDeletion->isEmpty()) {
-                    AlteracaoInformacaoUsuarioQuery::create()
-                        ->filterByPrimaryKeys($this->alteracaoInformacaoUsuariosScheduledForDeletion->getPrimaryKeys(false))
-                        ->delete($con);
-                    $this->alteracaoInformacaoUsuariosScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAlteracaoInformacaoUsuarios !== null) {
-                foreach ($this->collAlteracaoInformacaoUsuarios as $referrerFK) {
-                    if (!$referrerFK->isDeleted()) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
             }
 
             $this->alreadyInSave = false;
@@ -434,24 +448,24 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[] = TipoInformacaoPeer::ID;
+        $this->modifiedColumns[] = ArquivoEmailPeer::ID;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . TipoInformacaoPeer::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . ArquivoEmailPeer::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(TipoInformacaoPeer::ID)) {
+        if ($this->isColumnModified(ArquivoEmailPeer::ID)) {
             $modifiedColumns[':p' . $index++]  = '`ID`';
         }
-        if ($this->isColumnModified(TipoInformacaoPeer::NOME)) {
-            $modifiedColumns[':p' . $index++]  = '`NOME`';
+        if ($this->isColumnModified(ArquivoEmailPeer::ID_ARQUIVO)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_ARQUIVO`';
         }
-        if ($this->isColumnModified(TipoInformacaoPeer::REQUER_CONFIRMACAO)) {
-            $modifiedColumns[':p' . $index++]  = '`REQUER_CONFIRMACAO`';
+        if ($this->isColumnModified(ArquivoEmailPeer::ID_EMAIL)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_EMAIL`';
         }
 
         $sql = sprintf(
-            'INSERT INTO `tipo_informacao` (%s) VALUES (%s)',
+            'INSERT INTO `arquivo_email` (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -463,11 +477,11 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                     case '`ID`':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case '`NOME`':
-                        $stmt->bindValue($identifier, $this->nome, PDO::PARAM_STR);
+                    case '`ID_ARQUIVO`':
+                        $stmt->bindValue($identifier, $this->id_arquivo, PDO::PARAM_INT);
                         break;
-                    case '`REQUER_CONFIRMACAO`':
-                        $stmt->bindValue($identifier, $this->requer_confirmacao, PDO::PARAM_STR);
+                    case '`ID_EMAIL`':
+                        $stmt->bindValue($identifier, $this->id_email, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -563,18 +577,28 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
             $failureMap = array();
 
 
-            if (($retval = TipoInformacaoPeer::doValidate($this, $columns)) !== true) {
-                $failureMap = array_merge($failureMap, $retval);
+            // We call the validate method on the following object(s) if they
+            // were passed to this object by their coresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aArquivo !== null) {
+                if (!$this->aArquivo->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aArquivo->getValidationFailures());
+                }
+            }
+
+            if ($this->aEmailHeader !== null) {
+                if (!$this->aEmailHeader->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aEmailHeader->getValidationFailures());
+                }
             }
 
 
-                if ($this->collAlteracaoInformacaoUsuarios !== null) {
-                    foreach ($this->collAlteracaoInformacaoUsuarios as $referrerFK) {
-                        if (!$referrerFK->validate($columns)) {
-                            $failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-                        }
-                    }
-                }
+            if (($retval = ArquivoEmailPeer::doValidate($this, $columns)) !== true) {
+                $failureMap = array_merge($failureMap, $retval);
+            }
+
 
 
             $this->alreadyInValidation = false;
@@ -595,7 +619,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = TipoInformacaoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ArquivoEmailPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -615,10 +639,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                 return $this->getId();
                 break;
             case 1:
-                return $this->getNome();
+                return $this->getIdArquivo();
                 break;
             case 2:
-                return $this->getRequerConfirmacao();
+                return $this->getIdEmail();
                 break;
             default:
                 return null;
@@ -643,19 +667,22 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['TipoInformacao'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['ArquivoEmail'][serialize($this->getPrimaryKey())])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['TipoInformacao'][$this->getPrimaryKey()] = true;
-        $keys = TipoInformacaoPeer::getFieldNames($keyType);
+        $alreadyDumpedObjects['ArquivoEmail'][serialize($this->getPrimaryKey())] = true;
+        $keys = ArquivoEmailPeer::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getNome(),
-            $keys[2] => $this->getRequerConfirmacao(),
+            $keys[1] => $this->getIdArquivo(),
+            $keys[2] => $this->getIdEmail(),
         );
         if ($includeForeignObjects) {
-            if (null !== $this->collAlteracaoInformacaoUsuarios) {
-                $result['AlteracaoInformacaoUsuarios'] = $this->collAlteracaoInformacaoUsuarios->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            if (null !== $this->aArquivo) {
+                $result['Arquivo'] = $this->aArquivo->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aEmailHeader) {
+                $result['EmailHeader'] = $this->aEmailHeader->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -675,7 +702,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
     {
-        $pos = TipoInformacaoPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+        $pos = ArquivoEmailPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 
         $this->setByPosition($pos, $value);
     }
@@ -695,10 +722,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
                 $this->setId($value);
                 break;
             case 1:
-                $this->setNome($value);
+                $this->setIdArquivo($value);
                 break;
             case 2:
-                $this->setRequerConfirmacao($value);
+                $this->setIdEmail($value);
                 break;
         } // switch()
     }
@@ -722,11 +749,11 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
     {
-        $keys = TipoInformacaoPeer::getFieldNames($keyType);
+        $keys = ArquivoEmailPeer::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setNome($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setRequerConfirmacao($arr[$keys[2]]);
+        if (array_key_exists($keys[1], $arr)) $this->setIdArquivo($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setIdEmail($arr[$keys[2]]);
     }
 
     /**
@@ -736,11 +763,11 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(TipoInformacaoPeer::DATABASE_NAME);
+        $criteria = new Criteria(ArquivoEmailPeer::DATABASE_NAME);
 
-        if ($this->isColumnModified(TipoInformacaoPeer::ID)) $criteria->add(TipoInformacaoPeer::ID, $this->id);
-        if ($this->isColumnModified(TipoInformacaoPeer::NOME)) $criteria->add(TipoInformacaoPeer::NOME, $this->nome);
-        if ($this->isColumnModified(TipoInformacaoPeer::REQUER_CONFIRMACAO)) $criteria->add(TipoInformacaoPeer::REQUER_CONFIRMACAO, $this->requer_confirmacao);
+        if ($this->isColumnModified(ArquivoEmailPeer::ID)) $criteria->add(ArquivoEmailPeer::ID, $this->id);
+        if ($this->isColumnModified(ArquivoEmailPeer::ID_ARQUIVO)) $criteria->add(ArquivoEmailPeer::ID_ARQUIVO, $this->id_arquivo);
+        if ($this->isColumnModified(ArquivoEmailPeer::ID_EMAIL)) $criteria->add(ArquivoEmailPeer::ID_EMAIL, $this->id_email);
 
         return $criteria;
     }
@@ -755,30 +782,40 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(TipoInformacaoPeer::DATABASE_NAME);
-        $criteria->add(TipoInformacaoPeer::ID, $this->id);
+        $criteria = new Criteria(ArquivoEmailPeer::DATABASE_NAME);
+        $criteria->add(ArquivoEmailPeer::ID, $this->id);
+        $criteria->add(ArquivoEmailPeer::ID_ARQUIVO, $this->id_arquivo);
+        $criteria->add(ArquivoEmailPeer::ID_EMAIL, $this->id_email);
 
         return $criteria;
     }
 
     /**
-     * Returns the primary key for this object (row).
-     * @return int
+     * Returns the composite primary key for this object.
+     * The array elements will be in same order as specified in XML.
+     * @return array
      */
     public function getPrimaryKey()
     {
-        return $this->getId();
+        $pks = array();
+        $pks[0] = $this->getId();
+        $pks[1] = $this->getIdArquivo();
+        $pks[2] = $this->getIdEmail();
+
+        return $pks;
     }
 
     /**
-     * Generic method to set the primary key (id column).
+     * Set the [composite] primary key.
      *
-     * @param  int $key Primary key.
+     * @param array $keys The elements of the composite key (order must match the order in XML file).
      * @return void
      */
-    public function setPrimaryKey($key)
+    public function setPrimaryKey($keys)
     {
-        $this->setId($key);
+        $this->setId($keys[0]);
+        $this->setIdArquivo($keys[1]);
+        $this->setIdEmail($keys[2]);
     }
 
     /**
@@ -788,7 +825,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     public function isPrimaryKeyNull()
     {
 
-        return null === $this->getId();
+        return (null === $this->getId()) && (null === $this->getIdArquivo()) && (null === $this->getIdEmail());
     }
 
     /**
@@ -797,15 +834,15 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param object $copyObj An object of TipoInformacao (or compatible) type.
+     * @param object $copyObj An object of ArquivoEmail (or compatible) type.
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setNome($this->getNome());
-        $copyObj->setRequerConfirmacao($this->getRequerConfirmacao());
+        $copyObj->setIdArquivo($this->getIdArquivo());
+        $copyObj->setIdEmail($this->getIdEmail());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -813,12 +850,6 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
             $copyObj->setNew(false);
             // store object hash to prevent cycle
             $this->startCopy = true;
-
-            foreach ($this->getAlteracaoInformacaoUsuarios() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAlteracaoInformacaoUsuario($relObj->copy($deepCopy));
-                }
-            }
 
             //unflag object copy
             $this->startCopy = false;
@@ -839,7 +870,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      * objects.
      *
      * @param boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return TipoInformacao Clone of current object.
+     * @return ArquivoEmail Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -859,288 +890,117 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      * same instance for all member of this class. The method could therefore
      * be static, but this would prevent one from overriding the behavior.
      *
-     * @return TipoInformacaoPeer
+     * @return ArquivoEmailPeer
      */
     public function getPeer()
     {
         if (self::$peer === null) {
-            self::$peer = new TipoInformacaoPeer();
+            self::$peer = new ArquivoEmailPeer();
         }
 
         return self::$peer;
     }
 
-
     /**
-     * Initializes a collection based on the name of a relation.
-     * Avoids crafting an 'init[$relationName]s' method name
-     * that wouldn't work when StandardEnglishPluralizer is used.
+     * Declares an association between this object and a Arquivo object.
      *
-     * @param string $relationName The name of the relation to initialize
-     * @return void
-     */
-    public function initRelation($relationName)
-    {
-        if ('AlteracaoInformacaoUsuario' == $relationName) {
-            $this->initAlteracaoInformacaoUsuarios();
-        }
-    }
-
-    /**
-     * Clears out the collAlteracaoInformacaoUsuarios collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAlteracaoInformacaoUsuarios()
-     */
-    public function clearAlteracaoInformacaoUsuarios()
-    {
-        $this->collAlteracaoInformacaoUsuarios = null; // important to set this to null since that means it is uninitialized
-        $this->collAlteracaoInformacaoUsuariosPartial = null;
-    }
-
-    /**
-     * reset is the collAlteracaoInformacaoUsuarios collection loaded partially
-     *
-     * @return void
-     */
-    public function resetPartialAlteracaoInformacaoUsuarios($v = true)
-    {
-        $this->collAlteracaoInformacaoUsuariosPartial = $v;
-    }
-
-    /**
-     * Initializes the collAlteracaoInformacaoUsuarios collection.
-     *
-     * By default this just sets the collAlteracaoInformacaoUsuarios collection to an empty array (like clearcollAlteracaoInformacaoUsuarios());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAlteracaoInformacaoUsuarios($overrideExisting = true)
-    {
-        if (null !== $this->collAlteracaoInformacaoUsuarios && !$overrideExisting) {
-            return;
-        }
-        $this->collAlteracaoInformacaoUsuarios = new PropelObjectCollection();
-        $this->collAlteracaoInformacaoUsuarios->setModel('AlteracaoInformacaoUsuario');
-    }
-
-    /**
-     * Gets an array of AlteracaoInformacaoUsuario objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this TipoInformacao is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @return PropelObjectCollection|AlteracaoInformacaoUsuario[] List of AlteracaoInformacaoUsuario objects
+     * @param             Arquivo $v
+     * @return ArquivoEmail The current object (for fluent API support)
      * @throws PropelException
      */
-    public function getAlteracaoInformacaoUsuarios($criteria = null, PropelPDO $con = null)
+    public function setArquivo(Arquivo $v = null)
     {
-        $partial = $this->collAlteracaoInformacaoUsuariosPartial && !$this->isNew();
-        if (null === $this->collAlteracaoInformacaoUsuarios || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAlteracaoInformacaoUsuarios) {
-                // return empty collection
-                $this->initAlteracaoInformacaoUsuarios();
-            } else {
-                $collAlteracaoInformacaoUsuarios = AlteracaoInformacaoUsuarioQuery::create(null, $criteria)
-                    ->filterByTipoInformacao($this)
-                    ->find($con);
-                if (null !== $criteria) {
-                    if (false !== $this->collAlteracaoInformacaoUsuariosPartial && count($collAlteracaoInformacaoUsuarios)) {
-                      $this->initAlteracaoInformacaoUsuarios(false);
-
-                      foreach($collAlteracaoInformacaoUsuarios as $obj) {
-                        if (false == $this->collAlteracaoInformacaoUsuarios->contains($obj)) {
-                          $this->collAlteracaoInformacaoUsuarios->append($obj);
-                        }
-                      }
-
-                      $this->collAlteracaoInformacaoUsuariosPartial = true;
-                    }
-
-                    return $collAlteracaoInformacaoUsuarios;
-                }
-
-                if($partial && $this->collAlteracaoInformacaoUsuarios) {
-                    foreach($this->collAlteracaoInformacaoUsuarios as $obj) {
-                        if($obj->isNew()) {
-                            $collAlteracaoInformacaoUsuarios[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAlteracaoInformacaoUsuarios = $collAlteracaoInformacaoUsuarios;
-                $this->collAlteracaoInformacaoUsuariosPartial = false;
-            }
-        }
-
-        return $this->collAlteracaoInformacaoUsuarios;
-    }
-
-    /**
-     * Sets a collection of AlteracaoInformacaoUsuario objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param PropelCollection $alteracaoInformacaoUsuarios A Propel collection.
-     * @param PropelPDO $con Optional connection object
-     */
-    public function setAlteracaoInformacaoUsuarios(PropelCollection $alteracaoInformacaoUsuarios, PropelPDO $con = null)
-    {
-        $this->alteracaoInformacaoUsuariosScheduledForDeletion = $this->getAlteracaoInformacaoUsuarios(new Criteria(), $con)->diff($alteracaoInformacaoUsuarios);
-
-        foreach ($this->alteracaoInformacaoUsuariosScheduledForDeletion as $alteracaoInformacaoUsuarioRemoved) {
-            $alteracaoInformacaoUsuarioRemoved->setTipoInformacao(null);
-        }
-
-        $this->collAlteracaoInformacaoUsuarios = null;
-        foreach ($alteracaoInformacaoUsuarios as $alteracaoInformacaoUsuario) {
-            $this->addAlteracaoInformacaoUsuario($alteracaoInformacaoUsuario);
-        }
-
-        $this->collAlteracaoInformacaoUsuarios = $alteracaoInformacaoUsuarios;
-        $this->collAlteracaoInformacaoUsuariosPartial = false;
-    }
-
-    /**
-     * Returns the number of related AlteracaoInformacaoUsuario objects.
-     *
-     * @param Criteria $criteria
-     * @param boolean $distinct
-     * @param PropelPDO $con
-     * @return int             Count of related AlteracaoInformacaoUsuario objects.
-     * @throws PropelException
-     */
-    public function countAlteracaoInformacaoUsuarios(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-    {
-        $partial = $this->collAlteracaoInformacaoUsuariosPartial && !$this->isNew();
-        if (null === $this->collAlteracaoInformacaoUsuarios || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAlteracaoInformacaoUsuarios) {
-                return 0;
-            } else {
-                if($partial && !$criteria) {
-                    return count($this->getAlteracaoInformacaoUsuarios());
-                }
-                $query = AlteracaoInformacaoUsuarioQuery::create(null, $criteria);
-                if ($distinct) {
-                    $query->distinct();
-                }
-
-                return $query
-                    ->filterByTipoInformacao($this)
-                    ->count($con);
-            }
+        if ($v === null) {
+            $this->setIdArquivo(NULL);
         } else {
-            return count($this->collAlteracaoInformacaoUsuarios);
+            $this->setIdArquivo($v->getId());
         }
-    }
 
-    /**
-     * Method called to associate a AlteracaoInformacaoUsuario object to this object
-     * through the AlteracaoInformacaoUsuario foreign key attribute.
-     *
-     * @param    AlteracaoInformacaoUsuario $l AlteracaoInformacaoUsuario
-     * @return TipoInformacao The current object (for fluent API support)
-     */
-    public function addAlteracaoInformacaoUsuario(AlteracaoInformacaoUsuario $l)
-    {
-        if ($this->collAlteracaoInformacaoUsuarios === null) {
-            $this->initAlteracaoInformacaoUsuarios();
-            $this->collAlteracaoInformacaoUsuariosPartial = true;
+        $this->aArquivo = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Arquivo object, it will not be re-added.
+        if ($v !== null) {
+            $v->addArquivoEmail($this);
         }
-        if (!$this->collAlteracaoInformacaoUsuarios->contains($l)) { // only add it if the **same** object is not already associated
-            $this->doAddAlteracaoInformacaoUsuario($l);
-        }
+
 
         return $this;
     }
 
-    /**
-     * @param	AlteracaoInformacaoUsuario $alteracaoInformacaoUsuario The alteracaoInformacaoUsuario object to add.
-     */
-    protected function doAddAlteracaoInformacaoUsuario($alteracaoInformacaoUsuario)
-    {
-        $this->collAlteracaoInformacaoUsuarios[]= $alteracaoInformacaoUsuario;
-        $alteracaoInformacaoUsuario->setTipoInformacao($this);
-    }
 
     /**
-     * @param	AlteracaoInformacaoUsuario $alteracaoInformacaoUsuario The alteracaoInformacaoUsuario object to remove.
+     * Get the associated Arquivo object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @return Arquivo The associated Arquivo object.
+     * @throws PropelException
      */
-    public function removeAlteracaoInformacaoUsuario($alteracaoInformacaoUsuario)
+    public function getArquivo(PropelPDO $con = null)
     {
-        if ($this->getAlteracaoInformacaoUsuarios()->contains($alteracaoInformacaoUsuario)) {
-            $this->collAlteracaoInformacaoUsuarios->remove($this->collAlteracaoInformacaoUsuarios->search($alteracaoInformacaoUsuario));
-            if (null === $this->alteracaoInformacaoUsuariosScheduledForDeletion) {
-                $this->alteracaoInformacaoUsuariosScheduledForDeletion = clone $this->collAlteracaoInformacaoUsuarios;
-                $this->alteracaoInformacaoUsuariosScheduledForDeletion->clear();
-            }
-            $this->alteracaoInformacaoUsuariosScheduledForDeletion[]= $alteracaoInformacaoUsuario;
-            $alteracaoInformacaoUsuario->setTipoInformacao(null);
+        if ($this->aArquivo === null && ($this->id_arquivo !== null)) {
+            $this->aArquivo = ArquivoQuery::create()->findPk($this->id_arquivo, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aArquivo->addArquivoEmails($this);
+             */
         }
+
+        return $this->aArquivo;
+    }
+
+    /**
+     * Declares an association between this object and a EmailHeader object.
+     *
+     * @param             EmailHeader $v
+     * @return ArquivoEmail The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setEmailHeader(EmailHeader $v = null)
+    {
+        if ($v === null) {
+            $this->setIdEmail(NULL);
+        } else {
+            $this->setIdEmail($v->getIdEmail());
+        }
+
+        $this->aEmailHeader = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the EmailHeader object, it will not be re-added.
+        if ($v !== null) {
+            $v->addArquivoEmail($this);
+        }
+
+
+        return $this;
     }
 
 
     /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this TipoInformacao is new, it will return
-     * an empty collection; or if this TipoInformacao has previously
-     * been saved, it will retrieve related AlteracaoInformacaoUsuarios from storage.
+     * Get the associated EmailHeader object
      *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in TipoInformacao.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|AlteracaoInformacaoUsuario[] List of AlteracaoInformacaoUsuario objects
+     * @param PropelPDO $con Optional Connection object.
+     * @return EmailHeader The associated EmailHeader object.
+     * @throws PropelException
      */
-    public function getAlteracaoInformacaoUsuariosJoinUsuario($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public function getEmailHeader(PropelPDO $con = null)
     {
-        $query = AlteracaoInformacaoUsuarioQuery::create(null, $criteria);
-        $query->joinWith('Usuario', $join_behavior);
+        if ($this->aEmailHeader === null && ($this->id_email !== null)) {
+            $this->aEmailHeader = EmailHeaderQuery::create()->findPk($this->id_email, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aEmailHeader->addArquivoEmails($this);
+             */
+        }
 
-        return $this->getAlteracaoInformacaoUsuarios($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this TipoInformacao is new, it will return
-     * an empty collection; or if this TipoInformacao has previously
-     * been saved, it will retrieve related AlteracaoInformacaoUsuarios from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in TipoInformacao.
-     *
-     * @param Criteria $criteria optional Criteria object to narrow the query
-     * @param PropelPDO $con optional connection object
-     * @param string $join_behavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return PropelObjectCollection|AlteracaoInformacaoUsuario[] List of AlteracaoInformacaoUsuario objects
-     */
-    public function getAlteracaoInformacaoUsuariosJoinToken($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $query = AlteracaoInformacaoUsuarioQuery::create(null, $criteria);
-        $query->joinWith('Token', $join_behavior);
-
-        return $this->getAlteracaoInformacaoUsuarios($query, $con);
+        return $this->aEmailHeader;
     }
 
     /**
@@ -1149,8 +1009,8 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     public function clear()
     {
         $this->id = null;
-        $this->nome = null;
-        $this->requer_confirmacao = null;
+        $this->id_arquivo = null;
+        $this->id_email = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -1171,17 +1031,10 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collAlteracaoInformacaoUsuarios) {
-                foreach ($this->collAlteracaoInformacaoUsuarios as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
         } // if ($deep)
 
-        if ($this->collAlteracaoInformacaoUsuarios instanceof PropelCollection) {
-            $this->collAlteracaoInformacaoUsuarios->clearIterator();
-        }
-        $this->collAlteracaoInformacaoUsuarios = null;
+        $this->aArquivo = null;
+        $this->aEmailHeader = null;
     }
 
     /**
@@ -1191,7 +1044,7 @@ abstract class BaseTipoInformacao extends BaseObject implements Persistent
      */
     public function __toString()
     {
-        return (string) $this->exportTo(TipoInformacaoPeer::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(ArquivoEmailPeer::DEFAULT_STRING_FORMAT);
     }
 
     /**

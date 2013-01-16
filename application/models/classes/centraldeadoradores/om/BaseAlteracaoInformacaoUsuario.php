@@ -72,6 +72,11 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
     protected $id_token;
 
     /**
+     * @var        Usuario
+     */
+    protected $aUsuario;
+
+    /**
      * @var        TipoInformacao
      */
     protected $aTipoInformacao;
@@ -80,11 +85,6 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
      * @var        Token
      */
     protected $aToken;
-
-    /**
-     * @var        Usuario
-     */
-    protected $aUsuario;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -476,9 +476,9 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aUsuario = null;
             $this->aTipoInformacao = null;
             $this->aToken = null;
-            $this->aUsuario = null;
         } // if (deep)
     }
 
@@ -597,6 +597,13 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aUsuario !== null) {
+                if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
+                    $affectedRows += $this->aUsuario->save($con);
+                }
+                $this->setUsuario($this->aUsuario);
+            }
+
             if ($this->aTipoInformacao !== null) {
                 if ($this->aTipoInformacao->isModified() || $this->aTipoInformacao->isNew()) {
                     $affectedRows += $this->aTipoInformacao->save($con);
@@ -609,13 +616,6 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
                     $affectedRows += $this->aToken->save($con);
                 }
                 $this->setToken($this->aToken);
-            }
-
-            if ($this->aUsuario !== null) {
-                if ($this->aUsuario->isModified() || $this->aUsuario->isNew()) {
-                    $affectedRows += $this->aUsuario->save($con);
-                }
-                $this->setUsuario($this->aUsuario);
             }
 
             if ($this->isNew() || $this->isModified()) {
@@ -807,6 +807,12 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aUsuario !== null) {
+                if (!$this->aUsuario->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aUsuario->getValidationFailures());
+                }
+            }
+
             if ($this->aTipoInformacao !== null) {
                 if (!$this->aTipoInformacao->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aTipoInformacao->getValidationFailures());
@@ -816,12 +822,6 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
             if ($this->aToken !== null) {
                 if (!$this->aToken->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aToken->getValidationFailures());
-                }
-            }
-
-            if ($this->aUsuario !== null) {
-                if (!$this->aUsuario->validate($columns)) {
-                    $failureMap = array_merge($failureMap, $this->aUsuario->getValidationFailures());
                 }
             }
 
@@ -925,14 +925,14 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
             $keys[6] => $this->getIdToken(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->aUsuario) {
+                $result['Usuario'] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aTipoInformacao) {
                 $result['TipoInformacao'] = $this->aTipoInformacao->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aToken) {
                 $result['Token'] = $this->aToken->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
-            }
-            if (null !== $this->aUsuario) {
-                $result['Usuario'] = $this->aUsuario->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
         }
 
@@ -1166,6 +1166,57 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
     }
 
     /**
+     * Declares an association between this object and a Usuario object.
+     *
+     * @param             Usuario $v
+     * @return AlteracaoInformacaoUsuario The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setUsuario(Usuario $v = null)
+    {
+        if ($v === null) {
+            $this->setIdUsuario(NULL);
+        } else {
+            $this->setIdUsuario($v->getId());
+        }
+
+        $this->aUsuario = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the Usuario object, it will not be re-added.
+        if ($v !== null) {
+            $v->addAlteracaoInformacaoUsuario($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated Usuario object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @return Usuario The associated Usuario object.
+     * @throws PropelException
+     */
+    public function getUsuario(PropelPDO $con = null)
+    {
+        if ($this->aUsuario === null && ($this->id_usuario !== null)) {
+            $this->aUsuario = UsuarioQuery::create()->findPk($this->id_usuario, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aUsuario->addAlteracaoInformacaoUsuarios($this);
+             */
+        }
+
+        return $this->aUsuario;
+    }
+
+    /**
      * Declares an association between this object and a TipoInformacao object.
      *
      * @param             TipoInformacao $v
@@ -1268,57 +1319,6 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
     }
 
     /**
-     * Declares an association between this object and a Usuario object.
-     *
-     * @param             Usuario $v
-     * @return AlteracaoInformacaoUsuario The current object (for fluent API support)
-     * @throws PropelException
-     */
-    public function setUsuario(Usuario $v = null)
-    {
-        if ($v === null) {
-            $this->setIdUsuario(NULL);
-        } else {
-            $this->setIdUsuario($v->getId());
-        }
-
-        $this->aUsuario = $v;
-
-        // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the Usuario object, it will not be re-added.
-        if ($v !== null) {
-            $v->addAlteracaoInformacaoUsuario($this);
-        }
-
-
-        return $this;
-    }
-
-
-    /**
-     * Get the associated Usuario object
-     *
-     * @param PropelPDO $con Optional Connection object.
-     * @return Usuario The associated Usuario object.
-     * @throws PropelException
-     */
-    public function getUsuario(PropelPDO $con = null)
-    {
-        if ($this->aUsuario === null && ($this->id_usuario !== null)) {
-            $this->aUsuario = UsuarioQuery::create()->findPk($this->id_usuario, $con);
-            /* The following can be used additionally to
-                guarantee the related object contains a reference
-                to this object.  This level of coupling may, however, be
-                undesirable since it could result in an only partially populated collection
-                in the referenced object.
-                $this->aUsuario->addAlteracaoInformacaoUsuarios($this);
-             */
-        }
-
-        return $this->aUsuario;
-    }
-
-    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1352,9 +1352,9 @@ abstract class BaseAlteracaoInformacaoUsuario extends BaseObject implements Pers
         if ($deep) {
         } // if ($deep)
 
+        $this->aUsuario = null;
         $this->aTipoInformacao = null;
         $this->aToken = null;
-        $this->aUsuario = null;
     }
 
     /**

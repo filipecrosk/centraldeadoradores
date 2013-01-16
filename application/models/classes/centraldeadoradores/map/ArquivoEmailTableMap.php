@@ -3,7 +3,7 @@
 
 
 /**
- * This class defines the structure of the 'arquivo' table.
+ * This class defines the structure of the 'arquivo_email' table.
  *
  *
  *
@@ -14,13 +14,13 @@
  *
  * @package    propel.generator.centraldeadoradores.map
  */
-class ArquivoTableMap extends TableMap
+class ArquivoEmailTableMap extends TableMap
 {
 
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'centraldeadoradores.map.ArquivoTableMap';
+    const CLASS_NAME = 'centraldeadoradores.map.ArquivoEmailTableMap';
 
     /**
      * Initialize the table attributes, columns and validators
@@ -32,17 +32,15 @@ class ArquivoTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('arquivo');
-        $this->setPhpName('Arquivo');
-        $this->setClassname('Arquivo');
+        $this->setName('arquivo_email');
+        $this->setPhpName('ArquivoEmail');
+        $this->setClassname('ArquivoEmail');
         $this->setPackage('centraldeadoradores');
         $this->setUseIdGenerator(true);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('NOME', 'Nome', 'VARCHAR', true, 45, null);
-        $this->addColumn('MIME', 'Mime', 'VARCHAR', true, 45, null);
-        $this->addColumn('TAMANHO', 'Tamanho', 'INTEGER', true, null, null);
-        $this->addColumn('CONTEUDO', 'Conteudo', 'BLOB', true, null, null);
+        $this->addForeignPrimaryKey('ID_ARQUIVO', 'IdArquivo', 'INTEGER' , 'arquivo', 'ID', true, null, null);
+        $this->addForeignPrimaryKey('ID_EMAIL', 'IdEmail', 'INTEGER' , 'email_header', 'ID_EMAIL', true, null, null);
         // validators
     } // initialize()
 
@@ -51,7 +49,8 @@ class ArquivoTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('ArquivoEmail', 'ArquivoEmail', RelationMap::ONE_TO_MANY, array('Id' => 'Id_Arquivo', ), 'CASCADE', 'CASCADE', 'ArquivoEmails');
+        $this->addRelation('Arquivo', 'Arquivo', RelationMap::MANY_TO_ONE, array('Id_Arquivo' => 'Id', ), 'CASCADE', 'CASCADE');
+        $this->addRelation('EmailHeader', 'EmailHeader', RelationMap::MANY_TO_ONE, array('Id_Email' => 'Id_Email', ), 'CASCADE', 'CASCADE');
     } // buildRelations()
 
-} // ArquivoTableMap
+} // ArquivoEmailTableMap
