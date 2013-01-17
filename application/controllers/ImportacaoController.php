@@ -13,7 +13,5 @@ class ImportacaoController extends Zend_Controller_Action {
 			->setHeader('Content-type', 'audio/mpeg');
 		
 		echo stream_get_contents($kit->getConteudo(), -1, 0);
-		
-		
 	}
 }

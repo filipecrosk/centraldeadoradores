@@ -25,6 +25,7 @@ class EnvioemailController extends Internals_Controller_CloseAction {
 			$assunto = $this->getRequest ()->getPost ( 'assunto', null );
 			$corpoMensagem = $this->getRequest ()->getPost ( 'corpoMensagem', null );
 			$arquivo = null;
+			//echo "assunto ".$assunto;
 			if(isset($_FILES) && $_FILES['arquivo']['size'] > 0){
 				$fileName = $_FILES['arquivo']['name'];
 				$tmpName  = $_FILES['arquivo']['tmp_name'];
@@ -57,6 +58,7 @@ class EnvioemailController extends Internals_Controller_CloseAction {
 			$this->separarDestinatarios ( $email->getIdEmail (), $destinatarios );
 			Internals_Message::success("E-mails marcados para envio com sucesso!");
 			$this->_redirect("envioemail");
+			
 		}
 		catch (Exception $ex){
 			Internals_Message::error("Ocorreu um erro!");

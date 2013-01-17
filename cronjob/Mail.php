@@ -42,7 +42,7 @@ class Cronjob_Mail {
 											            email_header.Id_Usuario as remetenteId,
 											            email_header.Assunto,
 											            email_header.Corpo_Mensagem,
-														email_header.Id as IdHeader
+														email_header.Id_Email as IdHeader,
 											            usuario.Id,
 											            usuario.Nome,
 											            usuario.Email
@@ -103,7 +103,7 @@ class Cronjob_Mail {
 	
 	private function addAttachments($mail, $anexos){
 		if($anexos != null){
-			$mail->createAttachment(stream_get_contents($anexos[0]["Conteudo"], -1, 0), $anexos[0]["Mime"], Zend_Mime::DISPOSITION_INLINE, Zend_Mime::ENCODING_BASE64, $anexos[0]["Nome"]);
+			$mail->createAttachment($anexos[0]["Conteudo"], $anexos[0]["Mime"], Zend_Mime::DISPOSITION_INLINE, Zend_Mime::ENCODING_BASE64, $anexos[0]["Nome"]);
 		}
 		return $mail;
 	}
