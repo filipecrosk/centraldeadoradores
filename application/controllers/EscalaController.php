@@ -6,15 +6,16 @@ class EscalaController extends Internals_Controller_CloseAction {
 		parent::init();
 		Internals_SubMenu::AddItem("Minhas escalas", null);
 		if($this->nivelPermissao == 3){
-			Internals_SubMenu::AddItem("Resumo", "escala/index");
+			Internals_SubMenu::AddItem("Gerenciamento de Escalas", "escala/index");
+			Internals_SubMenu::AddItem("Resumo", "escala/resumo");
 		}
 		Internals_SubMenu::AddItem("Minhas escalas confirmadas", "escala/confirmadas");
 		Internals_SubMenu::AddItem("Minhas escalas a confirmar", "escala/aconfirmar");
 	}
 	
 	public function indexAction() {
-		$userCredentials = new Zend_Session_Namespace('UserCredentials');
-		$escalasPendentes = EscalaPessoaQuery::create()->filterByIdUsuario($userCredentials->id)
+		//$userCredentials = new Zend_Session_Namespace('UserCredentials');
+		$escalasPendentes = EscalaPessoaQuery::create()->filterByIdUsuario($this->userId)
 			->filterByIdStatusEscala(1)
 			->filterByData(array("min"=>date("Y-m-d H:i:s")))
 			->count();
@@ -25,17 +26,18 @@ class EscalaController extends Internals_Controller_CloseAction {
 				$this->_redirect("escala/confirmadas");
 			}
 		}
+		
 		$dados = EscalaPessoaQuery::create()
-			->addAsColumn("pendente", '(select count(*) from escala_pessoa as pp1 where pp1.Id_Local = escala_pessoa.Id_Local and pp1.Data = escala_pessoa.Data and pp1.Id_Status_Escala = 1)')
-			->addAsColumn("confirmada", '(select count(*) from escala_pessoa as pp2 where pp2.Id_Local = escala_pessoa.Id_Local and pp2.Data = escala_pessoa.Data and pp2.Id_Status_Escala = 2)')
-			->addAsColumn("recusada", '(select count(*) from escala_pessoa as pp3 where pp3.Id_Local = escala_pessoa.Id_Local and pp3.Data = escala_pessoa.Data and pp3.Id_Status_Escala = 3)')
-			->joinLocal()
-			->groupByIdLocal()
-			->groupByData()
-			->filterByData(array('min'=>date("Y-m-d H:i:s")))
-			->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
-			->find()
-			->toArray();
+		->addAsColumn("pendente", '(select count(*) from escala_pessoa as pp1 where pp1.Id_Local = escala_pessoa.Id_Local and pp1.Data = escala_pessoa.Data and pp1.Id_Status_Escala = 1)')
+		->addAsColumn("confirmada", '(select count(*) from escala_pessoa as pp2 where pp2.Id_Local = escala_pessoa.Id_Local and pp2.Data = escala_pessoa.Data and pp2.Id_Status_Escala = 2)')
+		->addAsColumn("recusada", '(select count(*) from escala_pessoa as pp3 where pp3.Id_Local = escala_pessoa.Id_Local and pp3.Data = escala_pessoa.Data and pp3.Id_Status_Escala = 3)')
+		->joinLocal()
+		->groupByIdLocal()
+		->groupByData()
+		->filterByData(array('min'=>date("Y-m-d H:i:s")))
+		->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
+		->find()
+		->toArray();
 		
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
@@ -43,14 +45,14 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
-  																	 LocalPeer::OM_CLASS=>LocalPeer::ID));
-	 	$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
+				LocalPeer::OM_CLASS=>LocalPeer::ID));
+		$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
 		
 		$criterio = array(
-							array("<img src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", array("recusada", "notequal", "0")),
-							array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "equal", "0")),
-							array("<img src='/default/images/icone-interrogacao.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "notequal", "0"))
-						 );
+				array("<img src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", array("recusada", "notequal", "0")),
+				array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "equal", "0")),
+				array("<img src='/default/images/icone-interrogacao.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "notequal", "0"))
+		);
 		
 		$modalConfirmaNovoLocal = new Internals_Modal ( "O local digitado não está cadastrado. Deseja cadastrar este local?", "Novo local" );
 		$modalConfirmaNovoLocal->putYesButton ();
@@ -63,25 +65,44 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$criterio = array(array("<img alt='delete' onclick='javascript:confirmDelete(this); return false;' src='/default/images/icone-delete.png' style=' width:20px; display: block; margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Excluir",$criterio);
 		$link = array("/escala/excluir?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
-  																	 LocalPeer::OM_CLASS=>LocalPeer::ID));
+				LocalPeer::OM_CLASS=>LocalPeer::ID));
 		$this->view->grid->addLink("Excluir", $link, null, false);
 		
 		$this->view->inlineScript ()->captureStart ();
-		echo 
+		echo
 		"
 		var link = '';
 		function confirmDelete(comp){
-			link = $(comp).parent().attr('href');
-			$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('show');
+		link = $(comp).parent().attr('href');
+		$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('show');
 		}
 		$(document).ready(function() {
-			$('." . $modalConfirmaNovoLocal->getModalName () . "Yes').click(function(){
-				$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('hide');
-				window.location.replace(link);
-			});
+		$('." . $modalConfirmaNovoLocal->getModalName () . "Yes').click(function(){
+		$('#" . $modalConfirmaNovoLocal->getModalName () . "').modal('hide');
+		window.location.replace(link);
+		});
 		});
 		";
 		$this->view->inlineScript ()->captureEnd ();
+	}
+	
+	public function resumoAction(){
+		$dados = EscalaPessoaQuery::create()
+		->joinLocal()
+		->groupByIdLocal()
+		->groupByData()
+		->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
+		->find()
+		->toArray();
+		
+		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
+		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
+		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
+		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
+				LocalPeer::OM_CLASS=>LocalPeer::ID));
+		$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
+		$this->view->grid->setShowWeekDay();
+		$this->view->grid->setShowDayPart();
 	}
 	
 	public function confirmadasAction(){
@@ -113,9 +134,15 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalRecusar->putNoButton();
 		$modalRecusar->setModalName("Cancelar");
 		
+		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
+													<h1>Criar mensagem definitiva.</h1>", "Falha recusa");
+		$modalFalhaRecusa->putOkButton();
+		$modalFalhaRecusa->setModalName("FalhaRecusa");
+		
 		$this->view->modal = array();
 		$this->view->modal[] = $modalMotivo;
 		$this->view->modal[] = $modalRecusar;
+		$this->view->modal[] = $modalFalhaRecusa;
 		
 		$this->view->inlineScript ()->captureStart ();
 		echo "
@@ -133,13 +160,28 @@ class EscalaController extends Internals_Controller_CloseAction {
 					}
 				});
 				$('.".$modalMotivo->getModalName()."Save').click(function(){
-					if($('#textAreaMotivo').val() != ''){
+					if(!$(this).hasClass('disabled') && $('#textAreaMotivo').val() != ''){
 						$('#".$modalMotivo->getModalName()."').modal('hide');
 						$(this).button('reset');
 						$('#".$modalRecusar->getModalName()."').modal('show');
 						$('.".$modalRecusar->getModalName()."Yes').click(function(){
-							$(this).button('loading');
-							$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+							var botaoYes = $(this);
+							botaoYes.button('loading');
+							var arr = link.attr('href').split('?');
+							$.ajax({
+								type: 'POST',
+								data: { param: arr[1]},
+								url: '/ajax/checkdataforrecusa',
+								success: function(data) {
+									if(data === 'false'){
+										botaoYes.button('reset');
+										$('#".$modalRecusar->getModalName()."').modal('hide');
+										$('#".$modalFalhaRecusa->getModalName()."').modal('show');
+									} else {
+										$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+									}							
+								}
+							});
 						});
 					}
 				});
@@ -206,9 +248,16 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalMotivo->putSaveButton();
 		$modalMotivo->putCancelButton();
 		$modalMotivo->setModalName("Motivo");
+		
+		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
+				<h1>Criar mensagem definitiva.</h1>", "Falha recusa");
+		$modalFalhaRecusa->putOkButton();
+		$modalFalhaRecusa->setModalName("FalhaRecusa");
+
 		$this->view->modal[] = $modalConfirmar;
 		$this->view->modal[] = $modalRecusar;
 		$this->view->modal[] = $modalMotivo;
+		$this->view->modal[] = $modalFalhaRecusa;
 		
 		$this->view->inlineScript ()->captureStart ();
 		echo "
@@ -239,8 +288,23 @@ class EscalaController extends Internals_Controller_CloseAction {
 								$(this).button('reset');
 								$('#".$modalRecusar->getModalName()."').modal('show');
 								$('.".$modalRecusar->getModalName()."Yes').click(function(){
-									$(this).button('loading');
-									$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+									var botaoYes = $(this);
+									botaoYes.button('loading');
+									var arr = link.attr('href').split('?');
+									$.ajax({
+										type: 'POST',
+										data: { param: arr[1]},
+										url: '/ajax/checkdataforrecusa',
+										success: function(data) {
+											if(data === 'false'){
+												botaoYes.button('reset');
+												$('#".$modalRecusar->getModalName()."').modal('hide');
+												$('#".$modalFalhaRecusa->getModalName()."').modal('show');
+											} else {
+												$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
+											}							
+										}
+									});
 								});
 							}
 						});
@@ -351,7 +415,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$escala->setMotivoRecusa($motivo);
 		$escala->save();
 		Internals_Message::success("Escala recusada com sucesso!");
-		$this->_redirect("escala/aconfirmar");
+		$this->_redirect("escala");
+		
 	}
 	public function excluirAction(){
 		$this->_helper->layout()->setLayout("blank");

@@ -217,4 +217,16 @@ class AjaxController extends Zend_Controller_Action {
 		echo $componente;
 	}
 	
+	public function checkdataforrecusaAction(){
+		$param = $this->getRequest()->getPost('param', null);
+		$arr = explode("=", $param);
+		$idEscala = $arr[1];
+		$escala = EscalaPessoaQuery::create()->findPk($idEscala);
+		$nextWeek = time() + (7 * 24 * 60 * 60);
+		if(date('Y-m-d', $nextWeek) < $escala->getData('Y-m-d')){
+			echo "true";
+		} else {
+			echo "false";
+		}
+	}
 }
