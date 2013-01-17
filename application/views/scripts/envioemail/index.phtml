@@ -78,7 +78,6 @@
 			});
 		});
 		if(verifyBrowser()){
-			$(".btn").addClass("disabled");
 			$("#arquivo").change(function(){
 				var arquivo = document.getElementById('arquivo');
 				if(arquivo.files[0].size > 8000000){
@@ -89,13 +88,11 @@
 						data: {"texto":"O arquivo para upload deve ser menor que 8MB."},
 						success: function(data) {
 							$("#alerts").html(data);
-							$(".btn").addClass("disabled");
 						}
 					});
 				}
 				else{
 					$("#alerts").html("");
-					$(".btn").removeClass("disabled");
 				}
 			});
 		} else {
@@ -148,7 +145,7 @@
 		</div>
 		<div class="control-group" >
 			<label class="control-label" for="assunto">Assunto: </label>
-			<input id="assunto" name="assunto" type="text" class="input-xxlarge">
+			<input type="text" name="assunto">
 		</div>
 		<div class="control-group">
 		    <label class="control-label" for="arquivo">Anexo :</label>

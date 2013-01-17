@@ -25,7 +25,12 @@ class EnvioemailController extends Internals_Controller_CloseAction {
 			$assunto = $this->getRequest ()->getPost ( 'assunto', null );
 			$corpoMensagem = $this->getRequest ()->getPost ( 'corpoMensagem', null );
 			$arquivo = null;
-			//echo "assunto ".$assunto;
+			$email = new EmailHeader ();
+			$email->setAssunto ( $assunto );
+			$email->setCorpoMensagem ( $corpoMensagem );
+			$email->setIdUsuario ( $this->userId );
+			$now = date ( 'Y-m-d H:i:s' );
+			$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
 			if(isset($_FILES) && $_FILES['arquivo']['size'] > 0){
 				$fileName = $_FILES['arquivo']['name'];
 				$tmpName  = $_FILES['arquivo']['tmp_name'];
@@ -46,19 +51,12 @@ class EnvioemailController extends Internals_Controller_CloseAction {
 				$arquivo->setMime($fileType);
 				$arquivo->setTamanho($fileSize);
 				$arquivo->setConteudo($content);
+				$email->addArquivoEmail($arquivo->getArquivoEmail());
 			}
-			$email = new EmailHeader ();
-			$email->setAssunto ( $assunto );
-			$email->setCorpoMensagem ( $corpoMensagem );
-			$email->setIdUsuario ( $this->userId );
-			$now = date ( 'Y-m-d H:i:s' );
-			$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
-			$email->addArquivoEmail($arquivo->getArquivoEmail());
 			$email->save ();
 			$this->separarDestinatarios ( $email->getIdEmail (), $destinatarios );
 			Internals_Message::success("E-mails marcados para envio com sucesso!");
 			$this->_redirect("envioemail");
-			
 		}
 		catch (Exception $ex){
 			Internals_Message::error("Ocorreu um erro!");
