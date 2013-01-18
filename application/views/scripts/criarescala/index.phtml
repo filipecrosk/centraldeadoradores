@@ -331,7 +331,7 @@
 			funcoesEnviar = $("#"+id+"-idsFuncoes").val().split(',');
 		}
 		if(jQuery.inArray($('#'+id+'-funcao').val(), funcoesEnviar) == -1 && $('#'+id+'-funcao').val() != ""){
-			$("#"+id).append("<div title='"+$('#'+id+'-funcao').val()+"' class='dest destUsuario " + id + "-funcaoSelecionada''>"+$('#'+id+'-funcao option:selected').html()+"<span class='close' style='margin-left:3px;' onclick='removeDest($(this).parent())'>×</span></div>");
+			$("#"+id).append("<div id='" + id + "-funcaoSelecionada' title='"+$('#'+id+'-funcao').val()+"' class='dest destUsuario " + id + "-funcaoSelecionada'>"+$('#'+id+'-funcao option:selected').html()+"<span class='close' style='margin-left:3px;' onclick='removeDest($(this).parent())'>×</span></div>");
 			funcoesEnviar.push($('#'+id+'-funcao').val());
 			$("#"+id+"-idsFuncoes").val(funcoesEnviar);
 		}
@@ -350,12 +350,13 @@
 	}
 
 </script>
-<input id="modalName" type="hidden" value="<?php echo $this->modalName; ?>" />
+<input id="modalName" type="hidden"
+	value="<?php echo $this->modalName; ?>" />
 <h1>Criar nova escala</h1>
 <div class="form-inline">
-	<div class="control-group" style="text-align:center;">
-		<label class="control-label" for="banda">Bandas</label>
-		<select id="banda" name="banda">
+	<div class="control-group" style="text-align: center;">
+		<label class="control-label" for="banda">Bandas</label> <select
+			id="banda" name="banda">
 			<option selected="selected"></option>
 			<?php
 				foreach ($this->bandas as $banda){
@@ -364,30 +365,35 @@
 			?>
 		</select>
 		<button class="selecionarBanda btn btn-primary">Selecionar banda</button>
-		<span class="help-block">Caso queira escalar uma banda, ou usar seus componentes com ponto de partida para uma escala, selecione a banda aqui.</span>	
+		<span class="help-block">Caso queira escalar uma banda, ou usar seus
+			componentes com ponto de partida para uma escala, selecione a banda
+			aqui.</span>
 	</div>
 </div>
 <p>&nbsp;</p>
-<div class="hero-unit" style="padding-top:40px;padding-bottom:10px;">
+<div class="hero-unit" style="padding-top: 40px; padding-bottom: 10px;">
 	<form id="formulario" action="/criarescala/nova" method="post">
-		<div class="form-inline center" style="margin-bottom:20px;" >
+		<div class="form-inline center" style="margin-bottom: 20px;">
 			<div class="control-group">
-				<label class="control-label" for="local">Local: </label>
-				<input type="text" id="local" name="local" style="width:180px;" />
-				<label class="control-label" for="data" style="margin-left:10px;">Data: </label>
-				<input type="text" id="data" name="data" style="width:100px;" />
-				<label class="control-label" for="hora" style="margin-left:10px;">Hora: </label>
-				<input type="text" id="hora" name="hora" style="width:100px;" />
-				<label class="control-label" for="responsavel" style="margin-left:10px;">Responsável: </label>
-				<input type="text" id="responsavel" name="responsavel" style="width:180px;" />
+				<label class="control-label" for="local">Local: </label> <input
+					type="text" id="local" name="local" style="width: 180px;" /> <label
+					class="control-label" for="data" style="margin-left: 10px;">Data: </label>
+				<input type="text" id="data" name="data" style="width: 100px;" /> <label
+					class="control-label" for="hora" style="margin-left: 10px;">Hora: </label>
+				<input type="text" id="hora" name="hora" style="width: 100px;" /> <label
+					class="control-label" for="responsavel" style="margin-left: 10px;">Responsável:
+				</label> <input type="text" id="responsavel" name="responsavel"
+					style="width: 180px;" />
 			</div>
 		</div>
-		<div style="padding-bottom:20px;">
-			<button class="adicionarIntegrante btn" data-loading-text="Adicionando...">Adicionar Integrante</button>
-			<button id="dicas" class="btn" data-loading-text="Adicionando..." >Dicas</button>
+		<div style="padding-bottom: 20px;">
+			<button class="adicionarIntegrante btn"
+				data-loading-text="Adicionando...">Adicionar Integrante</button>
+			<button id="dicas" class="btn" data-loading-text="Adicionando...">Dicas</button>
 			<div class="pull-right">
-				<button class="salvar btn btn-primary" autocomplete="off" data-loading-text="Salvando...">Salvar</button>
-				<button class="cancelar btn">Cancelar</button>	
+				<button class="salvar btn btn-primary" autocomplete="off"
+					data-loading-text="Salvando...">Salvar</button>
+				<button class="cancelar btn">Cancelar</button>
 			</div>
 		</div>
 	</form>

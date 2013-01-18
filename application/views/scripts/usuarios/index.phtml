@@ -1,8 +1,27 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$("#checkFilterMinisterio").val(getURLParameter("filterMinisterio"));
+		/*
+		$("#checkFilterMinisterio").change(function(){
+			var ministerio = $("#checkFilterMinisterio").val();
+			if(ministerio != -1){
+				$("#func").hide();
+			} else {
+				$("#func").show();
+			}
+		});
+		$("#checkFilterFuncao").change(function(){
+			var funcao = $("#checkFilterFuncao").val();
+			if(funcao != -1){
+				$("#mini").hide();
+			} else {
+				$("#mini").show();
+			}
+		});
+		*/
 		$("#filterMinisterio").click(function(){
 			var ministerio = $("#checkFilterMinisterio").val();
+			var funcao = $("#checkFilterFuncao").val();
 			if(ministerio != -1){
 				window.location.replace("/usuarios?filterMinisterio=" + ministerio);
 			} else {
@@ -17,19 +36,34 @@
 	    );
 	}
 </script>
-<div style="text-align:center;">
-
-	Filtro por Ministério:	<select id="checkFilterMinisterio">
-								<option selected="selected" value="-1">Todos</option>
-								<option value="-2">Sem ministério</option>
-								<?php 
-									foreach ($this->ministerios as $ministerio){
-										echo "<option value='".$ministerio->getId()."'>".$ministerio->getNome()."</option>";
-									}
-								?>
-							</select>
-							<button id="filterMinisterio" class="btn btn-primary" style="margin-bottom:8px; margin-left:10px;">Filtrar</button>
-
+<div class="row">
+	<div class="span7" style="text-align:right;">
+		<div id="mini">
+		Ministério:	<select id="checkFilterMinisterio">
+									<option selected="selected" value="-1">Todos</option>
+									<option value="-2">Sem ministério</option>
+									<?php 
+										foreach ($this->ministerios as $ministerio){
+											echo "<option value='".$ministerio->getId()."'>".$ministerio->getNome()."</option>";
+										}
+									?>
+								</select>
+		</div>
+		<div id="func" class="hide">
+			Função:	<select id="checkFilterFuncao">
+									<option selected="selected" value="-1">Todos</option>
+									<option value="-2">Sem função</option>
+									<?php 
+										foreach ($this->funcoes as $funcao){
+											echo "<option value='".$funcao->getId()."'>".$funcao->getNome()."</option>";
+										}
+									?>
+								</select>
+		</div>
+	</div>
+	<div class="span5" style="text-align:left;">
+		<button id="filterMinisterio" class="btn btn-primary">Filtrar</button>
+	</div>
 </div>
 <?php
 	echo $this->crudModalAddAction;

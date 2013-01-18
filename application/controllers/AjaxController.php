@@ -138,12 +138,13 @@ class AjaxController extends Zend_Controller_Action {
 					<select class="funcaoUsuario" id="'.$name.'-funcao" name="'.$name.'-funcao">
 						'.$options.'
 					</select>
-					<img id="'.$name.'+plusFunction" src="/default/images/icone-plus.png" onclick="addFuncao(\''.$name.'\')" >
+					<img id="'.$name.'+plusFunction" src="/default/images/icone-plus.png" onclick="addFuncao(\''.$name.'\');" >
 					<button id="'.$name.'-remover" onclick="return false" class="remover btn btn-danger pull-right"><i class="icon-remove icon-white"></i> Remover</button>
 					<button autocomplete="off" data-loading-text="Validando..." id="'.$name.'-confirmar" onclick="return false" class="confirmar disabled btn btn-success pull-right" style="margin-right:7px;"><i class="icon-ok icon-white"></i> <b>Confirmar</b></button>
 					<div id="'.$name.'" style="margin-top: 10px">
-					<span style="float:left;">Funções adicionadas:</span>
-				</div>
+						<span style="float:left;">Funções adicionadas:</span>
+						<input type="hidden" name="'.$name.'idsFuncoes" id="'.$name.'-idsFuncoes" value="" />
+					</div>
 				</div>
 				<h5 id="'.$name.'-alert" style="color:#AD0A0A;text-align:center;"></h5>
 			</div>';
@@ -173,7 +174,7 @@ class AjaxController extends Zend_Controller_Action {
 				<button autocomplete="off" data-loading-text="Validando..." id="'.$name.'-confirmar" onclick="return false" class="confirmar disabled btn btn-success pull-right" style="margin-right:7px;"><i class="icon-ok icon-white"></i> <b>Confirmar</b></button>
 				<div id="'.$name.'" style="margin-top: 10px">
 					<span style="float:left;">Funções adicionadas:</span>
-					<input type="hidden" name="idsFuncoes" id="'.$name.'-idsFuncoes" value="" />
+					<input type="hidden" name="'.$name.'idsFuncoes" id="'.$name.'-idsFuncoes" value="" />
 				</div>
 			</div>
 			<h5 id="'.$name.'-alert" style="color:#AD0A0A;text-align:center;"></h5>

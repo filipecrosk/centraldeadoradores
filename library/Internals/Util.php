@@ -106,7 +106,7 @@ class Internals_Util {
 			return "Manhã";
 		} else if($arr[0] >= "12" && $arr[0] < "18"){
 			return "Tarde";
-		} else if($arr[0] >= "18" && $arr[0] < "00"){
+		} else if($arr[0] >= "18" && $arr[0] <= "23"){
 			return "Noite";
 		}
 	}

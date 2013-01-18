@@ -4,6 +4,16 @@ class EscalaController extends Internals_Controller_CloseAction {
 	
 	public function init(){
 		parent::init();
+		
+		$baseUrl = Zend_Controller_Front::getInstance ()->getRequest ()->getBaseUrl ();
+		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/jqueryui/css/ui-darkness/jquery-ui-1.8.23.custom.css" );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.datepicker.min.js', 'text/javascript' );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.autocomplete.min.js', 'text/javascript' );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.position.min.js', 'text/javascript' );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.widget.min.js', 'text/javascript' );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.core.min.js', 'text/javascript' );
+		$this->view->headScript ()->prependFile ( $baseUrl . '/default/js/jquery-mask.js', 'text/javascript' );
+		
 		Internals_SubMenu::AddItem("Minhas escalas", null);
 		if($this->nivelPermissao == 3){
 			Internals_SubMenu::AddItem("Gerenciamento de Escalas", "escala/index");
@@ -322,7 +332,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->local = LocalQuery::create()->filterById($idLocal)->select(array('Nome'))->findOne();
 		$data = new DateTime($data);
 		$this->view->data = $data->format('d/m/Y \à\s H:i');
-		
+				
 		$dados = EscalaPessoaFuncaoQuery::create()
 			->joinEscalaPessoa()
 			->joinFuncao()
@@ -337,6 +347,9 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->select(array("Funcao.Nome", "EscalaPessoa.IdStatusEscala"))
 			->find()
 			->toArray();
+		
+		$this->view->botao = "<a class='btn btn-primary' href='/escala/novousuario?local=" . $idLocal . "
+								&data=" . $this->getRequest()->getParam("data") . "'><i class='icon-white icon-plus'></i>Adicionar usuário</a>";
 		
 		for ($i = 0; $i < count($dados); $i++) {
 			$usuario = UsuarioQuery::create()
@@ -358,6 +371,69 @@ class EscalaController extends Internals_Controller_CloseAction {
 						 ,array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "2"))
 						 ,array("<img src='/default/images/icone-negativo.png' alt='Não escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "3")));
 		$this->view->grid->addFlagColumn("Escala confirmada",$criterio);
+	}
+	
+	public function novousuarioAction(){
+		$this->view->data = $this->getRequest()->getParam("data", null);
+		$this->view->idLocal = $this->getRequest()->getParam("local", null);
+		
+		$func = FuncaoQuery::create()->orderByNome()->find();
+		$funcoes = "<option selected='selected'></option>";
+		foreach ($func as $funcao){
+			$funcoes .= "<option value='" . $funcao->getId() . "'>" . $funcao->getNome() . "</option>"; 
+		}
+		$this->view->funcoes = $funcoes;
+		if($this->getRequest()->isPost()){
+			$data = $this->getRequest()->getPost('data', null);
+			$idLocal = $this->getRequest()->getPost('idLocal', null);
+			$nome = $this->getRequest()->getPost('nome', null);
+			$idsFuncoes = $this->getRequest()->getPost('idsFuncoes', null);
+			
+			$escalaPronta = EscalaPessoaQuery::create()
+				->filterByData(str_replace("%20", " ", $data ))
+				->filterByIdLocal($idLocal)
+				->find();
+			
+			$funcoes = explode(",", $idsFuncoes);
+			
+			$escala = new EscalaPessoa ();
+			$usuario = UsuarioQuery::create ()->filterByNome ( $nome )->findOne ();
+			$escala->setIdLocal ( $escalaPronta->getFirst()->getIdLocal () );
+			$escala->setIdUsuario ( $usuario->getId () );
+			$escala->setIdResponsavel ( $escalaPronta->getFirst()->getIdResponsavel () );
+			$escala->setData ( str_replace("%20", " ", $data ) );
+			$escala->setIdStatusEscala ( 1 );
+			foreach ($funcoes as $func){
+				$funcao = new EscalaPessoaFuncao();
+				$funcao->setIdFuncao($func);
+				$escala->addEscalaPessoaFuncao($funcao);
+			}
+			$escala->save ();
+			
+			$email = new EmailHeader();
+			$email->setAssunto("Nova escala criada!");
+			$email->setIdUsuario ( $this->userId );
+			$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
+			$email->setCorpoMensagem("
+					<h2 style=\"text-align: center; \">
+					<em><strong>Nova escala criada!</strong></em>
+					</h2>
+					<p>
+					Uma nova escala foi criada e voc&ecirc; foi escalado!
+					</p>
+					<p>
+					Por favor, confirme ou recuse a presen&ccedil;a na ministra&ccedil;&atilde;o e nos ensaios assim que poss&iacute;vel.
+					Para visualizar todas as suas escalas pendentes, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
+					</p>
+					");
+			$alertEmail = new EmailDetail();
+			$alertEmail->setEmailHeader($email);
+			$alertEmail->setUsuario($usuario);
+			$alertEmail->save();
+			
+			Internals_Message::success("Escala gravada com sucesso.");
+			$this->_redirect("escala");
+		}
 	}
 	
 	public function confirmarAction(){

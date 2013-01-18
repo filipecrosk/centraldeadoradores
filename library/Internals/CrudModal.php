@@ -39,6 +39,7 @@ class Internals_CrudModal extends Internals_Modal{
 		function ".$this->getSaveFunction()."(){
 		if($('.".$this->getModalName()."Save').attr('disabled') != 'disabled'){
 			$('.".$this->getModalName()."Save').button('loading');
+			alert('".Zend_Controller_Front::getInstance()->getRequest()->getControllerName()."/'+$('#".$this->form->getName()."Action').val());
 			$.post('".Zend_Controller_Front::getInstance()->getRequest()->getControllerName()."/'+$('#".$this->form->getName()."Action').val(), $('#".$this->form->getName()."').serialize())
 				.success(function(data) {
 					window.location.replace(\"".$this->getReloadSucessUrl()."\");

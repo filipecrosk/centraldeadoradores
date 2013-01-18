@@ -10,9 +10,12 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 	
 	public function indexAction() {
 		$this->view->ministerios = MinisterioQuery::create()->orderByNome()->find();
+		$this->view->funcoes = FuncaoQuery::create()->orderByNome()->find();
 		$this->view->modal = array();
 		$crudModal = new Internals_CrudModal(new Application_Form_Usuarios(), "Novo Usuário", $this->view);
 		$filterMinisterio = $this->getRequest()->getParam("filterMinisterio");
+		$filterFuncao = $this->getRequest()->getParam("filterFuncao");
+		
 		if($filterMinisterio != null && $filterMinisterio != -2){
 			$usuariosData = UsuarioMinisterioQuery::create()
 				->filterByIdMinisterio($filterMinisterio)
@@ -29,7 +32,7 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioMinisterioPeer::OM_CLASS=>UsuarioMinisterioPeer::ID_USUARIO));
 			$this->grid->addLink("Nome", $link, UsuarioPeer::OM_CLASS, false);
 			
-		} else if($filterMinisterio == -2){
+		} else if($filterMinisterio != null && $filterMinisterio == -2){
 			$usuariosData = UsuarioQuery::create()->filterByDesabilitado(0)
 				->orderByNome()
 				->useUsuarioMinisterioQuery(null, Criteria::LEFT_JOIN)
@@ -44,7 +47,9 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 			$this->grid->addColumn(UsuarioPeer::EMAIL, "E-Mail");
 			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioPeer::OM_CLASS=>UsuarioPeer::ID));
 			$this->grid->addLink("Nome", $link, null, false);
-		} else {
+		} else if($filterFuncao != null){
+
+		}else {
 			$usuariosData = UsuarioQuery::create()->filterByDesabilitado(0)
 				->orderByNome()
 				->select(array('Id', 'Nome', 'Email', 'Apelido'))

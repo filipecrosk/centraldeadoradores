@@ -1,0 +1,83 @@
+<script type="text/javascript">
+	var usuarios = [];
+	var funcoesEnviar = [];
+	$(document).ready(function(){
+		var locais = [];
+		
+		$.ajax({
+			url: '/ajax/getusuarios',
+			dataType: 'json',
+			success: function(data) {
+				jQuery.each(data, function(i, val) {
+					usuarios.push(val.Nome);
+				});
+				$( ".nomeUsuario" ).autocomplete( "option", "source", usuarios );
+			}
+		});
+		
+		$( ".nomeUsuario" ).autocomplete({
+			source: usuarios
+		});
+		$("#salvar").click(function(){
+			$("#formulario").submit();
+		});
+	});	
+
+	function bindarUsuarios(){
+		$( ".nomeUsuario" ).autocomplete({
+			source: usuarios,
+			change: function(event, ui) {
+				$.ajax({
+					url: '/ajax/getfuncaousuario',
+					dataType: 'html',
+					type: "POST",
+					data: { nome: $(this).val() },
+					success: function(data) {
+						$("#funcao").val(data);
+					}
+				});
+			}
+		});
+	}
+	function addFuncao(){
+		var funcoesEnviar = [];
+		if($("#idsFuncoes").val() != ""){
+			funcoesEnviar = $("#idsFuncoes").val().split(',');
+		}
+		if(jQuery.inArray($('#funcao').val(), funcoesEnviar) == -1 && $('#funcao').val() != ""){
+			$("#funcoesSelecionadas").append("<div title='"+$('#funcao').val()+"' class='dest destUsuario funcaoSelecionada''>"+$('#funcao option:selected').html()+"<span class='close' style='margin-left:3px;' onclick='removeDest($(this).parent())'>×</span></div>");
+			funcoesEnviar.push($('#funcao').val());
+			$("#idsFuncoes").val(funcoesEnviar);
+		}
+		$('#funcao').val("");
+	}
+	function removeDest(comp){
+		var funcoesEnviar = $("#idsFuncoes").val().split(',');
+		funcoesEnviar = jQuery.grep(funcoesEnviar, function(value) {
+			  return value != $(comp).attr("title");
+		});
+		$("#idsFuncoes").val(funcoesEnviar);
+		$(comp).remove();
+	}
+</script>
+<form id="formulario" action="/escala/novousuario" method="post">
+	<input type="hidden" id="data" name="data" value="<?php echo $this->data; ?>" >
+	<input type="hidden" id="idLocal" name="idLocal" value="<?php echo $this->idLocal; ?>" >
+	<div id="componente" class="well form-inline componente">
+		<div class="control-group">
+			<label class="control-label" for="nome">Nome : </label>
+			<input type="text" class="nomeUsuario" id="nome" name="nome" onfocus="bindarUsuarios()" />
+			<label class="control-label" style="margin-left:5px;" for="funcao">Funções : </label>
+			<select class="funcaoUsuario" id="funcao" name="funcao">
+				<?php echo $this->funcoes; ?>
+			</select>
+			<img id="plusFunction" src="/default/images/icone-plus.png" onclick="addFuncao()" >
+			<button id="salvar" autocomplete="off" data-loading-text="Validando..." id="confirmar" onclick="return false;" class="confirmar btn btn-success pull-right" style="margin-right:7px;"><i class="icon-ok icon-white"></i> <b>Salvar</b></button>
+			<div id="funcoesSelecionadas" style="margin-top: 10px">
+				<span style="float:left;">Funções adicionadas:</span>
+				<input type="hidden" name="idsFuncoes" id="idsFuncoes" value="" />
+			</div>
+		</div>
+		<h5 id="alert" style="color:#AD0A0A;text-align:center;"></h5>
+	</div>
+</form>
