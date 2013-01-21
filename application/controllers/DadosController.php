@@ -7,9 +7,11 @@ class DadosController extends Internals_Controller_CloseAction {
 		$dados = DadosQuery::create()
 			->filterByIdUsuario($this->userId)
 			->findOne();
+		/*
 		if($dados != null){
 			$this->_redirect("/index");
 		}
+		*/
 		$baseUrl = Zend_Controller_Front::getInstance ()->getRequest ()->getBaseUrl ();
 		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/style2.css" );
 		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/reset.css" );
@@ -19,7 +21,11 @@ class DadosController extends Internals_Controller_CloseAction {
 	
 	public function indexAction() {
 		if($this->getRequest()->isPost()){
-			$dados = new Dados ();
+			$dados = DadosQuery::create()
+				->filterByIdUsuario($this->userId)
+				->findOne();
+			if($dados == null)
+				$dados = new Dados ();
 			$dados->setIdUsuario($this->userId);
 			$dados->setEstaemcelula ( $_POST ['estaEmCelula'] == '1' ? true : false );
 			if ($_POST ['estaEmCelula'] == '1') {
@@ -153,7 +159,9 @@ class DadosController extends Internals_Controller_CloseAction {
 			
 			$dados->save ();
 			Internals_Message::success("Obrigado por preencher ao formulário de levantamento de dados.");
-			$this->_redirect("/index");
+			$this->_redirect("/");
+		} else {
+			$this->view->dados = DadosQuery::create()->filterByIdUsuario($this->userId)->findOne();
 		}
 	}
 

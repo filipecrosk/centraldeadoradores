@@ -1,14 +1,19 @@
 <div class="row-fluid offset2" style="padding-top:30px;">
 	<div class="span6">
-		<p style="font-size:18px;">Nome: <?php echo $this->nome; ?></p>
-		<p style="font-size:18px;">Apelido: <?php echo $this->apelido; ?></p>
-		<p style="font-size:18px;">Telefone: <?php echo $this->telefone; ?></p>
-		<p style="font-size:18px;">Aniversário: <?php echo $this->aniversario; ?></p>
+		<p style="font-size:18px;">Nome: <?php echo $this->usuario->getNome(); ?></p>
+		<p style="font-size:18px;">Apelido: <?php echo $this->usuario->getApelido(); ?></p>
+		<p style="font-size:18px;">Telefone: <?php echo $this->usuario->getTelefone(); ?></p>
+		<p style="font-size:18px;">Aniversário: <?php echo $this->usuario->getAniversario(); ?></p>
 	</div>
 	<div class="span6">
-		<p style="font-size:18px;">E-mail: <?php echo $this->email; ?></p>
-		<p style="font-size:18px;">Banda: <?php echo $this->banda; ?></p>
-		<p style="font-size:18px;">Celular: <?php echo $this->celular; ?></p>
+		<p style="font-size:18px;">E-mail: <?php echo $this->usuario->getEmail(); ?></p>
+		<p style="font-size:18px;">Banda: 
+		<?php 		
+			if($this->usuario->getBandaRelatedByIdBanda() != null){
+				echo $this->usuario->getBandaRelatedByIdBanda()->getNome();
+			} 
+		?></p>
+		<p style="font-size:18px;">Celular: <?php echo $this->usuario->getCelular(); ?></p>
 	</div>
 </div>
 <div style="padding-bottom:40px;">
@@ -38,4 +43,10 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div style="padding-bottom:40px;">
+	<label class="checkbox">
+		<input <?php echo ($this->dados != null && ord($this->dados->getEstaemcelula()) == 1 ? "checked" :""); ?> disabled type="checkbox" value="">
+		Está em célula:
+	</label>
 </div>

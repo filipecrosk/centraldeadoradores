@@ -80,18 +80,8 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 	public function detalheAction(){
 		$idUsuario = $this->getRequest()->getParam("idUsuario");
 		$usuario = UsuarioQuery::create()->findPk($idUsuario);
-		$this->view->nome = $usuario->getNome();
-		$this->view->apelido = $usuario->getApelido();
-		$this->view->email = $usuario->getEmail();
-		$this->view->telefone = $usuario->getTelefone();
-		$this->view->aniversario = $usuario->getAniversario();
-		
-		if($usuario->getBandaRelatedByIdBanda() != null){
-			$this->view->banda = $usuario->getBandaRelatedByIdBanda()->getNome();
-		}
-		$this->view->celular = $usuario->getCelular();
-		
-		$this->view->endereco = $usuario->getEndereco();
+		$this->view->usuario = $usuario;
+		$this->view->dados = $usuario->getDadoss()->getFirst();
 		
 		$funcoesUsuario = UsuarioFuncaoQuery::create()
 			->filterByIdUsuario($idUsuario)

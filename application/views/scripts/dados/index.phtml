@@ -1,6 +1,7 @@
 <script type="text/javascript">
 <!--
 	$(document).ready(function(){
+		verificaCondicoes();
 		$('select').change(function(){
 			verificaCondicoes();			
 		});
@@ -62,8 +63,8 @@
 				<td>Você está em uma célula?</td>
 				<td>
 					<select name="estaEmCelula">		
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option value="0" <?php echo ($this->dados != null && ord($this->dados->getEstaemcelula()) == 0 ? "selected='selected'" :""); ?>>Não</option>				
+						<option value="1" <?php echo ($this->dados != null && ord($this->dados->getEstaemcelula()) == 1 ? "selected='selected'" :""); ?>>Sim</option>
 					</select>
 				</td>			
 				<td>&nbsp;</td>
@@ -75,44 +76,44 @@
 				<td>Dia da sua célula:</td>
 				<td>
 					<select name="diaCelula">
-						<option value="1">Domingo</option>
-						<option value="2">Segunda</option>
-						<option value="3">Terça</option>
-						<option value="4">Quarta</option>
-						<option value="5">Quinta</option>
-						<option value="6">Sexta</option>
-						<option value="7">Sábado</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 1 ? "selected='selected'" :""); ?> value="1">Domingo</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 2 ? "selected='selected'" :""); ?> value="2">Segunda</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 3 ? "selected='selected'" :""); ?> value="3">Terça</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 4 ? "selected='selected'" :""); ?> value="4">Quarta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 5 ? "selected='selected'" :""); ?> value="5">Quinta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 6 ? "selected='selected'" :""); ?> value="6">Sexta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacelula()) == 7 ? "selected='selected'" :""); ?> value="7">Sábado</option>
 					</select>
 				</td>
 				<td>Horário:</td>
-				<td style="width:200px;">
+				<td style="width:300px;">
 					<select name="horaCelula">
-						<option value="1">01</option>
-						<option value="2">02</option>
-						<option value="3">03</option>
-						<option value="4">04</option>
-						<option value="5">05</option>
-						<option value="6">06</option>
-						<option value="7">07</option>
-						<option value="8">08</option>
-						<option value="9">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 1 ? "selected='selected'" :""); ?> value="1">01</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 2 ? "selected='selected'" :""); ?> value="2">02</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 3 ? "selected='selected'" :""); ?> value="3">03</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 4 ? "selected='selected'" :""); ?> value="4">04</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 5 ? "selected='selected'" :""); ?> value="5">05</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 6 ? "selected='selected'" :""); ?> value="6">06</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 7 ? "selected='selected'" :""); ?> value="7">07</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 8 ? "selected='selected'" :""); ?> value="8">08</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 9 ? "selected='selected'" :""); ?> value="9">09</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 10 ? "selected='selected'" :""); ?> value="10">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 11 ? "selected='selected'" :""); ?> value="11">11</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 12 ? "selected='selected'" :""); ?> value="12">12</option>
 					</select>
 					 horas<br>
 					<select name="minutoCelula">
-						<option value="0">00</option>
-						<option value="1">10</option>
-						<option value="2">20</option>
-						<option value="3">30</option>
-						<option value="4">40</option>
-						<option value="5">50</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 0 ? "selected='selected'" :""); ?> value="0">00</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 1 ? "selected='selected'" :""); ?> value="1">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 2 ? "selected='selected'" :""); ?> value="2">20</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 3 ? "selected='selected'" :""); ?> value="3">30</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 4 ? "selected='selected'" :""); ?> value="4">40</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracelula()) == 5 ? "selected='selected'" :""); ?> value="5">50</option>
 					</select>
 					 minutos<br>
 					<select name="periodoCelula">
-						<option value="1">am</option>
-						<option value="2" selected="selected">pm</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodocelula()) == 1 ? "selected='selected'" :""); ?> value="1">am</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodocelula()) == 2 ? "selected='selected'" :""); ?> value="2">pm</option>
 					</select>
 				</td>
 				<td>&nbsp;</td>
@@ -122,8 +123,8 @@
 				<td>Você é coordenador?</td>
 				<td>
 					<select name="coordenador">						
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option <?php echo ($this->dados != null && ord($this->dados->getCoordenador()) == 0 ? "selected='selected'" :""); ?> value="0">Não</option>				
+						<option <?php echo ($this->dados != null && ord($this->dados->getCoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">Sim</option>
 					</select>
 				</td>
 				<td>&nbsp;</td>
@@ -135,52 +136,52 @@
 				<td>Dia do seu GD:</td>
 				<td>
 					<select name="diaCoordenador">
-						<option value="1">Domingo</option>
-						<option value="2">Segunda</option>
-						<option value="3">Terça</option>
-						<option value="4">Quarta</option>
-						<option value="5">Quinta</option>
-						<option value="6">Sexta</option>
-						<option value="7">Sábado</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">Domingo</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 2 ? "selected='selected'" :""); ?> value="2">Segunda</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 3 ? "selected='selected'" :""); ?> value="3">Terça</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 4 ? "selected='selected'" :""); ?> value="4">Quarta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 5 ? "selected='selected'" :""); ?> value="5">Quinta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 6 ? "selected='selected'" :""); ?> value="6">Sexta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiacoordenador()) == 7 ? "selected='selected'" :""); ?> value="7">Sábado</option>
 					</select>
 				</td>
 				<td>Frequência:</td>
 				<td style="width:200px;">
 					<select name="frequenciaCoordenador">
-						<option value="1">Semanal</option>
-						<option value="2">Quinzenal</option>
-						<option value="3">Mensal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciacoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">Semanal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciacoordenador()) == 2 ? "selected='selected'" :""); ?> value="2">Quinzenal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciacoordenador()) == 3 ? "selected='selected'" :""); ?> value="3">Mensal</option>
 					</select>
 				</td>
 				<td>Horário:</td>
 				<td style="width:200px;">
 					<select name="horaCoordenador">
-						<option value="1">01</option>
-						<option value="2">02</option>
-						<option value="3">03</option>
-						<option value="4">04</option>
-						<option value="5">05</option>
-						<option value="6">06</option>
-						<option value="7">07</option>
-						<option value="8">08</option>
-						<option value="9">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">01</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 2 ? "selected='selected'" :""); ?> value="2">02</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 3 ? "selected='selected'" :""); ?> value="3">03</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 4 ? "selected='selected'" :""); ?> value="4">04</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 5 ? "selected='selected'" :""); ?> value="5">05</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 6 ? "selected='selected'" :""); ?> value="6">06</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 7 ? "selected='selected'" :""); ?> value="7">07</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 8 ? "selected='selected'" :""); ?> value="8">08</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 9 ? "selected='selected'" :""); ?> value="9">09</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 10 ? "selected='selected'" :""); ?> value="10">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 11 ? "selected='selected'" :""); ?> value="11">11</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoracoordenador()) == 12 ? "selected='selected'" :""); ?> value="12">12</option>
 					</select>
 					 horas<br>
 					<select name="minutoCoordenador">
-						<option value="0">00</option>
-						<option value="1">10</option>
-						<option value="2">20</option>
-						<option value="3">30</option>
-						<option value="4">40</option>
-						<option value="5">50</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 0 ? "selected='selected'" :""); ?> value="0">00</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 2 ? "selected='selected'" :""); ?> value="2">20</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 3 ? "selected='selected'" :""); ?> value="3">30</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 4 ? "selected='selected'" :""); ?> value="4">40</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutocoordenador()) == 5 ? "selected='selected'" :""); ?> value="5">50</option>
 					</select>
 					 minutos<br>
 					<select name="periodoCoordenador">
-						<option value="1">am</option>
-						<option value="2" selected="selected">pm</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodocoordenador()) == 1 ? "selected='selected'" :""); ?> value="1">am</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodocoordenador()) == 2 ? "selected='selected'" :""); ?> value="2">pm</option>
 					</select>
 				</td>			
 			</tr>
@@ -188,8 +189,8 @@
 				<td>Você é discipulador?</td>
 				<td>
 					<select name="discipulador">						
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option <?php echo ($this->dados != null && ord($this->dados->getDiscipulador()) == 0 ? "selected='selected'" :""); ?> value="0">Não</option>				
+						<option <?php echo ($this->dados != null && ord($this->dados->getDiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">Sim</option>
 					</select>
 				</td>
 				<td>&nbsp;</td>
@@ -201,52 +202,52 @@
 				<td>Dia do seu GD:</td>
 				<td>
 					<select name="diaDiscipulador">
-						<option value="1">Domingo</option>
-						<option value="2">Segunda</option>
-						<option value="3">Terça</option>
-						<option value="4">Quarta</option>
-						<option value="5">Quinta</option>
-						<option value="6">Sexta</option>
-						<option value="7">Sábado</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">Domingo</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 2 ? "selected='selected'" :""); ?> value="2">Segunda</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 3 ? "selected='selected'" :""); ?> value="3">Terça</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 4 ? "selected='selected'" :""); ?> value="4">Quarta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 5 ? "selected='selected'" :""); ?> value="5">Quinta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 6 ? "selected='selected'" :""); ?> value="6">Sexta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiadiscipulador()) == 7 ? "selected='selected'" :""); ?> value="7">Sábado</option>
 					</select>
 				</td>
 				<td>Frequência:</td>
 				<td style="width:200px;">
 					<select name="frequenciaDiscipulador">
-						<option value="1">Semanal</option>
-						<option value="2">Quinzenal</option>
-						<option value="3">Mensal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciadiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">Semanal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciadiscipulador()) == 2 ? "selected='selected'" :""); ?> value="2">Quinzenal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequenciadiscipulador()) == 3 ? "selected='selected'" :""); ?> value="3">Mensal</option>
 					</select>
 				</td>
 				<td>Horário:</td>
 				<td style="width:200px;">
 					<select name="horaDiscipulador">
-						<option value="1">01</option>
-						<option value="2">02</option>
-						<option value="3">03</option>
-						<option value="4">04</option>
-						<option value="5">05</option>
-						<option value="6">06</option>
-						<option value="7">07</option>
-						<option value="8">08</option>
-						<option value="9">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">01</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 2 ? "selected='selected'" :""); ?> value="2">02</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 3 ? "selected='selected'" :""); ?> value="3">03</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 4 ? "selected='selected'" :""); ?> value="4">04</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 5 ? "selected='selected'" :""); ?> value="5">05</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 6 ? "selected='selected'" :""); ?> value="6">06</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 7 ? "selected='selected'" :""); ?> value="7">07</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 8 ? "selected='selected'" :""); ?> value="8">08</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 9 ? "selected='selected'" :""); ?> value="9">09</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 10 ? "selected='selected'" :""); ?> value="10">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 11 ? "selected='selected'" :""); ?> value="11">11</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoradiscipulador()) == 12 ? "selected='selected'" :""); ?> value="12">12</option>
 					</select>
 					 horas<br>
 					<select name="minutoDiscipulador">
-						<option value="0">00</option>
-						<option value="1">10</option>
-						<option value="2">20</option>
-						<option value="3">30</option>
-						<option value="4">40</option>
-						<option value="5">50</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 0 ? "selected='selected'" :""); ?> value="0">00</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 2 ? "selected='selected'" :""); ?> value="2">20</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 3 ? "selected='selected'" :""); ?> value="3">30</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 4 ? "selected='selected'" :""); ?> value="4">40</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutodiscipulador()) == 5 ? "selected='selected'" :""); ?> value="5">50</option>
 					</select>
 					 minutos<br>
 					<select name="periodoDiscipulador">
-						<option value="1">am</option>
-						<option value="2" selected="selected">pm</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriododiscipulador()) == 1 ? "selected='selected'" :""); ?> value="1">am</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriododiscipulador()) == 2 ? "selected='selected'" :""); ?> value="2" selected="selected">pm</option>
 					</select>
 				</td>			
 			</tr>
@@ -254,8 +255,8 @@
 				<td>Você é líder de célula?</td>
 				<td>
 					<select name="lider">						
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option <?php echo ($this->dados != null && ord($this->dados->getLider()) == 0 ? "selected='selected'" :""); ?> value="0">Não</option>				
+						<option <?php echo ($this->dados != null && ord($this->dados->getLider()) == 1 ? "selected='selected'" :""); ?> value="1">Sim</option>
 					</select>
 				</td>
 				<td>&nbsp;</td>
@@ -267,67 +268,67 @@
 				<td>Dia do seu GD:</td>
 				<td>
 					<select name="diaLider">
-						<option value="1">Domingo</option>
-						<option value="2">Segunda</option>
-						<option value="3">Terça</option>
-						<option value="4">Quarta</option>
-						<option value="5">Quinta</option>
-						<option value="6">Sexta</option>
-						<option value="7">Sábado</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 1 ? "selected='selected'" :""); ?> value="1">Domingo</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 2 ? "selected='selected'" :""); ?> value="2">Segunda</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 3 ? "selected='selected'" :""); ?> value="3">Terça</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 4 ? "selected='selected'" :""); ?> value="4">Quarta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 5 ? "selected='selected'" :""); ?> value="5">Quinta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 6 ? "selected='selected'" :""); ?> value="6">Sexta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDialider()) == 7 ? "selected='selected'" :""); ?> value="7">Sábado</option>
 					</select>
 				</td>
 				<td>Frequência:</td>
 				<td style="width:200px;">
 					<select name="frequenciaLider">
-						<option value="1">Semanal</option>
-						<option value="2">Quinzenal</option>
-						<option value="3">Mensal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequencialider()) == 1 ? "selected='selected'" :""); ?> value="1">Semanal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequencialider()) == 2 ? "selected='selected'" :""); ?> value="2">Quinzenal</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getFrequencialider()) == 3 ? "selected='selected'" :""); ?> value="3">Mensal</option>
 					</select>
 				</td>
 				<td>Horário:</td>
 				<td style="width:200px;">
 					<select name="horaLider">
-						<option value="1">01</option>
-						<option value="2">02</option>
-						<option value="3">03</option>
-						<option value="4">04</option>
-						<option value="5">05</option>
-						<option value="6">06</option>
-						<option value="7">07</option>
-						<option value="8">08</option>
-						<option value="9">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 1 ? "selected='selected'" :""); ?> value="1">01</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 2 ? "selected='selected'" :""); ?> value="2">02</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 3 ? "selected='selected'" :""); ?> value="3">03</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 4 ? "selected='selected'" :""); ?> value="4">04</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 5 ? "selected='selected'" :""); ?> value="5">05</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 6 ? "selected='selected'" :""); ?> value="6">06</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 7 ? "selected='selected'" :""); ?> value="7">07</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 8 ? "selected='selected'" :""); ?> value="8">08</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 9 ? "selected='selected'" :""); ?> value="9">09</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 10 ? "selected='selected'" :""); ?> value="10">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 11 ? "selected='selected'" :""); ?> value="11">11</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoralider()) == 12 ? "selected='selected'" :""); ?> value="12">12</option>
 					</select>
 					 horas<br>
 					<select name="minutoLider">
-						<option value="0">00</option>
-						<option value="1">10</option>
-						<option value="2">20</option>
-						<option value="3">30</option>
-						<option value="4">40</option>
-						<option value="5">50</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 0 ? "selected='selected'" :""); ?> value="0">00</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 1 ? "selected='selected'" :""); ?> value="1">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 2 ? "selected='selected'" :""); ?> value="2">20</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 3 ? "selected='selected'" :""); ?> value="3">30</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 4 ? "selected='selected'" :""); ?> value="4">40</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutolider()) == 5 ? "selected='selected'" :""); ?> value="5">50</option>
 					</select>
 					 minutos<br>
 					<select name="periodoLider">
-						<option value="1">am</option>
-						<option value="2" selected="selected">pm</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodolider()) == 1 ? "selected='selected'" :""); ?> value="1">am</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodolider()) == 2 ? "selected='selected'" :""); ?> value="2">pm</option>
 					</select>
 				</td>			
 			</tr>
 			<tr class="naoELider">
 				<td>Nome do líder da sua célula: </td>
 				<td colspan="5">
-					<input type="text" name="nomeLider" style="width:100%;" />
+					<input type="text" name="nomeLider" style="width:100%;" value="<?php echo ($this->dados != null && ($this->dados->getNomelider()) != null ? $this->dados->getNomelider() :""); ?>" />
 				</td>
 			</tr>
 			<tr class="naoELider">
 				<td>Você é líder em treinamento?</td>
 				<td>
 					<select name="liderTreinamento">						
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option <?php echo ($this->dados != null && ord($this->dados->getLidertreinamento()) == 0 ? "selected='selected'" :""); ?> value="0">Não</option>				
+						<option <?php echo ($this->dados != null && ord($this->dados->getLidertreinamento()) == 1 ? "selected='selected'" :""); ?> value="1">Sim</option>
 					</select>
 				</td>			
 				<td>&nbsp;</td>
@@ -339,8 +340,8 @@
 				<td>Você faz CCM?</td>
 				<td>
 					<select name="ccm">						
-						<option value="0" selected="selected">Não</option>				
-						<option value="1">Sim</option>
+						<option <?php echo ($this->dados != null && ord($this->dados->getCcm()) == 0 ? "selected='selected'" :""); ?> value="0">Não</option>				
+						<option <?php echo ($this->dados != null && ord($this->dados->getCcm()) == 1 ? "selected='selected'" :""); ?> value="1">Sim</option>
 					</select>	
 				</td>				
 				<td>&nbsp;</td>
@@ -352,44 +353,44 @@
 				<td>Dia:</td>
 				<td>
 					<select name="diaCCM">
-						<option value="1">Domingo</option>
-						<option value="2">Segunda</option>
-						<option value="3">Terça</option>
-						<option value="4">Quarta</option>
-						<option value="5">Quinta</option>
-						<option value="6">Sexta</option>
-						<option value="7">Sábado</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 1 ? "selected='selected'" :""); ?> value="1">Domingo</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 2 ? "selected='selected'" :""); ?> value="2">Segunda</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 3 ? "selected='selected'" :""); ?> value="3">Terça</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 4 ? "selected='selected'" :""); ?> value="4">Quarta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 5 ? "selected='selected'" :""); ?> value="5">Quinta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 6 ? "selected='selected'" :""); ?> value="6">Sexta</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getDiaccm()) == 7 ? "selected='selected'" :""); ?> value="7">Sábado</option>
 					</select>
 				</td>
 				<td>Horário:</td>
 				<td style="width:200px;">
 					<select name="horaCCM">
-						<option value="1">01</option>
-						<option value="2">02</option>
-						<option value="3">03</option>
-						<option value="4">04</option>
-						<option value="5">05</option>
-						<option value="6">06</option>
-						<option value="7">07</option>
-						<option value="8">08</option>
-						<option value="9">09</option>
-						<option value="10">10</option>
-						<option value="11">11</option>
-						<option value="12">12</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 1 ? "selected='selected'" :""); ?> value="1">01</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 2 ? "selected='selected'" :""); ?> value="2">02</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 3 ? "selected='selected'" :""); ?> value="3">03</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 4 ? "selected='selected'" :""); ?> value="4">04</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 5 ? "selected='selected'" :""); ?> value="5">05</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 6 ? "selected='selected'" :""); ?> value="6">06</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 7 ? "selected='selected'" :""); ?> value="7">07</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 8 ? "selected='selected'" :""); ?> value="8">08</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 9 ? "selected='selected'" :""); ?> value="9">09</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 10 ? "selected='selected'" :""); ?> value="10">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 11 ? "selected='selected'" :""); ?> value="11">11</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getHoraccm()) == 12 ? "selected='selected'" :""); ?> value="12">12</option>
 					</select>
 					 horas<br>
 					<select name="minutoCCM">
-						<option value="0">00</option>
-						<option value="1">10</option>
-						<option value="2">20</option>
-						<option value="3">30</option>
-						<option value="4">40</option>
-						<option value="5">50</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 0 ? "selected='selected'" :""); ?> value="0">00</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 1 ? "selected='selected'" :""); ?> value="1">10</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 2 ? "selected='selected'" :""); ?> value="2">20</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 3 ? "selected='selected'" :""); ?> value="3">30</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 4 ? "selected='selected'" :""); ?> value="4">40</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getMinutoccm()) == 5 ? "selected='selected'" :""); ?> value="5">50</option>
 					</select>
 					 minutos<br>
 					<select name="periodoCCM">
-						<option value="1">am</option>
-						<option value="2" selected="selected">pm</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodoccm()) == 1 ? "selected='selected'" :""); ?> value="1">am</option>
+						<option <?php echo ($this->dados != null && ($this->dados->getPeriodoccm()) == 2 ? "selected='selected'" :""); ?> value="2">pm</option>
 					</select>
 				</td>
 				<td>&nbsp;</td>
@@ -410,43 +411,43 @@
 			</tr>
 			<tr>
 				<td>Manhã</td>
-				<td><input type="checkbox" value="1" name="manhaDomingo" ></td>						
-				<td><input type="checkbox" value="1" name="manhaSegunda" ></td>
-				<td><input type="checkbox" value="1" name="manhaTerca" ></td>
-				<td><input type="checkbox" value="1" name="manhaQuarta" ></td>
-				<td><input type="checkbox" value="1" name="manhaQuinta" ></td>
-				<td><input type="checkbox" value="1" name="manhaSexta" ></td>
-				<td><input type="checkbox" value="1" name="manhaSabado" ></td>		
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhadomingo()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaDomingo" ></td>						
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhasegunda()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaSegunda" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhaterca()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaTerca" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhaquarta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaQuarta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhaquinta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaQuinta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhasexta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaSexta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getManhasabado()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="manhaSabado" ></td>		
 			</tr>
 			<tr>
 				<td>Tarde</td>
-				<td><input type="checkbox" value="1" name="tardeDomingo" ></td>						
-				<td><input type="checkbox" value="1" name="tardeSegunda" ></td>
-				<td><input type="checkbox" value="1" name="tardeTerca" ></td>
-				<td><input type="checkbox" value="1" name="tardeQuarta" ></td>
-				<td><input type="checkbox" value="1" name="tardeQuinta" ></td>
-				<td><input type="checkbox" value="1" name="tardeSexta" ></td>
-				<td><input type="checkbox" value="1" name="tardeSabado" ></td>			
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardedomingo()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeDomingo" ></td>						
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardesegunda()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeSegunda" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardeterca()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeTerca" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardequarta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeQuarta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardequinta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeQuinta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardesexta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeSexta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getTardesabado()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="tardeSabado" ></td>		
 			</tr>
 			<tr>
 				<td>Noite</td>
-				<td><input type="checkbox" value="1" name="noiteDomingo" ></td>						
-				<td><input type="checkbox" value="1" name="noiteSegunda" ></td>
-				<td><input type="checkbox" value="1" name="noiteTerca" ></td>
-				<td><input type="checkbox" value="1" name="noiteQuarta" ></td>
-				<td><input type="checkbox" value="1" name="noiteQuinta" ></td>
-				<td><input type="checkbox" value="1" name="noiteSexta" ></td>
-				<td><input type="checkbox" value="1" name="noiteSabado" ></td>			
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitedomingo()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteDomingo" ></td>						
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitesegunda()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteSegunda" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoiteterca()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteTerca" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitequarta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteQuarta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitequinta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteQuinta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitesexta()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteSexta" ></td>
+				<td><input <?php echo ($this->dados != null && ord($this->dados->getNoitesabado()) == 1 ? "checked" :""); ?> type="checkbox" value="1" name="noiteSabado" ></td>			
 			</tr>
 		</table>
 		<p>Descreva mais sobre você (disponibilidade/ tarefas extras) com informações que 
 		através deste quadro não conseguiríamos obter.</p>
 		<p>
-			<textarea id="observacao" name="observacao" style="width:960px;height:200px;"></textarea>			
+			<textarea id="observacao" name="observacao" style="width:960px;height:200px;"><?php echo ($this->dados != null ? trim($this->dados->getObservacao()) : "")?></textarea>			
 		</p>
 		<input type="submit" name="submit" value="Enviar" class="btn" style="float:right;" />
 	</form>
-	<div id="rodape">
-		<p style="padding:30px;text-align:center;"><a href="http://www.goobi.com.br" style="color:#333;">&bull; by Gooby &bull;</a></p>
+	<div id="rodape" style="padding:30px;">
+		
 	</div>
 </div>	
