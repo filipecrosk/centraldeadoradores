@@ -15,4 +15,9 @@
  */
 class Token extends BaseToken
 {
+	public function fill(){
+		$this->setChave(md5(Internals_Util::randString(10)));
+		$this->setData(date("Y-m-d H:i:s"));
+		$this->save();
+	}
 }
