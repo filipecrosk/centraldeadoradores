@@ -57,9 +57,11 @@ class DadosController extends Internals_Controller_CloseAction {
 				$dados->setMinutolider ( $_POST ['minutoLider'] );
 				$dados->setPeriodolider ( $_POST ['periodoLider'] );
 				$dados->setFrequencialider ( $_POST ['frequenciaLider'] );
+				$dados->setNomelider ( "" );
+				$dados->setLidertreinamento ( false );
 			} else {
 				$dados->setNomelider ( $_POST ['nomeLider'] );
-				$dados->setLidertreinamento ( $_POST ['liderTreinamento'] );
+				$dados->setLidertreinamento ( $_POST ['liderTreinamento'] == '1' ? true : false );
 			}
 			$dados->setCcm ( $_POST ['ccm'] == '1' ? true : false );
 			if ($_POST ['ccm'] == '1') {

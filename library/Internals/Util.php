@@ -111,6 +111,44 @@ class Internals_Util {
 		}
 	}
 	
+	public static function getDayOfWeekNameDados($number){
+		switch ($number) {
+			case 1:
+				return "Domingo";
+			case 2:
+				return "Segunda-Feira";
+			case 3:
+				return "Terça-Feira";
+			case 4:
+				return "Quarta-Feira";
+			case 5:
+				return "Quinta-Feira";
+			case 6:
+				return "Sexta-Feira";
+			case 7:
+				return "Sábado";
+		}
+		return $number;
+	}
+	
+	public static function getMinuteDados($minute){
+		switch ($minute) {
+			case 0:
+				return "00";
+			case 1:
+				return "10";
+			case 2:
+				return "20";
+			case 3:
+				return "30";
+			case 4:
+				return "40";
+			case 5:
+				return "50";
+		}
+		return $minute;
+	}
+	
 }
 
 ?>

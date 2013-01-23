@@ -16,52 +16,30 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 		$filterMinisterio = $this->getRequest()->getParam("filterMinisterio");
 		$filterFuncao = $this->getRequest()->getParam("filterFuncao");
 		
-		if($filterMinisterio != null && $filterMinisterio != -2){
-			$usuariosData = UsuarioMinisterioQuery::create()
-				->filterByIdMinisterio($filterMinisterio)
-				->joinUsuario()
-				->select(array('IdUsuario','Usuario.Id', 'Usuario.Nome', 'Usuario.Email', 'Usuario.Apelido'))
-				->orderBy('Usuario.Nome')
-				->find()
-				->toArray();
-			$this->grid = new Internals_View_Helper_Grid(UsuarioMinisterioPeer::OM_CLASS, $this->view, $usuariosData);
-			$this->grid->addColumn(UsuarioPeer::NOME, "Nome", UsuarioPeer::OM_CLASS);
-			$this->grid->addColumn(UsuarioPeer::APELIDO, "Apelido", UsuarioPeer::OM_CLASS);
-			$this->grid->addColumn(UsuarioPeer::EMAIL, "E-Mail", UsuarioPeer::OM_CLASS);
-			
-			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioMinisterioPeer::OM_CLASS=>UsuarioMinisterioPeer::ID_USUARIO));
-			$this->grid->addLink("Nome", $link, UsuarioPeer::OM_CLASS, false);
-			
-		} else if($filterMinisterio != null && $filterMinisterio == -2){
-			$usuariosData = UsuarioQuery::create()->filterByDesabilitado(0)
-				->orderByNome()
-				->useUsuarioMinisterioQuery(null, Criteria::LEFT_JOIN)
-					->filterById(null, Criteria::ISNULL)
-				->endUse()
-				->select(array('Id', 'Nome', 'Email', 'Apelido'))
-				->find()
-				->toArray();
-			$this->grid = new Internals_View_Helper_Grid(UsuarioPeer::OM_CLASS, $this->view, $usuariosData);
-			$this->grid->addColumn(UsuarioPeer::NOME, "Nome");
-			$this->grid->addColumn(UsuarioPeer::APELIDO, "Apelido");
-			$this->grid->addColumn(UsuarioPeer::EMAIL, "E-Mail");
-			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioPeer::OM_CLASS=>UsuarioPeer::ID));
-			$this->grid->addLink("Nome", $link, null, false);
-		} else if($filterFuncao != null){
-
-		}else {
-			$usuariosData = UsuarioQuery::create()->filterByDesabilitado(0)
-				->orderByNome()
-				->select(array('Id', 'Nome', 'Email', 'Apelido'))
-				->find()
-				->toArray();
-			$this->grid = new Internals_View_Helper_Grid(UsuarioPeer::OM_CLASS, $this->view, $usuariosData);
-			$this->grid->addColumn(UsuarioPeer::NOME, "Nome");
-			$this->grid->addColumn(UsuarioPeer::APELIDO, "Apelido");
-			$this->grid->addColumn(UsuarioPeer::EMAIL, "E-Mail");
-			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioPeer::OM_CLASS=>UsuarioPeer::ID));
-			$this->grid->addLink("Nome", $link, null, false);
+		$query = UsuarioQuery::create()->filterByDesabilitado(0)
+			->orderByNome();
+		if($filterMinisterio != null && $filterMinisterio != -1 && $filterMinisterio != -2){
+			$query->useUsuarioMinisterioQuery()->filterByIdMinisterio($filterMinisterio)->endUse();
 		}
+		else if($filterMinisterio != null && $filterMinisterio != -1 && $filterMinisterio == -2){
+			$query->useUsuarioMinisterioQuery(null, Criteria::LEFT_JOIN)
+					->filterById(null, Criteria::ISNULL)
+				  ->endUse();
+		}
+		if($filterFuncao != null){
+			$query->useUsuarioFuncaoQuery()->filterByIdFuncao($filterFuncao)->endUse();
+		}
+		$usuariosData = $query->select(array('Id', 'Nome', 'Email', 'Apelido'))
+			->find()
+			->toArray();
+			
+		$this->grid = new Internals_View_Helper_Grid(UsuarioPeer::OM_CLASS, $this->view, $usuariosData);
+		$this->grid->addColumn(UsuarioPeer::NOME, "Nome");
+		$this->grid->addColumn(UsuarioPeer::APELIDO, "Apelido");
+		$this->grid->addColumn(UsuarioPeer::EMAIL, "E-Mail");
+		$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(UsuarioPeer::OM_CLASS=>UsuarioPeer::ID));
+		$this->grid->addLink("Nome", $link, null, false);
+		
 		
 		$criterio = array(array("<img alt='editar' onclick='javascript:" . $crudModal->getEditFunction() . "(this);' src='/default/images/icone-editar.png' style='display: block; width:20px; margin-left: auto;margin-right: auto;' >", false));
 		$this->grid->addFlagColumn("Editar",$criterio);

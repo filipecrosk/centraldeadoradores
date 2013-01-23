@@ -1,52 +1,148 @@
-<div class="row-fluid offset2" style="padding-top:30px;">
+<div class="row-fluid offset2" style="padding-top: 30px;">
 	<div class="span6">
-		<p style="font-size:18px;">Nome: <?php echo $this->usuario->getNome(); ?></p>
-		<p style="font-size:18px;">Apelido: <?php echo $this->usuario->getApelido(); ?></p>
-		<p style="font-size:18px;">Telefone: <?php echo $this->usuario->getTelefone(); ?></p>
-		<p style="font-size:18px;">Aniversário: <?php echo $this->usuario->getAniversario(); ?></p>
+		<p style="font-size: 18px;">Nome: <?php echo $this->usuario->getNome(); ?></p>
+		<p style="font-size: 18px;">Apelido: <?php echo $this->usuario->getApelido(); ?></p>
+		<p style="font-size: 18px;">Telefone: <?php echo $this->usuario->getTelefone(); ?></p>
+		<p style="font-size: 18px;">Aniversário: <?php echo $this->usuario->getAniversario(); ?></p>
 	</div>
 	<div class="span6">
-		<p style="font-size:18px;">E-mail: <?php echo $this->usuario->getEmail(); ?></p>
-		<p style="font-size:18px;">Banda: 
-		<?php 		
-			if($this->usuario->getBandaRelatedByIdBanda() != null){
-				echo $this->usuario->getBandaRelatedByIdBanda()->getNome();
-			} 
+		<p style="font-size: 18px;">E-mail: <?php echo $this->usuario->getEmail(); ?></p>
+		<p style="font-size: 18px;">Banda: 
+		<?php
+		if ($this->usuario->getBandaRelatedByIdBanda () != null) {
+			echo $this->usuario->getBandaRelatedByIdBanda ()->getNome ();
+		}
 		?></p>
-		<p style="font-size:18px;">Celular: <?php echo $this->usuario->getCelular(); ?></p>
+		<p style="font-size: 18px;">Celular: <?php echo $this->usuario->getCelular(); ?></p>
 	</div>
 </div>
-<div style="padding-bottom:40px;">
-	<div style="margin-top:60px;margin-bottom:20px;">
-		<a href="#" class="btn btn-primary" style="float:right;" onclick="javascript:<?php echo $this->openMinisterioFunction?>();">Cadastrar área</a>
+<div style="padding-bottom: 40px;">
+	<div style="margin-top: 60px; margin-bottom: 20px;">
+		<a href="#" class="btn btn-primary" style="float: right;"
+			onclick="javascript:<?php echo $this->openMinisterioFunction?>();">Cadastrar
+			área</a>
 		<h3>Áreas cadastradas para este usuário</h3>
 	</div>
 	<?php $this->gridMinisterio->renderGrid(); ?>
-	<div style="margin-top:100px;margin-bottom:20px;">
-		<a href="#" class="btn btn-primary" style="float:right;" onclick="javascript:<?php echo $this->openFuncaoFunction?>();">Cadastrar função</a>
+	<div style="margin-top: 100px; margin-bottom: 20px;">
+		<a href="#" class="btn btn-primary" style="float: right;"
+			onclick="javascript:<?php echo $this->openFuncaoFunction?>();">Cadastrar
+			função</a>
 		<h3>Funções cadastradas para este usuário</h3>
 	</div>
 	<?php $this->gridFuncao->renderGrid(); ?>
 </div>
-<div style="padding-bottom:40px;">
-	<div style="margin-top:60px;margin-bottom:20px;">
+<div style="padding-bottom: 40px;">
+	<div style="margin-top: 60px; margin-bottom: 20px;">
 		<h3>Disponibilidade</h3>
 	</div>
-	<div style="padding-bottom:40px;">
+	<div style="padding-bottom: 40px;">
 		<?php $this->gridDisponibilidade->renderGrid(); ?>
 	</div>
 	<div class="form-horizontal">
 		<div class="control-group">
-		<label class="control-label" for="observacao">Observação:</label>
+			<label class="control-label" for="observacao">Observação:</label>
 			<div class="controls">
-				<textarea  id="observacao" rows="5" style="width:100%;" disabled ><?php echo trim($this->observacao); ?></textarea>
+				<textarea id="observacao" rows="5" style="width: 100%;" disabled><?php echo trim($this->observacao); ?></textarea>
 			</div>
 		</div>
 	</div>
 </div>
-<div style="padding-bottom:40px;">
-	<label class="checkbox">
-		<input <?php echo ($this->dados != null && ord($this->dados->getEstaemcelula()) == 1 ? "checked" :""); ?> disabled type="checkbox" value="">
-		Está em célula:
+<div style="padding-bottom: 40px;" class="row-fluid">
+	<label class="checkbox inline span3"> <input
+		<?php echo ($this->dados != null && ord($this->dados->getEstaemcelula()) == 1 ? "checked" :""); ?>
+		disabled type="checkbox" value=""> Está em célula
+	</label> <label class="checkbox inline span3"> <input
+		<?php echo ($this->dados != null && ord($this->dados->getLider()) == 1 ? "checked" :""); ?>
+		disabled type="checkbox" value=""> É líder de célula
+	</label> <label class="checkbox inline span3"> <input
+		<?php echo ($this->dados != null && ord($this->dados->getDiscipulador()) == 1 ? "checked" :""); ?>
+		disabled type="checkbox" value=""> É discipulador
+	</label> <label class="checkbox inline span2"> <input
+		<?php echo ($this->dados != null && ord($this->dados->getCoordenador()) == 1 ? "checked" :""); ?>
+		disabled type="checkbox" value=""> É coordenador
 	</label>
 </div>
+<?php if(ord($this->dados->getEstaemcelula()) == 1){?>
+<div class="well">
+	<h3 style="margin-bottom: 20px;">Informações da célula</h3>
+	<div class="row-fluid">
+		<div class="span6">
+			<p>
+				<strong>Dia da célula:</strong> <?php echo Internals_Util::getDayOfWeekNameDados($this->dados->getDiacelula()); ?>
+			</p>
+		</div>
+		<div class="span6">
+			<?php if($this->dados->getNomelider() != ""){?>
+			<p>
+				<strong>Líder da célula:</strong> <?php echo $this->dados->getNomelider();?>
+			</p>
+			<?php }?>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span6">
+			<label class="checkbox inline span2"> <input
+				<?php echo ($this->dados != null && ord($this->dados->getLidertreinamento()) == 1 ? "checked" : ""); ?>
+				disabled type="checkbox" value=""> É líder em treinamento
+			</label>
+		</div>
+		<div class="span6">
+			<p>
+				<strong>Horário da célula:</strong> <?php echo ($this->dados->getHoracelula()<10 ? "0".$this->dados->getHoracelula() : $this->dados->getHoracelula()) . ":" . Internals_Util::getMinuteDados($this->dados->getMinutocelula()) . " " . ($this->dados->getPeriodocelula() == 0 ? "AM" : "PM");?>
+			</p>
+		</div>
+	</div>
+</div>
+<?php }?>
+<?php if(ord($this->dados->getLider()) == 1){?>
+<div class="well">
+	<h3 style="margin-bottom: 20px;">Informações do GD</h3>
+	<div class="row-fluid">
+		<div class="span6">
+			<p>
+				<strong>Dia do GD:</strong> <?php echo Internals_Util::getDayOfWeekNameDados($this->dados->getDialider()); ?>
+			</p>
+		</div>
+		<div class="span6">
+			<p>
+				<strong>Horário da GD:</strong> <?php echo ($this->dados->getHoralider()<10 ? "0".$this->dados->getHoralider() : $this->dados->getHoralider()) . ":" . Internals_Util::getMinuteDados($this->dados->getMinutolider()) . " " . ($this->dados->getPeriodolider() == 0 ? "AM" : "PM");?>
+			</p>
+		</div>
+	</div>
+</div>
+<?php }?>
+<?php if(ord($this->dados->getDiscipulador()) == 1){?>
+<div class="well">
+	<h3 style="margin-bottom: 20px;">Informações do GD Discipulador</h3>
+	<div class="row-fluid">
+		<div class="span6">
+			<p>
+				<strong>Dia do GD Discipulador:</strong> <?php echo Internals_Util::getDayOfWeekNameDados($this->dados->getDiadiscipulador()); ?>
+			</p>
+		</div>
+		<div class="span6">
+			<p>
+				<strong>Horário da GD:</strong> <?php echo ($this->dados->getHoradiscipulador()<10 ? "0".$this->dados->getHoradiscipulador() : $this->dados->getHoradiscipulador()) . ":" . Internals_Util::getMinuteDados($this->dados->getMinutodiscipulador()) . " " . ($this->dados->getPeriododiscipulador() == 0 ? "AM" : "PM");?>
+			</p>
+		</div>
+	</div>
+</div>
+<?php }?>
+<?php if(ord($this->dados->getCoordenador()) == 1){?>
+<div class="well">
+	<h3 style="margin-bottom: 20px;">Informações do GD Coordenador</h3>
+	<div class="row-fluid">
+		<div class="span6">
+			<p>
+				<strong>Dia do GD Coordenador:</strong> <?php echo Internals_Util::getDayOfWeekNameDados($this->dados->getDiacoordenador()); ?>
+			</p>
+		</div>
+		<div class="span6">
+			<p>
+				<strong>Horário da GD:</strong> <?php echo ($this->dados->getHoracoordenador()<10 ? "0".$this->dados->getHoracoordenador() : $this->dados->getHoracoordenador()) . ":" . Internals_Util::getMinuteDados($this->dados->getMinutocoordenador()) . " " . ($this->dados->getPeriodocoordenador() == 0 ? "AM" : "PM");?>
+			</p>
+		</div>
+	</div>
+</div>
+<?php }?>

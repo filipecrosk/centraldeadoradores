@@ -3,7 +3,7 @@
 	var funcoesEnviar = [];
 	$(document).ready(function(){
 		var locais = [];
-		$('#data').datepicker();
+		$('#data').datepicker({ dateFormat: "dd/mm/yy" });
 		$.ajax({
 			url: '/ajax/getlocais',
 			dataType: 'json',
