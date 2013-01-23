@@ -145,7 +145,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalRecusar->setModalName("Cancelar");
 		
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
-													<h1>Criar mensagem definitiva.</h1>", "Falha recusa");
+													Por favor entre em contato com os líderes.<br>bet.ol@terra.com.br ou junior.giovanini@gmail.com", "Falha recusa");
 		$modalFalhaRecusa->putOkButton();
 		$modalFalhaRecusa->setModalName("FalhaRecusa");
 		
@@ -472,11 +472,14 @@ class EscalaController extends Internals_Controller_CloseAction {
 			Confira a escala <a href=\"http://v2.centraldeadoradores.com.br/escala/detalhes?data=" . str_replace(" ", "%20", $escala->getData('Y-m-d H:i:s')) . "&idLocal=" . $local->getId() . "\">clicando aqui.</a>
 		</p>
 		");
+		$respDest = false;
 		$destinatarios = UsuarioQuery::create()
 			->filterByNivelpermissao(3)
 			->find();
 		foreach ( $destinatarios as $destinatario ) {
 			try {
+				if($destinatario->getId() == $escala->getIdResponsavel())
+					$respDest = true;
 				$alertEmail = new EmailDetail();
 				$alertEmail->setEmailHeader($email);
 				$alertEmail->setUsuario($destinatario);
@@ -486,7 +489,19 @@ class EscalaController extends Internals_Controller_CloseAction {
 				return;
 			}
 		}
-		
+		if(!$respDest){
+			try {
+				$destinatario = UsuarioQuery::create()
+					->findPk($escala->getIdResponsavel());
+				$alertEmail = new EmailDetail();
+				$alertEmail->setEmailHeader($email);
+				$alertEmail->setUsuario($destinatario);
+				$alertEmail->save();
+			} catch ( Exception $ex ) {
+				echo "Ocorreu um erro. ".$ex;
+				return;
+			}
+		}
 		$escala->setIdStatusEscala(3);
 		$escala->setMotivoRecusa($motivo);
 		$escala->save();
