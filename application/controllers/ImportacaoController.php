@@ -6,12 +6,7 @@ class ImportacaoController extends Zend_Controller_Action {
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender(true);
 		
-		$kit = ArquivoQuery::create()->findPk(1);
-		
-		$this->getResponse()
-			->setHeader('Content-Disposition', 'attachment; filename='.$kit->getNome())
-			->setHeader('Content-type', 'audio/mpeg');
-		
-		echo stream_get_contents($kit->getConteudo(), -1, 0);
+		$date = new DateTime( "26-01-2013 00:00:00");
+		echo $date->format('Y-m-d H:i:s');
 	}
 }

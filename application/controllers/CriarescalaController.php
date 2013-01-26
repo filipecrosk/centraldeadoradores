@@ -86,6 +86,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$this->_helper->viewRenderer->setNoRender ();
 		$nomeLocal = $this->getRequest ()->getPost ( 'local', null );
 		$data = $this->getRequest ()->getPost ( 'data', null );
+		$data = str_replace("/", "-", $data);
 		$hora = $this->getRequest ()->getPost ( 'hora', null );
 		$nomeResponsavel = $this->getRequest ()->getPost ( 'nomeResponsavel', null );
 		$escala = $this->getRequest ()->getPost ( 'escalados', null );

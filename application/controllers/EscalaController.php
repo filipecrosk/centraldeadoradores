@@ -41,10 +41,12 @@ class EscalaController extends Internals_Controller_CloseAction {
 		->addAsColumn("pendente", '(select count(*) from escala_pessoa as pp1 where pp1.Id_Local = escala_pessoa.Id_Local and pp1.Data = escala_pessoa.Data and pp1.Id_Status_Escala = 1)')
 		->addAsColumn("confirmada", '(select count(*) from escala_pessoa as pp2 where pp2.Id_Local = escala_pessoa.Id_Local and pp2.Data = escala_pessoa.Data and pp2.Id_Status_Escala = 2)')
 		->addAsColumn("recusada", '(select count(*) from escala_pessoa as pp3 where pp3.Id_Local = escala_pessoa.Id_Local and pp3.Data = escala_pessoa.Data and pp3.Id_Status_Escala = 3)')
+		->joinUsuarioRelatedByIdResponsavel()
 		->joinLocal()
 		->groupByIdLocal()
 		->groupByData()
 		->filterByData(array('min'=>date("Y-m-d H:i:s")))
+		->withColumn("usuario.Nome")
 		->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
 		->find()
 		->toArray();
@@ -52,6 +54,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
+		$this->view->grid->addColumn("usuarioNome", "Responsável", UsuarioPeer::OM_CLASS, false);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,

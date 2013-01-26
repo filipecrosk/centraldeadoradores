@@ -42,7 +42,7 @@
 		$('#hora').mask("99:99");
 
 		$(".salvar").click(function(){
-			$(this).button('loading');
+			$(".salvar").button('loading');
 			if($("#local").val() != ""){
 				if($("#data").val() != ""){
 					if($("#hora").val() != ""){
@@ -125,6 +125,12 @@
 															}
 														},
 														error: function(data){
+															var str = "";
+															for (prop in data)
+															{
+															  str += prop + " value :" + data[prop] + "\n";
+															}
+															alert(str);
 															alert(data);
 														}
 													});
@@ -213,7 +219,7 @@
 					type: "POST",
 					data: { idBanda: $("#banda").val() },
 					success: function(data) {
-						$("#formulario").append(data);
+						$("#integrantes").append(data);
 
 						$(".remover").each(function(){
 							var id = $(this).attr("id");
@@ -238,7 +244,7 @@
 				url: '/ajax/novointegrante',
 				dataType: 'html',
 				success: function(data) {
-					$("#formulario").append(data);
+					$("#integrantes").append(data);
 					$(".adicionarIntegrante").button('reset');
 				}
 			});
@@ -395,6 +401,12 @@
 					data-loading-text="Salvando...">Salvar</button>
 				<button class="cancelar btn">Cancelar</button>
 			</div>
+		</div>
+		<div id="integrantes"></div>
+		<div class="form-actions" style="padding-right:0px;">
+			<button class="cancelar btn pull-right" style="margin-left:4px;">Cancelar</button>
+			<button class="salvar btn btn-primary pull-right" autocomplete="off"
+				data-loading-text="Salvando...">Salvar</button>
 		</div>
 	</form>
 </div>
