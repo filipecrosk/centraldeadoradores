@@ -93,7 +93,7 @@
 														url: '/criarescala/nova',
 														type: 'post',
 														dataType: 'html',
-														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val() },
+														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val(), "idTipoEscala": $("#idTipoEscala").val() },
 														success: function(data) {
 															if($.trim(data) !== "Ok"){
 																$.ajax({
@@ -390,6 +390,14 @@
 					class="control-label" for="responsavel" style="margin-left: 10px;">Responsável:
 				</label> <input type="text" id="responsavel" name="responsavel"
 					style="width: 180px;" />
+				
+			</div>
+			<div class="control-group">
+				<label class="control-label" for="idTipoEscala">Tipo de Escala:</label> 
+				<select id="idTipoEscala" name="idTipoEscala">
+					<option selected="selected" value="1">Louvor</option>
+					<option value="2">Ensaio</option>
+				</select>
 			</div>
 		</div>
 		<div style="padding-bottom: 20px;">

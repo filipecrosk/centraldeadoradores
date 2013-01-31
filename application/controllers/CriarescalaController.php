@@ -89,8 +89,8 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$data = str_replace("/", "-", $data);
 		$hora = $this->getRequest ()->getPost ( 'hora', null );
 		$nomeResponsavel = $this->getRequest ()->getPost ( 'nomeResponsavel', null );
+		$tipoEscala = $this->getRequest ()->getPost ( 'idTipoEscala' );
 		$escala = $this->getRequest ()->getPost ( 'escalados', null );
-				
 		$local = LocalQuery::create ()->filterByNome ( $nomeLocal )->findOne ();
 		$date = new DateTime($data . " " . $hora.":00");
 		$existente = EscalaPessoaQuery::create()
@@ -135,6 +135,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$escala->setIdResponsavel ( $responsavel->getId () );
 				$escala->setData ( $data . " " . $hora );
 				$escala->setIdStatusEscala ( 1 );
+				$escala->setIdTipoEscala($tipoEscala);
 				$escala->save ();
 				$funcoes = split ( '-', $reg [1] );
 				foreach ( $funcoes as $idFuncao ) {

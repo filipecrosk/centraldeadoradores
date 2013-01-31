@@ -45,6 +45,7 @@ class EscalaPessoaTableMap extends TableMap
         $this->addForeignKey('ID_STATUS_ESCALA', 'IdStatusEscala', 'INTEGER', 'status_escala', 'ID', true, null, 1);
         $this->addForeignKey('ID_RESPONSAVEL', 'IdResponsavel', 'INTEGER', 'usuario', 'ID', true, null, null);
         $this->addColumn('MOTIVO_RECUSA', 'MotivoRecusa', 'CLOB', false, null, null);
+        $this->addForeignKey('ID_TIPO_ESCALA', 'IdTipoEscala', 'INTEGER', 'tipo_escala', 'ID', false, null, null);
         // validators
     } // initialize()
 
@@ -53,6 +54,7 @@ class EscalaPessoaTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('TipoEscala', 'TipoEscala', RelationMap::MANY_TO_ONE, array('Id_Tipo_Escala' => 'Id', ), null, null);
         $this->addRelation('Local', 'Local', RelationMap::MANY_TO_ONE, array('Id_Local' => 'Id', ), null, null);
         $this->addRelation('UsuarioRelatedByIdResponsavel', 'Usuario', RelationMap::MANY_TO_ONE, array('Id_Responsavel' => 'Id', ), null, null);
         $this->addRelation('StatusEscala', 'StatusEscala', RelationMap::MANY_TO_ONE, array('Id_Status_Escala' => 'Id', ), null, null);

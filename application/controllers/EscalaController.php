@@ -43,11 +43,12 @@ class EscalaController extends Internals_Controller_CloseAction {
 		->addAsColumn("recusada", '(select count(*) from escala_pessoa as pp3 where pp3.Id_Local = escala_pessoa.Id_Local and pp3.Data = escala_pessoa.Data and pp3.Id_Status_Escala = 3)')
 		->joinUsuarioRelatedByIdResponsavel()
 		->joinLocal()
+		->joinTipoEscala()
 		->groupByIdLocal()
 		->groupByData()
 		->filterByData(array('min'=>date("Y-m-d H:i:s")))
 		->withColumn("usuario.Nome")
-		->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
+		->select(Array('Id','Local.Nome', 'Data', 'Local.Id', 'TipoEscala.Nome'))
 		->find()
 		->toArray();
 		
@@ -55,6 +56,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
 		$this->view->grid->addColumn("usuarioNome", "Responsável", UsuarioPeer::OM_CLASS, false);
+		$this->view->grid->addColumn(TipoEscalaPeer::NOME, "Tipo de escala", TipoEscalaPeer::OM_CLASS);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
@@ -102,15 +104,17 @@ class EscalaController extends Internals_Controller_CloseAction {
 	public function resumoAction(){
 		$dados = EscalaPessoaQuery::create()
 		->joinLocal()
+		->joinTipoEscala()
 		->groupByIdLocal()
 		->groupByData()
-		->select(Array('Id','Local.Nome', 'Data', 'Local.Id'))
+		->select(Array('Id','Local.Nome', 'Data', 'Local.Id', 'TipoEscala.Nome'))
 		->find()
 		->toArray();
 		
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
+		$this->view->grid->addColumn(TipoEscalaPeer::NOME, "Tipo de escala", TipoEscalaPeer::OM_CLASS);
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
 				LocalPeer::OM_CLASS=>LocalPeer::ID));
 		$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
@@ -121,15 +125,17 @@ class EscalaController extends Internals_Controller_CloseAction {
 	public function confirmadasAction(){
 		$dados = EscalaPessoaQuery::create()
 			->joinLocal()
+			->joinTipoEscala()
 			->filterByIdUsuario($this->userId)
 			->filterByData(array('min'=>date("Y-m-d H:i:s")))
 			->filterByIdStatusEscala(2)
-			->select(array('Id','Local.Id', 'Local.Nome', 'Data', 'IdStatusEscala'))
+			->select(array('Id','Local.Id', 'Local.Nome', 'Data', 'IdStatusEscala', 'TipoEscala.Nome'))
 			->find()
 			->toArray();
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
-		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
+		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);		
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
+		$this->view->grid->addColumn(TipoEscalaPeer::NOME, "Tipo de escala", TipoEscalaPeer::OM_CLASS);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		
@@ -225,7 +231,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 					'Local.Nome'=>$dado->getLocal()->getNome(),
 					'Data'=>$dado->getData("Y-m-d H:i:s"),
 					'Id'=>$dado->getId(),
-					'Funcoes'=>$funcoes
+					'Funcoes'=>$funcoes,
+					'TipoEscala'=>$dado->getTipoEscala()->getNome()
 			);
 			$arrDados[] = $reg;
 		}
@@ -235,6 +242,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
 		$this->view->grid->addColumn("Funcoes", "Funções", null, false);
+		$this->view->grid->addColumn("TipoEscala", "Tipo de escala", null, false);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		

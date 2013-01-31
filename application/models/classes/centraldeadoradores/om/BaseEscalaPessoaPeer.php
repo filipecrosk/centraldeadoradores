@@ -24,13 +24,13 @@ abstract class BaseEscalaPessoaPeer
     const TM_CLASS = 'EscalaPessoaTableMap';
 
     /** The total number of columns. */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 8;
 
     /** The number of lazy-loaded columns. */
     const NUM_LAZY_LOAD_COLUMNS = 0;
 
     /** The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS) */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 8;
 
     /** the column name for the ID field */
     const ID = 'escala_pessoa.ID';
@@ -53,6 +53,9 @@ abstract class BaseEscalaPessoaPeer
     /** the column name for the MOTIVO_RECUSA field */
     const MOTIVO_RECUSA = 'escala_pessoa.MOTIVO_RECUSA';
 
+    /** the column name for the ID_TIPO_ESCALA field */
+    const ID_TIPO_ESCALA = 'escala_pessoa.ID_TIPO_ESCALA';
+
     /** The default string format for model objects of the related table **/
     const DEFAULT_STRING_FORMAT = 'YAML';
 
@@ -72,12 +75,12 @@ abstract class BaseEscalaPessoaPeer
      * e.g. EscalaPessoaPeer::$fieldNames[EscalaPessoaPeer::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        BasePeer::TYPE_PHPNAME => array ('Id', 'IdUsuario', 'IdLocal', 'Data', 'IdStatusEscala', 'IdResponsavel', 'MotivoRecusa', ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'idUsuario', 'idLocal', 'data', 'idStatusEscala', 'idResponsavel', 'motivoRecusa', ),
-        BasePeer::TYPE_COLNAME => array (EscalaPessoaPeer::ID, EscalaPessoaPeer::ID_USUARIO, EscalaPessoaPeer::ID_LOCAL, EscalaPessoaPeer::DATA, EscalaPessoaPeer::ID_STATUS_ESCALA, EscalaPessoaPeer::ID_RESPONSAVEL, EscalaPessoaPeer::MOTIVO_RECUSA, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ID_USUARIO', 'ID_LOCAL', 'DATA', 'ID_STATUS_ESCALA', 'ID_RESPONSAVEL', 'MOTIVO_RECUSA', ),
-        BasePeer::TYPE_FIELDNAME => array ('Id', 'Id_Usuario', 'Id_Local', 'Data', 'Id_Status_Escala', 'Id_Responsavel', 'Motivo_Recusa', ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id', 'IdUsuario', 'IdLocal', 'Data', 'IdStatusEscala', 'IdResponsavel', 'MotivoRecusa', 'IdTipoEscala', ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'idUsuario', 'idLocal', 'data', 'idStatusEscala', 'idResponsavel', 'motivoRecusa', 'idTipoEscala', ),
+        BasePeer::TYPE_COLNAME => array (EscalaPessoaPeer::ID, EscalaPessoaPeer::ID_USUARIO, EscalaPessoaPeer::ID_LOCAL, EscalaPessoaPeer::DATA, EscalaPessoaPeer::ID_STATUS_ESCALA, EscalaPessoaPeer::ID_RESPONSAVEL, EscalaPessoaPeer::MOTIVO_RECUSA, EscalaPessoaPeer::ID_TIPO_ESCALA, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID', 'ID_USUARIO', 'ID_LOCAL', 'DATA', 'ID_STATUS_ESCALA', 'ID_RESPONSAVEL', 'MOTIVO_RECUSA', 'ID_TIPO_ESCALA', ),
+        BasePeer::TYPE_FIELDNAME => array ('Id', 'Id_Usuario', 'Id_Local', 'Data', 'Id_Status_Escala', 'Id_Responsavel', 'Motivo_Recusa', 'Id_Tipo_Escala', ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -87,12 +90,12 @@ abstract class BaseEscalaPessoaPeer
      * e.g. EscalaPessoaPeer::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'IdUsuario' => 1, 'IdLocal' => 2, 'Data' => 3, 'IdStatusEscala' => 4, 'IdResponsavel' => 5, 'MotivoRecusa' => 6, ),
-        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'idUsuario' => 1, 'idLocal' => 2, 'data' => 3, 'idStatusEscala' => 4, 'idResponsavel' => 5, 'motivoRecusa' => 6, ),
-        BasePeer::TYPE_COLNAME => array (EscalaPessoaPeer::ID => 0, EscalaPessoaPeer::ID_USUARIO => 1, EscalaPessoaPeer::ID_LOCAL => 2, EscalaPessoaPeer::DATA => 3, EscalaPessoaPeer::ID_STATUS_ESCALA => 4, EscalaPessoaPeer::ID_RESPONSAVEL => 5, EscalaPessoaPeer::MOTIVO_RECUSA => 6, ),
-        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ID_USUARIO' => 1, 'ID_LOCAL' => 2, 'DATA' => 3, 'ID_STATUS_ESCALA' => 4, 'ID_RESPONSAVEL' => 5, 'MOTIVO_RECUSA' => 6, ),
-        BasePeer::TYPE_FIELDNAME => array ('Id' => 0, 'Id_Usuario' => 1, 'Id_Local' => 2, 'Data' => 3, 'Id_Status_Escala' => 4, 'Id_Responsavel' => 5, 'Motivo_Recusa' => 6, ),
-        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
+        BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'IdUsuario' => 1, 'IdLocal' => 2, 'Data' => 3, 'IdStatusEscala' => 4, 'IdResponsavel' => 5, 'MotivoRecusa' => 6, 'IdTipoEscala' => 7, ),
+        BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'idUsuario' => 1, 'idLocal' => 2, 'data' => 3, 'idStatusEscala' => 4, 'idResponsavel' => 5, 'motivoRecusa' => 6, 'idTipoEscala' => 7, ),
+        BasePeer::TYPE_COLNAME => array (EscalaPessoaPeer::ID => 0, EscalaPessoaPeer::ID_USUARIO => 1, EscalaPessoaPeer::ID_LOCAL => 2, EscalaPessoaPeer::DATA => 3, EscalaPessoaPeer::ID_STATUS_ESCALA => 4, EscalaPessoaPeer::ID_RESPONSAVEL => 5, EscalaPessoaPeer::MOTIVO_RECUSA => 6, EscalaPessoaPeer::ID_TIPO_ESCALA => 7, ),
+        BasePeer::TYPE_RAW_COLNAME => array ('ID' => 0, 'ID_USUARIO' => 1, 'ID_LOCAL' => 2, 'DATA' => 3, 'ID_STATUS_ESCALA' => 4, 'ID_RESPONSAVEL' => 5, 'MOTIVO_RECUSA' => 6, 'ID_TIPO_ESCALA' => 7, ),
+        BasePeer::TYPE_FIELDNAME => array ('Id' => 0, 'Id_Usuario' => 1, 'Id_Local' => 2, 'Data' => 3, 'Id_Status_Escala' => 4, 'Id_Responsavel' => 5, 'Motivo_Recusa' => 6, 'Id_Tipo_Escala' => 7, ),
+        BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
     );
 
     /**
@@ -173,6 +176,7 @@ abstract class BaseEscalaPessoaPeer
             $criteria->addSelectColumn(EscalaPessoaPeer::ID_STATUS_ESCALA);
             $criteria->addSelectColumn(EscalaPessoaPeer::ID_RESPONSAVEL);
             $criteria->addSelectColumn(EscalaPessoaPeer::MOTIVO_RECUSA);
+            $criteria->addSelectColumn(EscalaPessoaPeer::ID_TIPO_ESCALA);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.ID_USUARIO');
@@ -181,6 +185,7 @@ abstract class BaseEscalaPessoaPeer
             $criteria->addSelectColumn($alias . '.ID_STATUS_ESCALA');
             $criteria->addSelectColumn($alias . '.ID_RESPONSAVEL');
             $criteria->addSelectColumn($alias . '.MOTIVO_RECUSA');
+            $criteria->addSelectColumn($alias . '.ID_TIPO_ESCALA');
         }
     }
 
@@ -481,6 +486,57 @@ abstract class BaseEscalaPessoaPeer
 
 
     /**
+     * Returns the number of rows matching criteria, joining the related TipoEscala table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinTipoEscala(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EscalaPessoaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EscalaPessoaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+
+        // Set the correct dbName
+        $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
+    }
+
+
+    /**
      * Returns the number of rows matching criteria, joining the related Local table
      *
      * @param      Criteria $criteria
@@ -681,6 +737,73 @@ abstract class BaseEscalaPessoaPeer
         $stmt->closeCursor();
 
         return $count;
+    }
+
+
+    /**
+     * Selects a collection of EscalaPessoa objects pre-filled with their TipoEscala objects.
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of EscalaPessoa objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinTipoEscala(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+        }
+
+        EscalaPessoaPeer::addSelectColumns($criteria);
+        $startcol = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
+        TipoEscalaPeer::addSelectColumns($criteria);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+
+                $cls = EscalaPessoaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
+            } // if $obj1 already loaded
+
+            $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+            if ($key2 !== null) {
+                $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
+                if (!$obj2) {
+
+                    $cls = TipoEscalaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
+                } // if obj2 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to $obj2 (TipoEscala)
+                $obj2->addEscalaPessoa($obj1);
+
+            } // if joined row was not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
     }
 
 
@@ -988,6 +1111,8 @@ abstract class BaseEscalaPessoaPeer
             $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
@@ -1030,17 +1155,22 @@ abstract class BaseEscalaPessoaPeer
         EscalaPessoaPeer::addSelectColumns($criteria);
         $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
 
+        TipoEscalaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TipoEscalaPeer::NUM_HYDRATE_COLUMNS;
+
         LocalPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + LocalPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + LocalPeer::NUM_HYDRATE_COLUMNS;
 
         UsuarioPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
 
         StatusEscalaPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
 
         UsuarioPeer::addSelectColumns($criteria);
-        $startcol6 = $startcol5 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+        $startcol7 = $startcol6 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
@@ -1067,76 +1197,94 @@ abstract class BaseEscalaPessoaPeer
                 EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-            // Add objects for joined Local rows
+            // Add objects for joined TipoEscala rows
 
-            $key2 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+            $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
             if ($key2 !== null) {
-                $obj2 = LocalPeer::getInstanceFromPool($key2);
+                $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
                 if (!$obj2) {
 
-                    $cls = LocalPeer::getOMClass();
+                    $cls = TipoEscalaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    LocalPeer::addInstanceToPool($obj2, $key2);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
                 } // if obj2 loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (Local)
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (TipoEscala)
                 $obj2->addEscalaPessoa($obj1);
+            } // if joined row not null
+
+            // Add objects for joined Local rows
+
+            $key3 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+            if ($key3 !== null) {
+                $obj3 = LocalPeer::getInstanceFromPool($key3);
+                if (!$obj3) {
+
+                    $cls = LocalPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    LocalPeer::addInstanceToPool($obj3, $key3);
+                } // if obj3 loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Local)
+                $obj3->addEscalaPessoa($obj1);
             } // if joined row not null
 
             // Add objects for joined Usuario rows
 
-            $key3 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-            if ($key3 !== null) {
-                $obj3 = UsuarioPeer::getInstanceFromPool($key3);
-                if (!$obj3) {
+            $key4 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+            if ($key4 !== null) {
+                $obj4 = UsuarioPeer::getInstanceFromPool($key4);
+                if (!$obj4) {
 
                     $cls = UsuarioPeer::getOMClass();
 
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    UsuarioPeer::addInstanceToPool($obj3, $key3);
-                } // if obj3 loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    UsuarioPeer::addInstanceToPool($obj4, $key4);
+                } // if obj4 loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Usuario)
-                $obj3->addEscalaPessoaRelatedByIdResponsavel($obj1);
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (Usuario)
+                $obj4->addEscalaPessoaRelatedByIdResponsavel($obj1);
             } // if joined row not null
 
             // Add objects for joined StatusEscala rows
 
-            $key4 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-            if ($key4 !== null) {
-                $obj4 = StatusEscalaPeer::getInstanceFromPool($key4);
-                if (!$obj4) {
+            $key5 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+            if ($key5 !== null) {
+                $obj5 = StatusEscalaPeer::getInstanceFromPool($key5);
+                if (!$obj5) {
 
                     $cls = StatusEscalaPeer::getOMClass();
 
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    StatusEscalaPeer::addInstanceToPool($obj4, $key4);
-                } // if obj4 loaded
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    StatusEscalaPeer::addInstanceToPool($obj5, $key5);
+                } // if obj5 loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (StatusEscala)
-                $obj4->addEscalaPessoa($obj1);
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj5 (StatusEscala)
+                $obj5->addEscalaPessoa($obj1);
             } // if joined row not null
 
             // Add objects for joined Usuario rows
 
-            $key5 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol5);
-            if ($key5 !== null) {
-                $obj5 = UsuarioPeer::getInstanceFromPool($key5);
-                if (!$obj5) {
+            $key6 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+            if ($key6 !== null) {
+                $obj6 = UsuarioPeer::getInstanceFromPool($key6);
+                if (!$obj6) {
 
                     $cls = UsuarioPeer::getOMClass();
 
-                    $obj5 = new $cls();
-                    $obj5->hydrate($row, $startcol5);
-                    UsuarioPeer::addInstanceToPool($obj5, $key5);
-                } // if obj5 loaded
+                    $obj6 = new $cls();
+                    $obj6->hydrate($row, $startcol6);
+                    UsuarioPeer::addInstanceToPool($obj6, $key6);
+                } // if obj6 loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj5 (Usuario)
-                $obj5->addEscalaPessoaRelatedByIdUsuario($obj1);
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj6 (Usuario)
+                $obj6->addEscalaPessoaRelatedByIdUsuario($obj1);
             } // if joined row not null
 
             $results[] = $obj1;
@@ -1144,6 +1292,63 @@ abstract class BaseEscalaPessoaPeer
         $stmt->closeCursor();
 
         return $results;
+    }
+
+
+    /**
+     * Returns the number of rows matching criteria, joining the related TipoEscala table
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return int Number of matching rows.
+     */
+    public static function doCountJoinAllExceptTipoEscala(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        // we're going to modify criteria, so copy it first
+        $criteria = clone $criteria;
+
+        // We need to set the primary table name, since in the case that there are no WHERE columns
+        // it will be impossible for the BasePeer::createSelectSql() method to determine which
+        // tables go into the FROM clause.
+        $criteria->setPrimaryTableName(EscalaPessoaPeer::TABLE_NAME);
+
+        if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+            $criteria->setDistinct();
+        }
+
+        if (!$criteria->hasSelectClause()) {
+            EscalaPessoaPeer::addSelectColumns($criteria);
+        }
+
+        $criteria->clearOrderByColumns(); // ORDER BY should not affect count
+
+        // Set the correct dbName
+        $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+
+        if ($con === null) {
+            $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+        }
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_USUARIO, UsuarioPeer::ID, $join_behavior);
+
+        $stmt = BasePeer::doCount($criteria, $con);
+
+        if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $count = (int) $row[0];
+        } else {
+            $count = 0; // no rows returned; we infer that means 0 matches.
+        }
+        $stmt->closeCursor();
+
+        return $count;
     }
 
 
@@ -1182,6 +1387,8 @@ abstract class BaseEscalaPessoaPeer
         if ($con === null) {
             $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
 
@@ -1238,6 +1445,8 @@ abstract class BaseEscalaPessoaPeer
             $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
@@ -1290,6 +1499,8 @@ abstract class BaseEscalaPessoaPeer
         if ($con === null) {
             $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
@@ -1346,6 +1557,8 @@ abstract class BaseEscalaPessoaPeer
             $con = Propel::getConnection(EscalaPessoaPeer::DATABASE_NAME, Propel::CONNECTION_READ);
         }
 
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
@@ -1364,7 +1577,7 @@ abstract class BaseEscalaPessoaPeer
 
 
     /**
-     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except Local.
+     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except TipoEscala.
      *
      * @param      Criteria  $criteria
      * @param      PropelPDO $con
@@ -1373,227 +1586,7 @@ abstract class BaseEscalaPessoaPeer
      * @throws PropelException Any exceptions caught during processing will be
      *		 rethrown wrapped into a PropelException.
      */
-    public static function doSelectJoinAllExceptLocal(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
-        }
-
-        EscalaPessoaPeer::addSelectColumns($criteria);
-        $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
-
-        UsuarioPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
-
-        StatusEscalaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
-
-        UsuarioPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
-
-        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
-
-        $criteria->addJoin(EscalaPessoaPeer::ID_USUARIO, UsuarioPeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = EscalaPessoaPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Usuario rows
-
-                $key2 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = UsuarioPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = UsuarioPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    UsuarioPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (Usuario)
-                $obj2->addEscalaPessoaRelatedByIdResponsavel($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined StatusEscala rows
-
-                $key3 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = StatusEscalaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = StatusEscalaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    StatusEscalaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (StatusEscala)
-                $obj3->addEscalaPessoa($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined Usuario rows
-
-                $key4 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-                if ($key4 !== null) {
-                    $obj4 = UsuarioPeer::getInstanceFromPool($key4);
-                    if (!$obj4) {
-
-                        $cls = UsuarioPeer::getOMClass();
-
-                    $obj4 = new $cls();
-                    $obj4->hydrate($row, $startcol4);
-                    UsuarioPeer::addInstanceToPool($obj4, $key4);
-                } // if $obj4 already loaded
-
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (Usuario)
-                $obj4->addEscalaPessoaRelatedByIdUsuario($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except UsuarioRelatedByIdResponsavel.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of EscalaPessoa objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptUsuarioRelatedByIdResponsavel(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-    {
-        $criteria = clone $criteria;
-
-        // Set the correct dbName if it has not been overridden
-        // $criteria->getDbName() will return the same object if not set to another value
-        // so == check is okay and faster
-        if ($criteria->getDbName() == Propel::getDefaultDB()) {
-            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
-        }
-
-        EscalaPessoaPeer::addSelectColumns($criteria);
-        $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
-
-        LocalPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + LocalPeer::NUM_HYDRATE_COLUMNS;
-
-        StatusEscalaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
-
-        $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
-
-        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
-
-
-        $stmt = BasePeer::doSelect($criteria, $con);
-        $results = array();
-
-        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
-            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
-                // We no longer rehydrate the object, since this can cause data loss.
-                // See http://www.propelorm.org/ticket/509
-                // $obj1->hydrate($row, 0, true); // rehydrate
-            } else {
-                $cls = EscalaPessoaPeer::getOMClass();
-
-                $obj1 = new $cls();
-                $obj1->hydrate($row);
-                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
-            } // if obj1 already loaded
-
-                // Add objects for joined Local rows
-
-                $key2 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol2);
-                if ($key2 !== null) {
-                    $obj2 = LocalPeer::getInstanceFromPool($key2);
-                    if (!$obj2) {
-
-                        $cls = LocalPeer::getOMClass();
-
-                    $obj2 = new $cls();
-                    $obj2->hydrate($row, $startcol2);
-                    LocalPeer::addInstanceToPool($obj2, $key2);
-                } // if $obj2 already loaded
-
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (Local)
-                $obj2->addEscalaPessoa($obj1);
-
-            } // if joined row is not null
-
-                // Add objects for joined StatusEscala rows
-
-                $key3 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = StatusEscalaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
-
-                        $cls = StatusEscalaPeer::getOMClass();
-
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    StatusEscalaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
-
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (StatusEscala)
-                $obj3->addEscalaPessoa($obj1);
-
-            } // if joined row is not null
-
-            $results[] = $obj1;
-        }
-        $stmt->closeCursor();
-
-        return $results;
-    }
-
-
-    /**
-     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except StatusEscala.
-     *
-     * @param      Criteria  $criteria
-     * @param      PropelPDO $con
-     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-     * @return array           Array of EscalaPessoa objects.
-     * @throws PropelException Any exceptions caught during processing will be
-     *		 rethrown wrapped into a PropelException.
-     */
-    public static function doSelectJoinAllExceptStatusEscala(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    public static function doSelectJoinAllExceptTipoEscala(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
     {
         $criteria = clone $criteria;
 
@@ -1613,12 +1606,17 @@ abstract class BaseEscalaPessoaPeer
         UsuarioPeer::addSelectColumns($criteria);
         $startcol4 = $startcol3 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
 
+        StatusEscalaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+
         UsuarioPeer::addSelectColumns($criteria);
-        $startcol5 = $startcol4 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+        $startcol6 = $startcol5 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
 
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_USUARIO, UsuarioPeer::ID, $join_behavior);
 
@@ -1678,6 +1676,420 @@ abstract class BaseEscalaPessoaPeer
 
             } // if joined row is not null
 
+                // Add objects for joined StatusEscala rows
+
+                $key4 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = StatusEscalaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = StatusEscalaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    StatusEscalaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (StatusEscala)
+                $obj4->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Usuario rows
+
+                $key5 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = UsuarioPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = UsuarioPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    UsuarioPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj5 (Usuario)
+                $obj5->addEscalaPessoaRelatedByIdUsuario($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except Local.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of EscalaPessoa objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptLocal(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+        }
+
+        EscalaPessoaPeer::addSelectColumns($criteria);
+        $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
+
+        TipoEscalaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TipoEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        UsuarioPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        StatusEscalaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        UsuarioPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_USUARIO, UsuarioPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EscalaPessoaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined TipoEscala rows
+
+                $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = TipoEscalaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (TipoEscala)
+                $obj2->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Usuario rows
+
+                $key3 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = UsuarioPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = UsuarioPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    UsuarioPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Usuario)
+                $obj3->addEscalaPessoaRelatedByIdResponsavel($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined StatusEscala rows
+
+                $key4 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = StatusEscalaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = StatusEscalaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    StatusEscalaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (StatusEscala)
+                $obj4->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Usuario rows
+
+                $key5 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = UsuarioPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = UsuarioPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    UsuarioPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj5 (Usuario)
+                $obj5->addEscalaPessoaRelatedByIdUsuario($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except UsuarioRelatedByIdResponsavel.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of EscalaPessoa objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptUsuarioRelatedByIdResponsavel(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+        }
+
+        EscalaPessoaPeer::addSelectColumns($criteria);
+        $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
+
+        TipoEscalaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TipoEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        LocalPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + LocalPeer::NUM_HYDRATE_COLUMNS;
+
+        StatusEscalaPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_STATUS_ESCALA, StatusEscalaPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EscalaPessoaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined TipoEscala rows
+
+                $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = TipoEscalaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (TipoEscala)
+                $obj2->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Local rows
+
+                $key3 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = LocalPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = LocalPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    LocalPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Local)
+                $obj3->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined StatusEscala rows
+
+                $key4 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = StatusEscalaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
+
+                        $cls = StatusEscalaPeer::getOMClass();
+
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    StatusEscalaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (StatusEscala)
+                $obj4->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+            $results[] = $obj1;
+        }
+        $stmt->closeCursor();
+
+        return $results;
+    }
+
+
+    /**
+     * Selects a collection of EscalaPessoa objects pre-filled with all related objects except StatusEscala.
+     *
+     * @param      Criteria  $criteria
+     * @param      PropelPDO $con
+     * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+     * @return array           Array of EscalaPessoa objects.
+     * @throws PropelException Any exceptions caught during processing will be
+     *		 rethrown wrapped into a PropelException.
+     */
+    public static function doSelectJoinAllExceptStatusEscala(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+    {
+        $criteria = clone $criteria;
+
+        // Set the correct dbName if it has not been overridden
+        // $criteria->getDbName() will return the same object if not set to another value
+        // so == check is okay and faster
+        if ($criteria->getDbName() == Propel::getDefaultDB()) {
+            $criteria->setDbName(EscalaPessoaPeer::DATABASE_NAME);
+        }
+
+        EscalaPessoaPeer::addSelectColumns($criteria);
+        $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
+
+        TipoEscalaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TipoEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        LocalPeer::addSelectColumns($criteria);
+        $startcol4 = $startcol3 + LocalPeer::NUM_HYDRATE_COLUMNS;
+
+        UsuarioPeer::addSelectColumns($criteria);
+        $startcol5 = $startcol4 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        UsuarioPeer::addSelectColumns($criteria);
+        $startcol6 = $startcol5 + UsuarioPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_RESPONSAVEL, UsuarioPeer::ID, $join_behavior);
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_USUARIO, UsuarioPeer::ID, $join_behavior);
+
+
+        $stmt = BasePeer::doSelect($criteria, $con);
+        $results = array();
+
+        while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+            $key1 = EscalaPessoaPeer::getPrimaryKeyHashFromRow($row, 0);
+            if (null !== ($obj1 = EscalaPessoaPeer::getInstanceFromPool($key1))) {
+                // We no longer rehydrate the object, since this can cause data loss.
+                // See http://www.propelorm.org/ticket/509
+                // $obj1->hydrate($row, 0, true); // rehydrate
+            } else {
+                $cls = EscalaPessoaPeer::getOMClass();
+
+                $obj1 = new $cls();
+                $obj1->hydrate($row);
+                EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
+            } // if obj1 already loaded
+
+                // Add objects for joined TipoEscala rows
+
+                $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                if ($key2 !== null) {
+                    $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
+                    if (!$obj2) {
+
+                        $cls = TipoEscalaPeer::getOMClass();
+
+                    $obj2 = new $cls();
+                    $obj2->hydrate($row, $startcol2);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
+                } // if $obj2 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (TipoEscala)
+                $obj2->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Local rows
+
+                $key3 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = LocalPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = LocalPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    LocalPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Local)
+                $obj3->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
                 // Add objects for joined Usuario rows
 
                 $key4 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol4);
@@ -1693,7 +2105,26 @@ abstract class BaseEscalaPessoaPeer
                 } // if $obj4 already loaded
 
                 // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (Usuario)
-                $obj4->addEscalaPessoaRelatedByIdUsuario($obj1);
+                $obj4->addEscalaPessoaRelatedByIdResponsavel($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Usuario rows
+
+                $key5 = UsuarioPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+                if ($key5 !== null) {
+                    $obj5 = UsuarioPeer::getInstanceFromPool($key5);
+                    if (!$obj5) {
+
+                        $cls = UsuarioPeer::getOMClass();
+
+                    $obj5 = new $cls();
+                    $obj5->hydrate($row, $startcol5);
+                    UsuarioPeer::addInstanceToPool($obj5, $key5);
+                } // if $obj5 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj5 (Usuario)
+                $obj5->addEscalaPessoaRelatedByIdUsuario($obj1);
 
             } // if joined row is not null
 
@@ -1729,11 +2160,16 @@ abstract class BaseEscalaPessoaPeer
         EscalaPessoaPeer::addSelectColumns($criteria);
         $startcol2 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS;
 
+        TipoEscalaPeer::addSelectColumns($criteria);
+        $startcol3 = $startcol2 + TipoEscalaPeer::NUM_HYDRATE_COLUMNS;
+
         LocalPeer::addSelectColumns($criteria);
-        $startcol3 = $startcol2 + LocalPeer::NUM_HYDRATE_COLUMNS;
+        $startcol4 = $startcol3 + LocalPeer::NUM_HYDRATE_COLUMNS;
 
         StatusEscalaPeer::addSelectColumns($criteria);
-        $startcol4 = $startcol3 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+        $startcol5 = $startcol4 + StatusEscalaPeer::NUM_HYDRATE_COLUMNS;
+
+        $criteria->addJoin(EscalaPessoaPeer::ID_TIPO_ESCALA, TipoEscalaPeer::ID, $join_behavior);
 
         $criteria->addJoin(EscalaPessoaPeer::ID_LOCAL, LocalPeer::ID, $join_behavior);
 
@@ -1757,41 +2193,60 @@ abstract class BaseEscalaPessoaPeer
                 EscalaPessoaPeer::addInstanceToPool($obj1, $key1);
             } // if obj1 already loaded
 
-                // Add objects for joined Local rows
+                // Add objects for joined TipoEscala rows
 
-                $key2 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+                $key2 = TipoEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
                 if ($key2 !== null) {
-                    $obj2 = LocalPeer::getInstanceFromPool($key2);
+                    $obj2 = TipoEscalaPeer::getInstanceFromPool($key2);
                     if (!$obj2) {
 
-                        $cls = LocalPeer::getOMClass();
+                        $cls = TipoEscalaPeer::getOMClass();
 
                     $obj2 = new $cls();
                     $obj2->hydrate($row, $startcol2);
-                    LocalPeer::addInstanceToPool($obj2, $key2);
+                    TipoEscalaPeer::addInstanceToPool($obj2, $key2);
                 } // if $obj2 already loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (Local)
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj2 (TipoEscala)
                 $obj2->addEscalaPessoa($obj1);
+
+            } // if joined row is not null
+
+                // Add objects for joined Local rows
+
+                $key3 = LocalPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+                if ($key3 !== null) {
+                    $obj3 = LocalPeer::getInstanceFromPool($key3);
+                    if (!$obj3) {
+
+                        $cls = LocalPeer::getOMClass();
+
+                    $obj3 = new $cls();
+                    $obj3->hydrate($row, $startcol3);
+                    LocalPeer::addInstanceToPool($obj3, $key3);
+                } // if $obj3 already loaded
+
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (Local)
+                $obj3->addEscalaPessoa($obj1);
 
             } // if joined row is not null
 
                 // Add objects for joined StatusEscala rows
 
-                $key3 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-                if ($key3 !== null) {
-                    $obj3 = StatusEscalaPeer::getInstanceFromPool($key3);
-                    if (!$obj3) {
+                $key4 = StatusEscalaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+                if ($key4 !== null) {
+                    $obj4 = StatusEscalaPeer::getInstanceFromPool($key4);
+                    if (!$obj4) {
 
                         $cls = StatusEscalaPeer::getOMClass();
 
-                    $obj3 = new $cls();
-                    $obj3->hydrate($row, $startcol3);
-                    StatusEscalaPeer::addInstanceToPool($obj3, $key3);
-                } // if $obj3 already loaded
+                    $obj4 = new $cls();
+                    $obj4->hydrate($row, $startcol4);
+                    StatusEscalaPeer::addInstanceToPool($obj4, $key4);
+                } // if $obj4 already loaded
 
-                // Add the $obj1 (EscalaPessoa) to the collection in $obj3 (StatusEscala)
-                $obj3->addEscalaPessoa($obj1);
+                // Add the $obj1 (EscalaPessoa) to the collection in $obj4 (StatusEscala)
+                $obj4->addEscalaPessoa($obj1);
 
             } // if joined row is not null
 

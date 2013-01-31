@@ -73,6 +73,17 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
     protected $motivo_recusa;
 
     /**
+     * The value for the id_tipo_escala field.
+     * @var        int
+     */
+    protected $id_tipo_escala;
+
+    /**
+     * @var        TipoEscala
+     */
+    protected $aTipoEscala;
+
+    /**
      * @var        Local
      */
     protected $aLocal;
@@ -234,6 +245,16 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
     public function getMotivoRecusa()
     {
         return $this->motivo_recusa;
+    }
+
+    /**
+     * Get the [id_tipo_escala] column value.
+     *
+     * @return int
+     */
+    public function getIdTipoEscala()
+    {
+        return $this->id_tipo_escala;
     }
 
     /**
@@ -402,6 +423,31 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
     } // setMotivoRecusa()
 
     /**
+     * Set the value of [id_tipo_escala] column.
+     *
+     * @param int $v new value
+     * @return EscalaPessoa The current object (for fluent API support)
+     */
+    public function setIdTipoEscala($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->id_tipo_escala !== $v) {
+            $this->id_tipo_escala = $v;
+            $this->modifiedColumns[] = EscalaPessoaPeer::ID_TIPO_ESCALA;
+        }
+
+        if ($this->aTipoEscala !== null && $this->aTipoEscala->getId() !== $v) {
+            $this->aTipoEscala = null;
+        }
+
+
+        return $this;
+    } // setIdTipoEscala()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -444,6 +490,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             $this->id_status_escala = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
             $this->id_responsavel = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
             $this->motivo_recusa = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+            $this->id_tipo_escala = ($row[$startcol + 7] !== null) ? (int) $row[$startcol + 7] : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -452,7 +499,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
                 $this->ensureConsistency();
             }
 
-            return $startcol + 7; // 7 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS.
+            return $startcol + 8; // 8 = EscalaPessoaPeer::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating EscalaPessoa object", $e);
@@ -486,6 +533,9 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         }
         if ($this->aUsuarioRelatedByIdResponsavel !== null && $this->id_responsavel !== $this->aUsuarioRelatedByIdResponsavel->getId()) {
             $this->aUsuarioRelatedByIdResponsavel = null;
+        }
+        if ($this->aTipoEscala !== null && $this->id_tipo_escala !== $this->aTipoEscala->getId()) {
+            $this->aTipoEscala = null;
         }
     } // ensureConsistency
 
@@ -526,6 +576,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aTipoEscala = null;
             $this->aLocal = null;
             $this->aUsuarioRelatedByIdResponsavel = null;
             $this->aStatusEscala = null;
@@ -650,6 +701,13 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aTipoEscala !== null) {
+                if ($this->aTipoEscala->isModified() || $this->aTipoEscala->isNew()) {
+                    $affectedRows += $this->aTipoEscala->save($con);
+                }
+                $this->setTipoEscala($this->aTipoEscala);
+            }
+
             if ($this->aLocal !== null) {
                 if ($this->aLocal->isModified() || $this->aLocal->isNew()) {
                     $affectedRows += $this->aLocal->save($con);
@@ -753,6 +811,9 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         if ($this->isColumnModified(EscalaPessoaPeer::MOTIVO_RECUSA)) {
             $modifiedColumns[':p' . $index++]  = '`MOTIVO_RECUSA`';
         }
+        if ($this->isColumnModified(EscalaPessoaPeer::ID_TIPO_ESCALA)) {
+            $modifiedColumns[':p' . $index++]  = '`ID_TIPO_ESCALA`';
+        }
 
         $sql = sprintf(
             'INSERT INTO `escala_pessoa` (%s) VALUES (%s)',
@@ -784,6 +845,9 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
                         break;
                     case '`MOTIVO_RECUSA`':
                         $stmt->bindValue($identifier, $this->motivo_recusa, PDO::PARAM_STR);
+                        break;
+                    case '`ID_TIPO_ESCALA`':
+                        $stmt->bindValue($identifier, $this->id_tipo_escala, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -884,6 +948,12 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             // method.  This object relates to these object(s) by a
             // foreign key reference.
 
+            if ($this->aTipoEscala !== null) {
+                if (!$this->aTipoEscala->validate($columns)) {
+                    $failureMap = array_merge($failureMap, $this->aTipoEscala->getValidationFailures());
+                }
+            }
+
             if ($this->aLocal !== null) {
                 if (!$this->aLocal->validate($columns)) {
                     $failureMap = array_merge($failureMap, $this->aLocal->getValidationFailures());
@@ -978,6 +1048,9 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             case 6:
                 return $this->getMotivoRecusa();
                 break;
+            case 7:
+                return $this->getIdTipoEscala();
+                break;
             default:
                 return null;
                 break;
@@ -1014,8 +1087,12 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             $keys[4] => $this->getIdStatusEscala(),
             $keys[5] => $this->getIdResponsavel(),
             $keys[6] => $this->getMotivoRecusa(),
+            $keys[7] => $this->getIdTipoEscala(),
         );
         if ($includeForeignObjects) {
+            if (null !== $this->aTipoEscala) {
+                $result['TipoEscala'] = $this->aTipoEscala->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
             if (null !== $this->aLocal) {
                 $result['Local'] = $this->aLocal->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
@@ -1086,6 +1163,9 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             case 6:
                 $this->setMotivoRecusa($value);
                 break;
+            case 7:
+                $this->setIdTipoEscala($value);
+                break;
         } // switch()
     }
 
@@ -1117,6 +1197,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         if (array_key_exists($keys[4], $arr)) $this->setIdStatusEscala($arr[$keys[4]]);
         if (array_key_exists($keys[5], $arr)) $this->setIdResponsavel($arr[$keys[5]]);
         if (array_key_exists($keys[6], $arr)) $this->setMotivoRecusa($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setIdTipoEscala($arr[$keys[7]]);
     }
 
     /**
@@ -1135,6 +1216,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         if ($this->isColumnModified(EscalaPessoaPeer::ID_STATUS_ESCALA)) $criteria->add(EscalaPessoaPeer::ID_STATUS_ESCALA, $this->id_status_escala);
         if ($this->isColumnModified(EscalaPessoaPeer::ID_RESPONSAVEL)) $criteria->add(EscalaPessoaPeer::ID_RESPONSAVEL, $this->id_responsavel);
         if ($this->isColumnModified(EscalaPessoaPeer::MOTIVO_RECUSA)) $criteria->add(EscalaPessoaPeer::MOTIVO_RECUSA, $this->motivo_recusa);
+        if ($this->isColumnModified(EscalaPessoaPeer::ID_TIPO_ESCALA)) $criteria->add(EscalaPessoaPeer::ID_TIPO_ESCALA, $this->id_tipo_escala);
 
         return $criteria;
     }
@@ -1204,6 +1286,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         $copyObj->setIdStatusEscala($this->getIdStatusEscala());
         $copyObj->setIdResponsavel($this->getIdResponsavel());
         $copyObj->setMotivoRecusa($this->getMotivoRecusa());
+        $copyObj->setIdTipoEscala($this->getIdTipoEscala());
 
         if ($deepCopy && !$this->startCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1266,6 +1349,57 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         }
 
         return self::$peer;
+    }
+
+    /**
+     * Declares an association between this object and a TipoEscala object.
+     *
+     * @param             TipoEscala $v
+     * @return EscalaPessoa The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setTipoEscala(TipoEscala $v = null)
+    {
+        if ($v === null) {
+            $this->setIdTipoEscala(NULL);
+        } else {
+            $this->setIdTipoEscala($v->getId());
+        }
+
+        $this->aTipoEscala = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the TipoEscala object, it will not be re-added.
+        if ($v !== null) {
+            $v->addEscalaPessoa($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated TipoEscala object
+     *
+     * @param PropelPDO $con Optional Connection object.
+     * @return TipoEscala The associated TipoEscala object.
+     * @throws PropelException
+     */
+    public function getTipoEscala(PropelPDO $con = null)
+    {
+        if ($this->aTipoEscala === null && ($this->id_tipo_escala !== null)) {
+            $this->aTipoEscala = TipoEscalaQuery::create()->findPk($this->id_tipo_escala, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aTipoEscala->addEscalaPessoas($this);
+             */
+        }
+
+        return $this->aTipoEscala;
     }
 
     /**
@@ -1732,6 +1866,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
         $this->id_status_escala = null;
         $this->id_responsavel = null;
         $this->motivo_recusa = null;
+        $this->id_tipo_escala = null;
         $this->alreadyInSave = false;
         $this->alreadyInValidation = false;
         $this->clearAllReferences();
@@ -1764,6 +1899,7 @@ abstract class BaseEscalaPessoa extends BaseObject implements Persistent
             $this->collEscalaPessoaFuncaos->clearIterator();
         }
         $this->collEscalaPessoaFuncaos = null;
+        $this->aTipoEscala = null;
         $this->aLocal = null;
         $this->aUsuarioRelatedByIdResponsavel = null;
         $this->aStatusEscala = null;
