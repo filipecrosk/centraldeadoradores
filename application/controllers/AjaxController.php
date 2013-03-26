@@ -115,7 +115,7 @@ class AjaxController extends Zend_Controller_Action {
 	
 	public function escalarbandaAction(){
 		$idBanda = $this->getRequest()->getPost('idBanda', null);
-		$integrantes = UsuarioQuery::create()->orderByNome()->filterByIdBanda($idBanda)->find();
+		$integrantes = UsuarioQuery::create()->filterByDesabilitado(0)->filterByIdBanda($idBanda)->orderByNome()->find();
 		$funcoes = FuncaoQuery::create()->orderByNome()->find();
 		$componentes = "";
 		

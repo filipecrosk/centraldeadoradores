@@ -84,6 +84,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 	public function novaAction() {
 		$this->_helper->layout ()->disableLayout ();
 		$this->_helper->viewRenderer->setNoRender ();
+		
 		$nomeLocal = $this->getRequest ()->getPost ( 'local', null );
 		$data = $this->getRequest ()->getPost ( 'data', null );
 		$data = str_replace("/", "-", $data);
@@ -91,6 +92,8 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$nomeResponsavel = $this->getRequest ()->getPost ( 'nomeResponsavel', null );
 		$tipoEscala = $this->getRequest ()->getPost ( 'idTipoEscala' );
 		$escala = $this->getRequest ()->getPost ( 'escalados', null );
+		$selecaoBanda = $this->getRequest ()->getPost ( 'selecaoBanda', null );
+		
 		$local = LocalQuery::create ()->filterByNome ( $nomeLocal )->findOne ();
 		$date = new DateTime($data . " " . $hora.":00");
 		$existente = EscalaPessoaQuery::create()
@@ -113,18 +116,48 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$email->setAssunto("Nova escala criada!");
 		$email->setIdUsuario ( $this->userId );
 		$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
+		$horario = $data . " " . $hora;
+		if($selecaoBanda == "false"){
+			$this->emailIndividual($email);
+		} else {
+			$this->emailBanda($email);
+		}
+		$this->createEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala);
+		echo "Ok";
+	}
+	
+	private function emailIndividual($email){
 		$email->setCorpoMensagem("
-		<h2 style=\"text-align: center; \">
-			<em><strong>Nova escala criada!</strong></em>
-		</h2>
-		<p>
-			Uma nova escala foi criada e voc&ecirc; foi escalado!
-		</p>
-		<p>
-			Por favor, confirme ou recuse a presen&ccedil;a na ministra&ccedil;&atilde;o e nos ensaios assim que poss&iacute;vel. 
-			Para visualizar todas as suas escalas pendentes, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
-		</p>
-								");
+				<h2 style=\"text-align: center; \">
+				<em><strong>Nova escala criada!</strong></em>
+				</h2>
+				<p>
+				Uma nova escala foi criada e voc&ecirc; foi escalado!
+				</p>
+				<p>
+				Por favor, confirme ou recuse a presen&ccedil;a na ministra&ccedil;&atilde;o e nos ensaios assim que poss&iacute;vel.
+				Para visualizar todas as suas escalas pendentes, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
+				</p>
+				");
+	}
+	
+	private function emailBanda($email){
+		$email->setCorpoMensagem("
+				email por banda
+				<h2 style=\"text-align: center; \">
+				<em><strong>Nova escala criada!</strong></em>
+				</h2>
+				<p>
+				Uma nova escala foi criada e voc&ecirc; foi escalado!
+				</p>
+				<p>
+				Por favor, confirme ou recuse a presen&ccedil;a na ministra&ccedil;&atilde;o e nos ensaios assim que poss&iacute;vel.
+				Para visualizar todas as suas escalas pendentes, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
+				</p>
+				");
+	}
+	
+	private function createEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala){
 		foreach ( $escalados as $escalado ) {
 			try {
 				$reg = split ( ":", $escalado );
@@ -133,7 +166,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$escala->setIdLocal ( $local->getId () );
 				$escala->setIdUsuario ( $usuario->getId () );
 				$escala->setIdResponsavel ( $responsavel->getId () );
-				$escala->setData ( $data . " " . $hora );
+				$escala->setData ( $horario );
 				$escala->setIdStatusEscala ( 1 );
 				$escala->setIdTipoEscala($tipoEscala);
 				$escala->save ();
@@ -144,7 +177,8 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 						$escalaFuncao->setIdEscalaPessoa ( $escala->getId () );
 						$escalaFuncao->setIdFuncao ( $idFuncao );
 						$escalaFuncao->save ();
-					} catch ( Exception $ex ) { }
+					} catch ( Exception $ex ) {
+					}
 				}
 				$alertEmail = new EmailDetail();
 				$alertEmail->setEmailHeader($email);
@@ -155,7 +189,6 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				return;
 			}
 		}
-		echo "Ok";
 	}
 	
 	public function getdicaAction(){

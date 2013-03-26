@@ -3,6 +3,7 @@
 	var funcoesEnviar = [];
 	$(document).ready(function(){
 		var locais = [];
+		var bandaSelecionada = false;
 		$('#data').datepicker({ dateFormat: "dd/mm/yy" });
 		$.ajax({
 			url: '/ajax/getlocais',
@@ -93,7 +94,9 @@
 														url: '/criarescala/nova',
 														type: 'post',
 														dataType: 'html',
-														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val(), "idTipoEscala": $("#idTipoEscala").val() },
+														data: { 'escalados': json, 'local': $("#local").val(), 'data': $("#data").val(), 
+															'hora': $("#hora").val(), 'nomeResponsavel': $("#responsavel").val(), 
+															"idTipoEscala": $("#idTipoEscala").val(), "selecaoBanda": bandaSelecionada },
 														success: function(data) {
 															if($.trim(data) !== "Ok"){
 																$.ajax({
@@ -123,6 +126,8 @@
 																	}
 																});
 															}
+															$(".selecionarBanda").button("reset");
+															bandaSelecionada = false;
 														},
 														error: function(data){
 															var str = "";
@@ -208,11 +213,15 @@
 			$("#data").val("");
 			$("#hora").val("");
 			$("#responsavel").val("");
+			$(".selecionarBanda").button("reset");
+			bandaSelecionada = false;
 			return false;
 		});
 		
 		$(".selecionarBanda").click(function(){
 			if($("#banda").val() != ""){
+				var botao = $(this);
+				$(botao).button('loading');
 				$.ajax({
 					url: '/ajax/escalarbanda',
 					dataType: 'html',
@@ -229,9 +238,12 @@
 								return false;
 							});
 						});
+						$(botao).html('Selecionar banda');
+						bandaSelecionada = true;
 					},
 					error: function(data){
 						alert("error:"+data);
+						$(botao).button('reset');
 					}
 				});
 			}
@@ -370,7 +382,7 @@
 				}
 			?>
 		</select>
-		<button class="selecionarBanda btn btn-primary">Selecionar banda</button>
+		<button class="selecionarBanda btn btn-primary" data-loading-text="Carregando..." >Selecionar banda</button>
 		<span class="help-block">Caso queira escalar uma banda, ou usar seus
 			componentes com ponto de partida para uma escala, selecione a banda
 			aqui.</span>
