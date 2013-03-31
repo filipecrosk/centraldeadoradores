@@ -24,11 +24,11 @@ class EscalaController extends Internals_Controller_CloseAction {
 	}
 	
 	public function indexAction() {
-		//$userCredentials = new Zend_Session_Namespace('UserCredentials');
 		$escalasPendentes = EscalaPessoaQuery::create()->filterByIdUsuario($this->userId)
 			->filterByIdStatusEscala(1)
 			->filterByData(array("min"=>date("Y-m-d H:i:s")))
 			->count();
+		/*
 		if($this->nivelPermissao != 3){
 			if($escalasPendentes > 0){ 
 				$this->_redirect("escala/aconfirmar");
@@ -36,7 +36,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 				$this->_redirect("escala/confirmadas");
 			}
 		}
-		
+		*/
 		$dados = EscalaPessoaQuery::create()
 		->addAsColumn("pendente", '(select count(*) from escala_pessoa as pp1 where pp1.Id_Local = escala_pessoa.Id_Local and pp1.Data = escala_pessoa.Data and pp1.Id_Status_Escala = 1)')
 		->addAsColumn("confirmada", '(select count(*) from escala_pessoa as pp2 where pp2.Id_Local = escala_pessoa.Id_Local and pp2.Data = escala_pessoa.Data and pp2.Id_Status_Escala = 2)')
@@ -75,14 +75,14 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalConfirmaNovoLocal->setModalName ( "ConfirmaNovoLocal" );
 		$this->view->modal = array ();
 		$this->view->modal [] = $modalConfirmaNovoLocal;
-		
-		$this->view->grid->addFlagColumn("Status",$criterio);
-		$criterio = array(array("<img alt='delete' onclick='javascript:confirmDelete(this); return false;' src='/default/images/icone-delete.png' style=' width:20px; display: block; margin-left: auto;margin-right: auto;' >", false));
-		$this->view->grid->addFlagColumn("Excluir",$criterio);
-		$link = array("/escala/excluir?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
-				LocalPeer::OM_CLASS=>LocalPeer::ID));
-		$this->view->grid->addLink("Excluir", $link, null, false);
-		
+		if($this->nivelPermissao != 3){
+			$this->view->grid->addFlagColumn("Status",$criterio);
+			$criterio = array(array("<img alt='delete' onclick='javascript:confirmDelete(this); return false;' src='/default/images/icone-delete.png' style=' width:20px; display: block; margin-left: auto;margin-right: auto;' >", false));
+			$this->view->grid->addFlagColumn("Excluir",$criterio);
+			$link = array("/escala/excluir?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
+					LocalPeer::OM_CLASS=>LocalPeer::ID));
+			$this->view->grid->addLink("Excluir", $link, null, false);
+		}
 		$this->view->inlineScript ()->captureStart ();
 		echo
 		"
@@ -358,9 +358,10 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->select(array("Funcao.Nome", "EscalaPessoa.IdStatusEscala"))
 			->find()
 			->toArray();
-		
-		$this->view->botao = "<a class='btn btn-primary' href='/escala/novousuario?local=" . $idLocal . "
+		if($this->nivelPermissao == 3){
+			$this->view->botao = "<a class='btn btn-primary' href='/escala/novousuario?local=" . $idLocal . "
 								&data=" . $this->getRequest()->getParam("data") . "'><i class='icon-white icon-plus'></i>Adicionar usuário</a>";
+		}
 		
 		for ($i = 0; $i < count($dados); $i++) {
 			$usuario = UsuarioQuery::create()
@@ -373,15 +374,16 @@ class EscalaController extends Internals_Controller_CloseAction {
 		
 		$this->view->grid->addColumn("UsuarioNome", "Nome", UsuarioPeer::OM_CLASS, false);
 		$this->view->grid->addColumn(FuncaoPeer::NOME, "Função", FuncaoPeer::OM_CLASS);
-		$this->view->grid->addColumn("EscalaPessoaMotivoRecusa", "Motivo Recusa", EscalaPessoaPeer::OM_CLASS, false);
-		
-		$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(false => "UsuarioId"));
-		$this->view->grid->addLink("UsuarioNome", $link, null,false);
-		
-		$criterio = array(array("<img src='/default/images/icone-interrogacao.png' alt='Confirmação pendente' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "1"))
-						 ,array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "2"))
-						 ,array("<img src='/default/images/icone-negativo.png' alt='Não escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "3")));
-		$this->view->grid->addFlagColumn("Escala confirmada",$criterio);
+		if($this->nivelPermissao != 3){
+			$this->view->grid->addColumn("EscalaPessoaMotivoRecusa", "Motivo Recusa", EscalaPessoaPeer::OM_CLASS, false);
+			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(false => "UsuarioId"));
+			$this->view->grid->addLink("UsuarioNome", $link, null,false);
+			
+			$criterio = array(array("<img src='/default/images/icone-interrogacao.png' alt='Confirmação pendente' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "1"))
+							 ,array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "2"))
+							 ,array("<img src='/default/images/icone-negativo.png' alt='Não escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "3")));
+			$this->view->grid->addFlagColumn("Escala confirmada",$criterio);
+		}
 	}
 	
 	public function novousuarioAction(){
