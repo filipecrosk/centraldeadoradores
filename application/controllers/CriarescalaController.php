@@ -24,20 +24,6 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$modalCreateLocal->putCancelButton ();
 		$modalCreateLocal->setModalName ( "NovoLocal" );
 		$body = new Application_Form_Locais();
-			/*'<form class="form-horizontal">
-				    <div class="control-group">
-				      <label class="control-label" for="nomeLocal">Nome: </label>
-				      <div class="controls">
-				        <input type="text" class="input-xlarge" id="nomeLocal">
-				      </div>
-				    </div>
-				    <div class="control-group">
-				    	<label class="control-label" for="enderecoLocal">Endereço: </label>
-				    	<div class="controls">
-				        	<input type="text" class="input-xlarge" id="enderecoLocal">
-				      </div>
-				  	</div>
-				</form>';*/
 		$modalCreateLocal->setBody ( $body );
 		$modalConfirmaNovoLocal = new Internals_Modal ( "O local digitado não está cadastrado. Deseja cadastrar este local?", "Novo local" );
 		$modalConfirmaNovoLocal->putYesButton ();
@@ -119,10 +105,12 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 		$horario = $data . " " . $hora;
 		if($selecaoBanda == "false"){
 			$this->emailIndividual($email);
+			$this->createEscalaAndEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala, false);
 		} else {
 			$this->emailBanda($email);
+			$this->createEscalaAndEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala, true);
 		}
-		$this->createEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala);
+		
 		echo "Ok";
 	}
 	
@@ -157,7 +145,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				");
 	}
 	
-	private function createEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala){
+	private function createEscalaAndEmailDetail($email, $escalados, $local, $responsavel, $horario, $tipoEscala, $isBanda){
 		foreach ( $escalados as $escalado ) {
 			try {
 				$reg = split ( ":", $escalado );
@@ -169,6 +157,9 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$escala->setData ( $horario );
 				$escala->setIdStatusEscala ( 1 );
 				$escala->setIdTipoEscala($tipoEscala);
+				if($isBanda){
+					$escala->setIdStatusEscala(2);
+				}
 				$escala->save ();
 				$funcoes = split ( '-', $reg [1] );
 				foreach ( $funcoes as $idFuncao ) {

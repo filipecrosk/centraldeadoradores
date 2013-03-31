@@ -15,8 +15,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/js/jquery-mask.js', 'text/javascript' );
 		
 		Internals_SubMenu::AddItem("Minhas escalas", null);
+		Internals_SubMenu::AddItem("Escalas", "escala/index");
 		if($this->nivelPermissao == 3){
-			Internals_SubMenu::AddItem("Gerenciamento de Escalas", "escala/index");
 			Internals_SubMenu::AddItem("Resumo", "escala/resumo");
 		}
 		Internals_SubMenu::AddItem("Minhas escalas confirmadas", "escala/confirmadas");
@@ -75,7 +75,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalConfirmaNovoLocal->setModalName ( "ConfirmaNovoLocal" );
 		$this->view->modal = array ();
 		$this->view->modal [] = $modalConfirmaNovoLocal;
-		if($this->nivelPermissao != 3){
+		if($this->nivelPermissao == 3){
 			$this->view->grid->addFlagColumn("Status",$criterio);
 			$criterio = array(array("<img alt='delete' onclick='javascript:confirmDelete(this); return false;' src='/default/images/icone-delete.png' style=' width:20px; display: block; margin-left: auto;margin-right: auto;' >", false));
 			$this->view->grid->addFlagColumn("Excluir",$criterio);
@@ -271,7 +271,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalMotivo->setModalName("Motivo");
 		
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
-				<h1>Criar mensagem definitiva.</h1>", "Falha recusa");
+												Por favor, entre em contato com a liderança para solucionar o seu problema.<br>
+												<a href='bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
 		$modalFalhaRecusa->putOkButton();
 		$modalFalhaRecusa->setModalName("FalhaRecusa");
 
@@ -374,7 +375,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		
 		$this->view->grid->addColumn("UsuarioNome", "Nome", UsuarioPeer::OM_CLASS, false);
 		$this->view->grid->addColumn(FuncaoPeer::NOME, "Função", FuncaoPeer::OM_CLASS);
-		if($this->nivelPermissao != 3){
+		if($this->nivelPermissao == 3){
 			$this->view->grid->addColumn("EscalaPessoaMotivoRecusa", "Motivo Recusa", EscalaPessoaPeer::OM_CLASS, false);
 			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(false => "UsuarioId"));
 			$this->view->grid->addLink("UsuarioNome", $link, null,false);
