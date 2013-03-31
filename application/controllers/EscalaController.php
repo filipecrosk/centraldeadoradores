@@ -154,7 +154,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalRecusar->setModalName("Cancelar");
 		
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
-													Por favor entre em contato com os líderes.<br>bet.ol@terra.com.br ou junior.giovanini@gmail.com", "Falha recusa");
+												Por favor, entre em contato com a liderança para solucionar o seu problema.<br>
+												<a href='mailto:bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
 		$modalFalhaRecusa->putOkButton();
 		$modalFalhaRecusa->setModalName("FalhaRecusa");
 		
@@ -272,7 +273,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
 												Por favor, entre em contato com a liderança para solucionar o seu problema.<br>
-												<a href='bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
+												<a href='mailto:bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
 		$modalFalhaRecusa->putOkButton();
 		$modalFalhaRecusa->setModalName("FalhaRecusa");
 
@@ -359,6 +360,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->select(array("Funcao.Nome", "EscalaPessoa.IdStatusEscala"))
 			->find()
 			->toArray();
+		
 		if($this->nivelPermissao == 3){
 			$this->view->botao = "<a class='btn btn-primary' href='/escala/novousuario?local=" . $idLocal . "
 								&data=" . $this->getRequest()->getParam("data") . "'><i class='icon-white icon-plus'></i>Adicionar usuário</a>";

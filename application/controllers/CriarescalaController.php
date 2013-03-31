@@ -131,16 +131,14 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 	
 	private function emailBanda($email){
 		$email->setCorpoMensagem("
-				email por banda
 				<h2 style=\"text-align: center; \">
-				<em><strong>Nova escala criada!</strong></em>
+				<em><strong>A sua banda foi escalada!</strong></em>
 				</h2>
 				<p>
-				Uma nova escala foi criada e voc&ecirc; foi escalado!
+				Uma nova escala foi criada e a sua banda está escalada!
 				</p>
 				<p>
-				Por favor, confirme ou recuse a presen&ccedil;a na ministra&ccedil;&atilde;o e nos ensaios assim que poss&iacute;vel.
-				Para visualizar todas as suas escalas pendentes, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
+				Para visualizar todas as informa&ccedil;&otilde;es da usa escala, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
 				</p>
 				");
 	}
@@ -157,7 +155,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$escala->setData ( $horario );
 				$escala->setIdStatusEscala ( 1 );
 				$escala->setIdTipoEscala($tipoEscala);
-				if($isBanda){
+				if($isBanda && $responsavel->getId() != $usuario->getId()){
 					$escala->setIdStatusEscala(2);
 				}
 				$escala->save ();
