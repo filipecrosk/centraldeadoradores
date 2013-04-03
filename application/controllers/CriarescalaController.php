@@ -155,8 +155,8 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				$escala->setData ( $horario );
 				$escala->setIdStatusEscala ( 1 );
 				$escala->setIdTipoEscala($tipoEscala);
-				if($isBanda && $responsavel->getId() != $usuario->getId()){
-					$escala->setIdStatusEscala(2);
+				if($isBanda){
+					$escala->setIsEscalaBanda(1);
 				}
 				$escala->save ();
 				$funcoes = split ( '-', $reg [1] );

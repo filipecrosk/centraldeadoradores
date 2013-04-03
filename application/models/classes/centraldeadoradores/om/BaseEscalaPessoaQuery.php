@@ -14,6 +14,7 @@
  * @method EscalaPessoaQuery orderByIdResponsavel($order = Criteria::ASC) Order by the Id_Responsavel column
  * @method EscalaPessoaQuery orderByMotivoRecusa($order = Criteria::ASC) Order by the Motivo_Recusa column
  * @method EscalaPessoaQuery orderByIdTipoEscala($order = Criteria::ASC) Order by the Id_Tipo_Escala column
+ * @method EscalaPessoaQuery orderByIsEscalaBanda($order = Criteria::ASC) Order by the Is_Escala_Banda column
  *
  * @method EscalaPessoaQuery groupById() Group by the Id column
  * @method EscalaPessoaQuery groupByIdUsuario() Group by the Id_Usuario column
@@ -23,14 +24,11 @@
  * @method EscalaPessoaQuery groupByIdResponsavel() Group by the Id_Responsavel column
  * @method EscalaPessoaQuery groupByMotivoRecusa() Group by the Motivo_Recusa column
  * @method EscalaPessoaQuery groupByIdTipoEscala() Group by the Id_Tipo_Escala column
+ * @method EscalaPessoaQuery groupByIsEscalaBanda() Group by the Is_Escala_Banda column
  *
  * @method EscalaPessoaQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method EscalaPessoaQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
  * @method EscalaPessoaQuery innerJoin($relation) Adds a INNER JOIN clause to the query
- *
- * @method EscalaPessoaQuery leftJoinTipoEscala($relationAlias = null) Adds a LEFT JOIN clause to the query using the TipoEscala relation
- * @method EscalaPessoaQuery rightJoinTipoEscala($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TipoEscala relation
- * @method EscalaPessoaQuery innerJoinTipoEscala($relationAlias = null) Adds a INNER JOIN clause to the query using the TipoEscala relation
  *
  * @method EscalaPessoaQuery leftJoinLocal($relationAlias = null) Adds a LEFT JOIN clause to the query using the Local relation
  * @method EscalaPessoaQuery rightJoinLocal($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Local relation
@@ -48,6 +46,10 @@
  * @method EscalaPessoaQuery rightJoinUsuarioRelatedByIdUsuario($relationAlias = null) Adds a RIGHT JOIN clause to the query using the UsuarioRelatedByIdUsuario relation
  * @method EscalaPessoaQuery innerJoinUsuarioRelatedByIdUsuario($relationAlias = null) Adds a INNER JOIN clause to the query using the UsuarioRelatedByIdUsuario relation
  *
+ * @method EscalaPessoaQuery leftJoinTipoEscala($relationAlias = null) Adds a LEFT JOIN clause to the query using the TipoEscala relation
+ * @method EscalaPessoaQuery rightJoinTipoEscala($relationAlias = null) Adds a RIGHT JOIN clause to the query using the TipoEscala relation
+ * @method EscalaPessoaQuery innerJoinTipoEscala($relationAlias = null) Adds a INNER JOIN clause to the query using the TipoEscala relation
+ *
  * @method EscalaPessoaQuery leftJoinEscalaPessoaFuncao($relationAlias = null) Adds a LEFT JOIN clause to the query using the EscalaPessoaFuncao relation
  * @method EscalaPessoaQuery rightJoinEscalaPessoaFuncao($relationAlias = null) Adds a RIGHT JOIN clause to the query using the EscalaPessoaFuncao relation
  * @method EscalaPessoaQuery innerJoinEscalaPessoaFuncao($relationAlias = null) Adds a INNER JOIN clause to the query using the EscalaPessoaFuncao relation
@@ -63,6 +65,7 @@
  * @method EscalaPessoa findOneByIdResponsavel(int $Id_Responsavel) Return the first EscalaPessoa filtered by the Id_Responsavel column
  * @method EscalaPessoa findOneByMotivoRecusa(string $Motivo_Recusa) Return the first EscalaPessoa filtered by the Motivo_Recusa column
  * @method EscalaPessoa findOneByIdTipoEscala(int $Id_Tipo_Escala) Return the first EscalaPessoa filtered by the Id_Tipo_Escala column
+ * @method EscalaPessoa findOneByIsEscalaBanda(int $Is_Escala_Banda) Return the first EscalaPessoa filtered by the Is_Escala_Banda column
  *
  * @method array findById(int $Id) Return EscalaPessoa objects filtered by the Id column
  * @method array findByIdUsuario(int $Id_Usuario) Return EscalaPessoa objects filtered by the Id_Usuario column
@@ -72,6 +75,7 @@
  * @method array findByIdResponsavel(int $Id_Responsavel) Return EscalaPessoa objects filtered by the Id_Responsavel column
  * @method array findByMotivoRecusa(string $Motivo_Recusa) Return EscalaPessoa objects filtered by the Motivo_Recusa column
  * @method array findByIdTipoEscala(int $Id_Tipo_Escala) Return EscalaPessoa objects filtered by the Id_Tipo_Escala column
+ * @method array findByIsEscalaBanda(int $Is_Escala_Banda) Return EscalaPessoa objects filtered by the Is_Escala_Banda column
  *
  * @package    propel.generator.centraldeadoradores.om
  */
@@ -161,7 +165,7 @@ abstract class BaseEscalaPessoaQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT `ID`, `ID_USUARIO`, `ID_LOCAL`, `DATA`, `ID_STATUS_ESCALA`, `ID_RESPONSAVEL`, `MOTIVO_RECUSA`, `ID_TIPO_ESCALA` FROM `escala_pessoa` WHERE `ID` = :p0';
+        $sql = 'SELECT `ID`, `ID_USUARIO`, `ID_LOCAL`, `DATA`, `ID_STATUS_ESCALA`, `ID_RESPONSAVEL`, `MOTIVO_RECUSA`, `ID_TIPO_ESCALA`, `IS_ESCALA_BANDA` FROM `escala_pessoa` WHERE `ID` = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -565,79 +569,44 @@ abstract class BaseEscalaPessoaQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related TipoEscala object
+     * Filter the query on the Is_Escala_Banda column
      *
-     * @param   TipoEscala|PropelObjectCollection $tipoEscala The related object(s) to use as filter
+     * Example usage:
+     * <code>
+     * $query->filterByIsEscalaBanda(1234); // WHERE Is_Escala_Banda = 1234
+     * $query->filterByIsEscalaBanda(array(12, 34)); // WHERE Is_Escala_Banda IN (12, 34)
+     * $query->filterByIsEscalaBanda(array('min' => 12)); // WHERE Is_Escala_Banda > 12
+     * </code>
+     *
+     * @param     mixed $isEscalaBanda The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return   EscalaPessoaQuery The current query, for fluid interface
-     * @throws   PropelException - if the provided filter is invalid.
-     */
-    public function filterByTipoEscala($tipoEscala, $comparison = null)
-    {
-        if ($tipoEscala instanceof TipoEscala) {
-            return $this
-                ->addUsingAlias(EscalaPessoaPeer::ID_TIPO_ESCALA, $tipoEscala->getId(), $comparison);
-        } elseif ($tipoEscala instanceof PropelObjectCollection) {
-            if (null === $comparison) {
-                $comparison = Criteria::IN;
-            }
-
-            return $this
-                ->addUsingAlias(EscalaPessoaPeer::ID_TIPO_ESCALA, $tipoEscala->toKeyValue('PrimaryKey', 'Id'), $comparison);
-        } else {
-            throw new PropelException('filterByTipoEscala() only accepts arguments of type TipoEscala or PropelCollection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the TipoEscala relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return EscalaPessoaQuery The current query, for fluid interface
      */
-    public function joinTipoEscala($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function filterByIsEscalaBanda($isEscalaBanda = null, $comparison = null)
     {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('TipoEscala');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
+        if (is_array($isEscalaBanda)) {
+            $useMinMax = false;
+            if (isset($isEscalaBanda['min'])) {
+                $this->addUsingAlias(EscalaPessoaPeer::IS_ESCALA_BANDA, $isEscalaBanda['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($isEscalaBanda['max'])) {
+                $this->addUsingAlias(EscalaPessoaPeer::IS_ESCALA_BANDA, $isEscalaBanda['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
         }
 
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'TipoEscala');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the TipoEscala relation TipoEscala object
-     *
-     * @see       useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return   TipoEscalaQuery A secondary query class using the current class as primary query
-     */
-    public function useTipoEscalaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinTipoEscala($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'TipoEscala', 'TipoEscalaQuery');
+        return $this->addUsingAlias(EscalaPessoaPeer::IS_ESCALA_BANDA, $isEscalaBanda, $comparison);
     }
 
     /**
@@ -942,6 +911,82 @@ abstract class BaseEscalaPessoaQuery extends ModelCriteria
         return $this
             ->joinUsuarioRelatedByIdUsuario($relationAlias, $joinType)
             ->useQuery($relationAlias ? $relationAlias : 'UsuarioRelatedByIdUsuario', 'UsuarioQuery');
+    }
+
+    /**
+     * Filter the query by a related TipoEscala object
+     *
+     * @param   TipoEscala|PropelObjectCollection $tipoEscala The related object(s) to use as filter
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return   EscalaPessoaQuery The current query, for fluid interface
+     * @throws   PropelException - if the provided filter is invalid.
+     */
+    public function filterByTipoEscala($tipoEscala, $comparison = null)
+    {
+        if ($tipoEscala instanceof TipoEscala) {
+            return $this
+                ->addUsingAlias(EscalaPessoaPeer::ID_TIPO_ESCALA, $tipoEscala->getId(), $comparison);
+        } elseif ($tipoEscala instanceof PropelObjectCollection) {
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+
+            return $this
+                ->addUsingAlias(EscalaPessoaPeer::ID_TIPO_ESCALA, $tipoEscala->toKeyValue('PrimaryKey', 'Id'), $comparison);
+        } else {
+            throw new PropelException('filterByTipoEscala() only accepts arguments of type TipoEscala or PropelCollection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the TipoEscala relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return EscalaPessoaQuery The current query, for fluid interface
+     */
+    public function joinTipoEscala($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('TipoEscala');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'TipoEscala');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the TipoEscala relation TipoEscala object
+     *
+     * @see       useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   TipoEscalaQuery A secondary query class using the current class as primary query
+     */
+    public function useTipoEscalaQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    {
+        return $this
+            ->joinTipoEscala($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'TipoEscala', 'TipoEscalaQuery');
     }
 
     /**

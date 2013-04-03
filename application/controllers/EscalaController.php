@@ -139,7 +139,8 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 		
-		$criterio = array(array("<img alt='recusar' src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", false));
+		$criterio = 
+		array(array("<img alt='recusar' src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Cancelar",$criterio);
 		$link = array("/escala/recusar?idEscala=[1]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::ID));
 		$this->view->grid->addLink("Cancelar", $link, null, false);
@@ -213,10 +214,12 @@ class EscalaController extends Internals_Controller_CloseAction {
 	
 	public function aconfirmarAction(){
 		$dados = EscalaPessoaQuery::create()
-			->joinLocal()
 			->filterByIdUsuario($this->userId)
 			->filterByData(array('min'=>date("Y-m-d H:i:s")))
 			->filterByIdStatusEscala(1)
+			->condition('cond1', 'escala_pessoa.IS_ESCALA_BANDA = 0') // create a condition named 'cond1'
+			->condition('cond2', 'escala_pessoa.ID_RESPONSAVEL= '.$this->userId)       // create a condition named 'cond2'
+			->where(array('cond1', 'cond2'), 'or')
 			->find();
 		$arrDados = array();
 		foreach ($dados as $dado){
@@ -459,6 +462,18 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$escala = EscalaPessoaQuery::create()->findPk($idEscala);
 		$escala->setIdStatusEscala(2);
 		$escala->save();
+		if($escala->getIsEscalaBanda() == 1){
+			$bandaEscalada = EscalaPessoaQuery::create()
+				->filterByIdResponsavel($escala->getIdResponsavel())
+				->filterByIdLocal($escala->getIdLocal())
+				->filterByData($escala->getData('Y-m-d H:i:s'))
+				->filterByIdStatusEscala(1)
+				->find();
+			foreach ($bandaEscalada as $membro) {
+				$membro->setIdStatusEscala(2);
+				$membro->save();
+			}
+		}
 		Internals_Message::success("Escala confirmada com sucesso!");
 		$this->_redirect("escala/aconfirmar");
 	}
@@ -469,61 +484,78 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$idEscala = $this->getRequest()->getParam('idEscala', null);
 		$motivo = $this->getRequest()->getParam('motivo', null);
 		$escala = EscalaPessoaQuery::create()->findPk($idEscala);
-		$usuario = $escala->getUsuarioRelatedByIdUsuario();
-		$local = $escala->getLocal();
-		
-		$email = new EmailHeader();
-		$email->setAssunto("Cancelamento de Escala");
-		$email->setIdUsuario ( $usuario->getId() );
-		$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
-		$email->setCorpoMensagem("
-		<h2 style=\"text-align: center; \">
-			<em><strong>Escala cancelada!</strong></em>
-		</h2>
-		<p>
-			O usu&acute;rio " . $usuario->getNome() . " cancelou a escala para o dia " . str_replace("à", "&agrave;", $escala->getData('d/m/Y à\s H:i')) . " 		
-			no local " . $local->getNome() . ".
-		</p>
-		<p>
-			Confira a escala <a href=\"http://v2.centraldeadoradores.com.br/escala/detalhes?data=" . str_replace(" ", "%20", $escala->getData('Y-m-d H:i:s')) . "&idLocal=" . $local->getId() . "\">clicando aqui.</a>
-		</p>
-		");
-		$respDest = false;
-		$destinatarios = UsuarioQuery::create()
-			->filterByNivelpermissao(3)
-			->find();
-		foreach ( $destinatarios as $destinatario ) {
-			try {
-				if($destinatario->getId() == $escala->getIdResponsavel())
-					$respDest = true;
-				$alertEmail = new EmailDetail();
-				$alertEmail->setEmailHeader($email);
-				$alertEmail->setUsuario($destinatario);
-				$alertEmail->save();
-			} catch ( Exception $ex ) {
-				echo "Ocorreu um erro. ".$ex;
-				return;
+		if($escala->getIsEscalaBanda() == 0 || $escala->getIdResponsavel() == $this->userId){
+			$usuario = $escala->getUsuarioRelatedByIdUsuario();
+			$local = $escala->getLocal();
+			
+			$email = new EmailHeader();
+			$email->setAssunto("Cancelamento de Escala");
+			$email->setIdUsuario ( $usuario->getId() );
+			$email->setDataCadastro ( date ( 'Y-m-d H:i:s' ) );
+			$email->setCorpoMensagem("
+			<h2 style=\"text-align: center; \">
+				<em><strong>Escala cancelada!</strong></em>
+			</h2>
+			<p>
+				O usu&acute;rio " . $usuario->getNome() . " cancelou a escala para o dia " . str_replace("à", "&agrave;", $escala->getData('d/m/Y à\s H:i')) . " 		
+				no local " . $local->getNome() . ".
+			</p>
+			<p>
+				Confira a escala <a href=\"http://v2.centraldeadoradores.com.br/escala/detalhes?data=" . str_replace(" ", "%20", $escala->getData('Y-m-d H:i:s')) . "&idLocal=" . $local->getId() . "\">clicando aqui.</a>
+			</p>
+			");
+			$respDest = false;
+			$destinatarios = UsuarioQuery::create()
+				->filterByNivelpermissao(3)
+				->find();
+			foreach ( $destinatarios as $destinatario ) {
+				try {
+					if($destinatario->getId() == $escala->getIdResponsavel())
+						$respDest = true;
+					$alertEmail = new EmailDetail();
+					$alertEmail->setEmailHeader($email);
+					$alertEmail->setUsuario($destinatario);
+					$alertEmail->save();
+				} catch ( Exception $ex ) {
+					echo "Ocorreu um erro. ".$ex;
+					return;
+				}
 			}
-		}
-		if(!$respDest){
-			try {
-				$destinatario = UsuarioQuery::create()
-					->findPk($escala->getIdResponsavel());
-				$alertEmail = new EmailDetail();
-				$alertEmail->setEmailHeader($email);
-				$alertEmail->setUsuario($destinatario);
-				$alertEmail->save();
-			} catch ( Exception $ex ) {
-				echo "Ocorreu um erro. ".$ex;
-				return;
+			if(!$respDest){
+				try {
+					$destinatario = UsuarioQuery::create()
+						->findPk($escala->getIdResponsavel());
+					$alertEmail = new EmailDetail();
+					$alertEmail->setEmailHeader($email);
+					$alertEmail->setUsuario($destinatario);
+					$alertEmail->save();
+				} catch ( Exception $ex ) {
+					echo "Ocorreu um erro. ".$ex;
+					return;
+				}
 			}
+			if($escala->getIsEscalaBanda() == 1){
+				$bandaEscalada = EscalaPessoaQuery::create()
+				->filterByIdResponsavel($escala->getIdResponsavel())
+				->filterByIdLocal($escala->getIdLocal())
+				->filterByData($escala->getData('Y-m-d H:i:s'))
+				->find();
+				foreach ($bandaEscalada as $membro) {
+					$membro->setIdStatusEscala(3);
+					$membro->setMotivoRecusa($motivo);
+					$membro->save();
+				}
+			} else {
+				$escala->setIdStatusEscala(3);
+				$escala->setMotivoRecusa($motivo);
+				$escala->save();
+			}
+			Internals_Message::success("Escala recusada com sucesso!");
+			$this->_redirect("escala");
+		} else {
+			Internals_Message::error("Esta escala foi feita pra toda a banda! Para cancelar, entre em contato com seu líder de banda.");
+			$this->_redirect("escala");
 		}
-		$escala->setIdStatusEscala(3);
-		$escala->setMotivoRecusa($motivo);
-		$escala->save();
-		Internals_Message::success("Escala recusada com sucesso!");
-		$this->_redirect("escala");
-		
 	}
 	public function excluirAction(){
 		$this->_helper->layout()->setLayout("blank");
