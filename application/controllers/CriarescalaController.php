@@ -135,7 +135,7 @@ class CriarescalaController extends Internals_Controller_CloseAction {
 				<em><strong>A sua banda foi escalada!</strong></em>
 				</h2>
 				<p>
-				Uma nova escala foi criada e a sua banda está escalada!
+				Uma nova escala foi criada e a sua banda est&acute; escalada!
 				</p>
 				<p>
 				Para visualizar todas as informa&ccedil;&otilde;es da usa escala, <a href=\"http://v2.centraldeadoradores.com.br\">clique aqui.</a>
