@@ -48,6 +48,10 @@ class EscalaController extends Internals_Controller_CloseAction {
 		->groupByData()
 		->filterByData(array('min'=>date("Y-m-d H:i:s")))
 		->withColumn("usuario.Nome")
+		->condition('cond1', 'escala_pessoa.IS_ESCALA_BANDA = 1')
+		->condition('cond2', 'escala_pessoa.ID_USUARIO= '.$this->userId)
+		->condition('cond3', 'true='.($this->nivelPermissao=="3"?"true":"false"))
+		->where(array('cond1', 'cond2', 'cond3'), 'or')
 		->select(Array('Id','Local.Nome', 'Data', 'Local.Id', 'TipoEscala.Nome'))
 		->find()
 		->toArray();
