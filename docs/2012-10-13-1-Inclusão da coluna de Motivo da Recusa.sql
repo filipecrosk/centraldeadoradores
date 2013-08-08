@@ -1,0 +1,1 @@
+ALTER TABLE escala_pessoa ADD Motivo_Recusa LONGTEXT;
