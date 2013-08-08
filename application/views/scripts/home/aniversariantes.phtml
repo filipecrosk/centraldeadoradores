@@ -1,0 +1,47 @@
+<h1>Lista de aniversariantes de <?=$this->data;?></h1>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#checkFilterMes").val(getURLParameter("filterMes"));
+    $("#filterMes").click(function(){
+      var mes = $("#checkFilterMes").val();
+      if(mes != ""){
+        window.location.replace("/home/aniversariantes?filterMes=" + mes);
+      } else {
+        window.location.replace("/home/aniversariantes");
+      }
+      return false;
+    });
+  });
+  function getURLParameter(name) {
+      return decodeURI(
+          (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+      );
+  }
+</script>
+<div class="row">
+  <div class="span7" style="text-align:right;">
+    <div id="mini">
+    Mês: <select id="checkFilterMes">
+                  <option value="" selected="selected">Atual</option>
+                  <option value="01">Janeiro</option>
+                  <option value="02">Fevereiro</option>
+                  <option value="03">Março</option>
+                  <option value="04">Abril</option>
+                  <option value="05">Maio</option>
+                  <option value="06">Junho</option>
+                  <option value="07">Julho</option>
+                  <option value="08">Agosto</option>
+                  <option value="09">Setembro</option>
+                  <option value="10">Outubro</option>
+                  <option value="11">Novembro</option>
+                  <option value="12">Dezembro</option>
+                </select>
+    </div>
+  </div>
+  <div class="span2" style="text-align:left;">
+    <button id="filterMes" class="btn btn-primary">Filtrar</button>
+  </div>
+</div>
+<?php
+  $this->grid->renderGrid();
+?>

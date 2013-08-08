@@ -26,7 +26,7 @@ class UsuariosController extends Internals_Controller_CrudCloseAction {
 					->filterById(null, Criteria::ISNULL)
 				  ->endUse();
 		}
-		if($filterFuncao != null){
+		if($filterFuncao != null && $filterFuncao != -1){
 			$query->useUsuarioFuncaoQuery()->filterByIdFuncao($filterFuncao)->endUse();
 		}
 		$usuariosData = $query->select(array('Id', 'Nome', 'Email', 'Apelido'))

@@ -1,7 +1,7 @@
 <?php
 
 class LoginController extends Zend_Controller_Action {
-	
+
 	public function init(){
 		parent::init();
 		if(Internals_Auth::Check()){
@@ -9,16 +9,16 @@ class LoginController extends Zend_Controller_Action {
 		}
 		$this->_helper->layout()->setLayout("1column");
 	}
-	
+
 	public function indexAction() {
 		$this->_helper->layout()->setLayout("1column");
 	}
-	
+
 	public function autenticarAction(){
 		 $this->_helper->viewRenderer->setNoRender(true);
 
 		 if(Internals_Auth::Autenticar($this->getRequest()->getPost('Usuario', null), $this->getRequest()->getPost('Senha', null))){
-		 	$this->_redirect("/");
+		 	$this->_redirect("/home");
 		 }
 		 else{
 		 	Internals_Message::error("Erro de login");
@@ -26,7 +26,7 @@ class LoginController extends Zend_Controller_Action {
 		 }
 
 	}
-	
+
 	public function lembrarsenhaAction(){
 		if($this->getRequest()->isPost()){
 			$email = $this->getRequest()->getPost('email', null);
@@ -42,12 +42,12 @@ class LoginController extends Zend_Controller_Action {
 					$alteracao->setData(date("Y-m-d H:i:s"));
 					$alteracao->setIdTipoInformacaoId(4);
 					$alteracao->save();
-					
+
 					$envioEmail = new Internals_NovoUsuarioMail($usuario->getNome(), $usuario->getEmail(), $senha);
-					
+
 					$envioEmail->lembrarSenhaMessage($alteracao->getToken()->getChave());
 					$envioEmail->enviar();
-					
+
 					Internals_Message::info("Um e-mail foi enviado para você com a nova senha.");
 					$this->_redirect("/login");
 				} else {
@@ -58,7 +58,7 @@ class LoginController extends Zend_Controller_Action {
 			}
 		}
 	}
-	
+
 	public function confirmaralteracaoAction(){
 		$this->_helper->layout()->disableLayout();
 		$this->_helper->viewRenderer->setNoRender();
@@ -76,12 +76,12 @@ class LoginController extends Zend_Controller_Action {
 			$usuario->save();
 			$token->setUtilizada(1);
 			$token->save();
-			Internals_Message::info("Senha alterada com sucesso. 
+			Internals_Message::info("Senha alterada com sucesso.
 					A partir de agora você deverá usar a nova senha para fazer o login.");
 			$this->_redirect("/login");
 		} else {
 			$baseUrl = Zend_Controller_Front::getInstance ()->getRequest ()->getBaseUrl ();
-			Internals_Message::error("O token utilizado não tem mais valor. Caso necessite, 
+			Internals_Message::error("O token utilizado não tem mais valor. Caso necessite,
 					<a href='".$baseUrl."/login/lembrarsenha'>clique aqui</a> e peça uma nova senha.");
 			$this->_redirect("/login");
 		}

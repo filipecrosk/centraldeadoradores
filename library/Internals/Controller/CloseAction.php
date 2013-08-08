@@ -1,4 +1,4 @@
- <?php
+<?php
 
 class Internals_Controller_CloseAction extends Zend_Controller_Action {
 	
@@ -13,7 +13,7 @@ class Internals_Controller_CloseAction extends Zend_Controller_Action {
 			$this->_redirect("login");
 		} else {
 			$userCredentials = new Zend_Session_Namespace('UserCredentials');
-			$this->userId = $userCredentials->id;
+			$this->userId = $userCredentials->id;	
 			$this->userName = $userCredentials->nome;
 			$this->nivelPermissao = $userCredentials->nivelPermissao;
 			if(Zend_Controller_Front::getInstance()->getRequest()->getControllerName() != "dados"){

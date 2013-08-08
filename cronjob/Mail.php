@@ -35,7 +35,7 @@ class Cronjob_Mail {
 	private function getAllEmails() {
 		$emailsEnviar = $this->pdo->query ( "
 											SELECT  Enviar.*,
-											        usuario.Nome as Remetente
+											        usuario.Nome as Remetente, usuario.Email as ReplyTo
 											FROM
 											(
 											    SELECT  email_detail.Id_Email_Enviado,
@@ -60,7 +60,7 @@ class Cronjob_Mail {
 					break;
 				}
 				$anexos = $this->getAttachments($enviar ['IdHeader']);
-				$this->sendMail ( $enviar ['Email'], $enviar ['Nome'], $enviar ['Assunto'], $enviar ['Corpo_Mensagem'], $anexos,$enviar ['Remetente'] );
+				$this->sendMail ( $enviar ['Email'], $enviar ['Nome'], $enviar ['Assunto'], $enviar ['Corpo_Mensagem'], $anexos,$enviar ['Remetente'], $enviar ['ReplyTo'] );
 				$this->updateEmailEnviado ( $enviar ["Id_Email_Enviado"] );
 				//$this->reset($enviar["Id_Email_Enviado"]);
 				$this->contaEmail [0] ["Emails_Enviados"] ++;
@@ -74,7 +74,7 @@ class Cronjob_Mail {
 		echo "Enviados".$this->contaEmail [0] ["Emails_Enviados"];
 	}
 	
-	private function sendMail($to, $nome, $assunto, $corpo, $anexos, $remetente) {
+	private function sendMail($to, $nome, $assunto, $corpo, $anexos, $remetente, $replyto) {
 		$settings = array ('ssl' => 'ssl', 'port' => 465, 'auth' => 'login', 'username' => $this->contaEmail [0] ["UserName"], 'password' => $this->contaEmail [0] ["Password"] );
 		$transport = new Zend_Mail_Transport_Smtp ( 'smtp.gmail.com', $settings );
 		$email_from = "centraldeadoradores@centraldeadoradores.com.br";
@@ -82,7 +82,7 @@ class Cronjob_Mail {
 		$email_to = $to;
 		$name_to = Internals_Util::removeSpecial ( $nome );
 		$mail = new Zend_Mail ();
-		$mail->setReplyTo ( $email_from, $name_from );
+		$mail->setReplyTo ( $replyto, $remetente );
 		$mail->setFrom ( $email_from, $name_from );
 		$mail->addTo ( $email_to, $name_to );
 		$mail->setSubject ( Internals_Util::removeSpecial ( $assunto ) );
