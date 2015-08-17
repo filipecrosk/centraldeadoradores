@@ -15,12 +15,27 @@ class HomeController extends Internals_Controller_CloseAction
 	public function indexAction()
 	{
 		$dados = null;
-		$dados = EmailHeaderQuery::create()->filterByIdUsuario($this->userId)->find()->toArray();
+		$dados = EmailDetailQuery::create()
+							->filterByIdDestinatario($this->userId)
+							->orderByDataCadastro()
+							->find()
+							->toArray();
 
-		$this->view->grid = new Internals_View_Helper_Grid(EmailHeaderPeer::OM_CLASS, $this->view, $dados);
-		$this->view->grid->addColumn(EmailHeaderPeer::ASSUNTO, "Assunto");
-		$this->view->grid->addColumn(EmailHeaderPeer::DATA_CADASTRO, "Data");
-		$link = array("/home/email?id=[1]"=>array(EmailHeaderPeer::OM_CLASS=>EmailHeaderPeer::ID_EMAIL));
+		for ($i = 0; $i < count($dados); $i++) {
+			$email = EmailHeaderQuery::create()
+				->findPk($dados[$i]["IdEmail"]);
+			$dados[$i]["idEmail"] = $email->getIdEmail();
+			$dados[$i]["Assunto"] = $email->getAssunto();
+			$dados[$i]["Data"] = $email->getDataCadastro();
+		}
+
+		$this->view->grid = new Internals_View_Helper_Grid(EmailDetailPeer::OM_CLASS, $this->view, $dados);
+
+		$this->view->grid->addColumn("Assunto", "Assunto", EmailHeaderPeer::OM_CLASS, false);
+		$this->view->grid->addColumn("Data", "Data", EmailHeaderPeer::OM_CLASS, false);
+		$this->view->grid->setSort(false);
+
+		$link = array("/home/email?id=[1]"=>array(false => "idEmail"));
 		$this->view->grid->addLink("Assunto", $link, null, false);
 		$this->view->grid->addLink("Data", $link, null, false);
 	}

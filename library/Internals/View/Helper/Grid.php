@@ -3,17 +3,17 @@
 class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 
 	private $gridName;
-	private $type; 
+	private $type;
 	private $noDataMessage;
-	
+
 	public $target = "_self";
-	
+
 	private $header = array ();
 	private $footer = false;
 	private $content = array ();
 	private $link = array ();
 	private $flags = array();
-	
+
 	private $hasData = false;
 	private $paginate = true;
 	private $filter = true;
@@ -21,7 +21,7 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 	private $info = true;
 	private $showWeekDay = false;
 	private $showDayPart = false;
-	
+
 	function __construct($type, $view, $data = null) {
 		$this->view = $view;
 		$this->type = $type;
@@ -31,20 +31,20 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 		}
 		$this->generateGridName();
 	}
-	
+
 	public function renderGrid() {
 		if ($this->hasData) {
 			$this->addJavaScript ();
 			$header = '<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="'.$this->getGridName().'">';
 			$header .= '	<thead>' . PHP_EOL;
 			$header .= '		<tr>' . PHP_EOL;
-			
+
 			if (count ( $this->header ) == 0)
 				$this->putDefaultHeader ();
 			foreach ( $this->header as $title ) {
 				$header .= '			<th>' . $title . '</th>' . PHP_EOL;
 			}
-			
+
 			$header .= '		</tr>' . PHP_EOL;
 			$header .= '	</thead>' . PHP_EOL;
 			$content = '	<tbody>' . PHP_EOL;
@@ -60,7 +60,7 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 									if(is_array($flag)){
 										if ($flag[1]  == "equal") {
 											$retorno = '';
-											if(array_key_exists(3, $flags[1])){ 
+											if(array_key_exists(3, $flags[1])){
 												$retorno = $this->compareEqual($row[BasePeer::translateFieldname ( $flags[1][3], $flags[1][0], BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME )],$flags[1][2],$flags[0]);
 											} else {
 												$retorno = $this->compareEqual($row[$flags[1][0]],$flags[1][2],$flags[0]);
@@ -157,11 +157,11 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 				}
 				$content .= '		</tr>';
 			}
-			
+
 			$content .= '	</tbody>' . PHP_EOL;
-			
+
 			$footer = '';
-			
+
 			if ($this->footer == true) {
 				$footer = '	<tfoot>' . PHP_EOL;
 				$footer .= '		<tr>' . PHP_EOL;
@@ -171,14 +171,14 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 				$footer .= '		</tr>' . PHP_EOL;
 				$footer .= '	</tfoot>' . PHP_EOL;
 			}
-			
+
 			$footer .= '</table>' . PHP_EOL;
 			echo $header . $content . $footer;
 		} else{
 			echo ($this->noDataMessage == null ? "<h4>Sem Dados</h4>" : "<h4>" . $this->noDataMessage . "</h4>");
 		}
 	}
-	
+
 	private function substituiParametros($row, $link, $parametros){
 		$cont = 1;
 		foreach ($parametros as $parametro){
@@ -187,17 +187,17 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 				if($tipo[$cont-1] == false){
 					$link = str_replace("[".$cont."]", $row[$parametro[$cont-1]], $link);
 				} else {
-				
-					$link = str_replace("[".$cont."]", 
-							($tipo[$cont-1] == $this->type? 
-									$row[BasePeer::translateFieldname ( $tipo[$cont-1], 
-									$parametro[$tipo[$cont-1]], 
-									BasePeer::TYPE_COLNAME, 
+
+					$link = str_replace("[".$cont."]",
+							($tipo[$cont-1] == $this->type?
+									$row[BasePeer::translateFieldname ( $tipo[$cont-1],
+									$parametro[$tipo[$cont-1]],
+									BasePeer::TYPE_COLNAME,
 									BasePeer::TYPE_PHPNAME )] :
-									 $row[$tipo[$cont-1].".".BasePeer::translateFieldname ( $tipo[$cont-1], 
-									$parametro[$tipo[$cont-1]], 
-									BasePeer::TYPE_COLNAME, 
-									BasePeer::TYPE_PHPNAME )]), 
+									 $row[$tipo[$cont-1].".".BasePeer::translateFieldname ( $tipo[$cont-1],
+									$parametro[$tipo[$cont-1]],
+									BasePeer::TYPE_COLNAME,
+									BasePeer::TYPE_PHPNAME )]),
 							$link);
 				}
 				$cont++;
@@ -205,23 +205,23 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 		}
 		return $link;
 	}
-	
+
 	private function compareEqual($valor, $comp, $result){
 		if($valor == $comp){
 			return $result;
 		}
 		return false;
 	}
-	
+
 	private function compareNotEqual($valor, $comp, $result){
 		if($valor != $comp){
 			return $result;
 		}
 		return false;
 	}
-	
+
 	public function configureDefault() {
-	
+
 	}
 	/*
 	 * Como usar:
@@ -272,86 +272,86 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 			$this->link [$type.".".$key] = $link;
 		}
 	}
-	
+
 	public function addRow($row){
 		$this->hasData = true;
 		$this->content[] = $row;
 	}
-	
+
 	public function setShowFooter($footer) {
 		$this->footer = $footer;
 	}
-	
+
 	public function getGridName() {
 		return $this->gridName;
 	}
-	
+
 	public function setGridName($gridName) {
 		$this->gridName = $gridName;
 	}
-	
+
 	public function setNoDataMessage($message){
 		$this->noDataMessage = $message;
 	}
-	
+
 	public function setPaginate($bool){
 		$this->paginate = $bool;
 	}
-	
+
 	public function setFilter($bool){
 		$this->filter = $bool;
 	}
-	
+
 	public function setSort($bool){
 		$this->sort = $bool;
 	}
-	
+
 	public function setInfo($bool){
 		$this->info = $bool;
 	}
-	
+
 	public function setShowWeekDay()
 	{
 		$this->showWeekDay = true;
 	}
-	
+
 	public function setShowDayPart()
 	{
 		$this->showDayPart = true;
 	}
-	
-	
+
+
 	private function putDefaultHeader() {
 		foreach ( $this->content [0] as $key => $value ) {
 			$this->header [$key] = $key;
 		}
 	}
-	
+
 	private function generateGridName() {
 		// /TODO Implementar o método que crie nomes pseudo-aleatórios para os grids
 		$this->gridName = "grid".Internals_Util::randString(10);
 	}
-	
+
 	private function addJavaScript() {
 		$baseUrl = Zend_Controller_Front::getInstance ()->getRequest ()->getBaseUrl ();
 		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/dataTable/css/DT_bootstrap.css" );
 		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/bootstrap/css/bootstrap.min.css" );
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/dataTable/js/DT_bootstrap.js', 'text/javascript' );
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/dataTable/js/jquery.dataTables.min.js', 'text/javascript' );
-		
+
 		$this->view->inlineScript ()->captureStart ();
 		echo "$(document).ready(function() {
 					$('#".$this->getGridName()."').dataTable({
 						\"sPaginationType\": \"bootstrap\",
 						\"bPaginate\": ".($this->paginate ? "true" : "false").",
-				        \"bFilter\": ".($this->filter ? "true" : "false").", 
+				        \"bFilter\": ".($this->filter ? "true" : "false").",
         				\"bSort\": ".($this->sort ? "true" : "false").",
         				\"bInfo\": ".($this->info ? "true" : "false").",
 						\"oLanguage\": {
 						    \"sProcessing\":   \"Processando...\",
 						    \"sLengthMenu\":   \"Mostrar _MENU_ registros\",
 						    \"sZeroRecords\":  \"Não foram encontrados resultados\",
-						    \"sInfo\":         \"Mostrando de _START_ até _END_ de _TOTAL_ registros\",
+						    \"sInfo\":         \"\",
 						    \"sInfoEmpty\":    \"Mostrando de 0 até 0 de 0 registros\",
 						    \"sInfoFiltered\": \"(filtrado de _MAX_ registros no total)\",
 						    \"sInfoPostFix\":  \"\",
@@ -369,5 +369,6 @@ class Internals_View_Helper_Grid extends Zend_View_Helper_Abstract {
 		$this->view->inlineScript ()->captureEnd ();
 	}
 }
-
+//REMOVIDO DO LAYOUT
+//\"sInfo\":         \"Mostrando de _START_ até _END_ de _TOTAL_ registros\",
 ?>

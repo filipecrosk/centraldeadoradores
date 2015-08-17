@@ -1,10 +1,10 @@
 <?php
 
 class EscalaController extends Internals_Controller_CloseAction {
-	
+
 	public function init(){
 		parent::init();
-		
+
 		$baseUrl = Zend_Controller_Front::getInstance ()->getRequest ()->getBaseUrl ();
 		$this->view->headLink ()->prependStylesheet ( $baseUrl . "/default/jqueryui/css/ui-darkness/jquery-ui-1.8.23.custom.css" );
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.datepicker.min.js', 'text/javascript' );
@@ -13,7 +13,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.widget.min.js', 'text/javascript' );
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/jqueryui/js/jquery.ui.core.min.js', 'text/javascript' );
 		$this->view->headScript ()->prependFile ( $baseUrl . '/default/js/jquery-mask.js', 'text/javascript' );
-		
+
 		Internals_SubMenu::AddItem("Minhas escalas", null);
 		Internals_SubMenu::AddItem("Escalas", "escala/index");
 		if($this->nivelPermissao == 3){
@@ -22,7 +22,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		Internals_SubMenu::AddItem("Minhas escalas confirmadas", "escala/confirmadas");
 		Internals_SubMenu::AddItem("Minhas escalas a confirmar", "escala/aconfirmar");
 	}
-	
+
 	public function indexAction() {
 		$escalasPendentes = EscalaPessoaQuery::create()->filterByIdUsuario($this->userId)
 			->filterByIdStatusEscala(1)
@@ -30,7 +30,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->count();
 		/*
 		if($this->nivelPermissao != 3){
-			if($escalasPendentes > 0){ 
+			if($escalasPendentes > 0){
 				$this->_redirect("escala/aconfirmar");
 			} else {
 				$this->_redirect("escala/confirmadas");
@@ -55,7 +55,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		->select(Array('Id','Local.Nome', 'Data', 'Local.Id', 'TipoEscala.Nome'))
 		->find()
 		->toArray();
-		
+
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
@@ -63,16 +63,17 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->addColumn(TipoEscalaPeer::NOME, "Tipo de escala", TipoEscalaPeer::OM_CLASS);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
+		$this->view->grid->setPaginate(false);
 		$link = array("/escala/detalhes?data=[1]&idLocal=[2]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::DATA,
 				LocalPeer::OM_CLASS=>LocalPeer::ID));
 		$this->view->grid->addLink(LocalPeer::NOME, $link, LocalPeer::OM_CLASS);
-		
+
 		$criterio = array(
 				array("<img src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", array("recusada", "notequal", "0")),
 				array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "equal", "0")),
 				array("<img src='/default/images/icone-interrogacao.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("pendente", "notequal", "0"))
 		);
-		
+
 		$modalConfirmaNovoLocal = new Internals_Modal ( "O local digitado não está cadastrado. Deseja cadastrar este local?", "Novo local" );
 		$modalConfirmaNovoLocal->putYesButton ();
 		$modalConfirmaNovoLocal->putNoButton ();
@@ -104,7 +105,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		";
 		$this->view->inlineScript ()->captureEnd ();
 	}
-	
+
 	public function resumoAction(){
 		$dados = EscalaPessoaQuery::create()
 		->joinLocal()
@@ -114,7 +115,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		->select(Array('Id','Local.Nome', 'Data', 'Local.Id', 'TipoEscala.Nome'))
 		->find()
 		->toArray();
-		
+
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e Hora");
@@ -125,7 +126,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
 	}
-	
+
 	public function confirmadasAction(){
 		$dados = EscalaPessoaQuery::create()
 			->joinLocal()
@@ -137,18 +138,19 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->find()
 			->toArray();
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $dados);
-		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);		
+		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
 		$this->view->grid->addColumn(TipoEscalaPeer::NOME, "Tipo de escala", TipoEscalaPeer::OM_CLASS);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
-		
-		$criterio = 
+		$this->view->grid->setPaginate(false);
+
+		$criterio =
 		array(array("<img alt='recusar' src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Cancelar",$criterio);
 		$link = array("/escala/recusar?idEscala=[1]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::ID));
 		$this->view->grid->addLink("Cancelar", $link, null, false);
-		
+
 		$modalMotivo = new Internals_Modal("Qual o motivo do cancelamento?<br><br><textarea class=\"input-xlarge\" id=\"textAreaMotivo\" rows=\"3\" style=\" width:95%;\"></textarea>", "Motivo do cancelamento");
 		$modalMotivo->putSaveButton();
 		$modalMotivo->putCancelButton();
@@ -157,18 +159,18 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalRecusar->putYesButton();
 		$modalRecusar->putNoButton();
 		$modalRecusar->setModalName("Cancelar");
-		
+
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
 												Por favor, entre em contato com a liderança para solucionar o seu problema.<br>
 												<a href='mailto:bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
 		$modalFalhaRecusa->putOkButton();
 		$modalFalhaRecusa->setModalName("FalhaRecusa");
-		
+
 		$this->view->modal = array();
 		$this->view->modal[] = $modalMotivo;
 		$this->view->modal[] = $modalRecusar;
 		$this->view->modal[] = $modalFalhaRecusa;
-		
+
 		$this->view->inlineScript ()->captureStart ();
 		echo "
 		$(document).ready(function() {
@@ -204,7 +206,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 										$('#".$modalFalhaRecusa->getModalName()."').modal('show');
 									} else {
 										$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
-									}							
+									}
 								}
 							});
 						});
@@ -215,7 +217,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		} );";
 		$this->view->inlineScript ()->captureEnd ();
 	}
-	
+
 	public function aconfirmarAction(){
 		$dados = EscalaPessoaQuery::create()
 			->filterByIdUsuario($this->userId)
@@ -244,26 +246,27 @@ class EscalaController extends Internals_Controller_CloseAction {
 			);
 			$arrDados[] = $reg;
 		}
-		
+
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaPeer::OM_CLASS, $this->view, $arrDados);
-		
+
 		$this->view->grid->addColumn(LocalPeer::NOME, "Local", LocalPeer::OM_CLASS);
 		$this->view->grid->addColumn(EscalaPessoaPeer::DATA, "Data e hora");
 		$this->view->grid->addColumn("Funcoes", "Funções", null, false);
 		$this->view->grid->addColumn("TipoEscala", "Tipo de escala", null, false);
 		$this->view->grid->setShowWeekDay();
 		$this->view->grid->setShowDayPart();
-		
+		$this->view->grid->setPaginate(false);
+
 		$criterio = array(array("<img alt='confirmar' src='/default/images/icone-positivo.png' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Confirmar",$criterio);
 		$criterio = array(array("<img alt='recusar' src='/default/images/icone-negativo.png' alt='Escala recusada' style='display: block;margin-left: auto;margin-right: auto;' >", false));
 		$this->view->grid->addFlagColumn("Recusar",$criterio);
-		
+
 		$link = array("/escala/confirmar?idEscala=[1]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::ID));
 		$this->view->grid->addLink("Confirmar", $link, null, false);
 		$link = array("/escala/recusar?idEscala=[1]"=>array(EscalaPessoaPeer::OM_CLASS=>EscalaPessoaPeer::ID));
 		$this->view->grid->addLink("Recusar", $link, null, false);
-		
+
 		$this->view->modal = array();
 		$modalConfirmar = new Internals_Modal("Deseja realmente confirmar esta escala?", "Confirmar escala");
 		$modalConfirmar->putYesButton();
@@ -277,7 +280,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$modalMotivo->putSaveButton();
 		$modalMotivo->putCancelButton();
 		$modalMotivo->setModalName("Motivo");
-		
+
 		$modalFalhaRecusa = new Internals_Modal("Não é permitido cancelar a escala com menos de 1 semana de antecedencia.<br>
 												Por favor, entre em contato com a liderança para solucionar o seu problema.<br>
 												<a href='mailto:bet@ibcbh.com.br'>bet@ibcbh.com.br</a>", "Falha recusa");
@@ -288,7 +291,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$this->view->modal[] = $modalRecusar;
 		$this->view->modal[] = $modalMotivo;
 		$this->view->modal[] = $modalFalhaRecusa;
-		
+
 		$this->view->inlineScript ()->captureStart ();
 		echo "
 			$(document).ready(function() {
@@ -332,7 +335,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 												$('#".$modalFalhaRecusa->getModalName()."').modal('show');
 											} else {
 												$(window.location).attr('href', link.attr('href') + '&motivo=' + $('#textAreaMotivo').val() );
-											}							
+											}
 										}
 									});
 								});
@@ -344,15 +347,15 @@ class EscalaController extends Internals_Controller_CloseAction {
 			} );";
 		$this->view->inlineScript ()->captureEnd ();
 	}
-	
+
 	public function detalhesAction(){
 		$idLocal = $this->getRequest()->getParam("idLocal");
 		$data = $this->getRequest()->getParam("data");
-		
+
 		$this->view->local = LocalQuery::create()->filterById($idLocal)->select(array('Nome'))->findOne();
 		$data = new DateTime($data);
 		$this->view->data = $data->format('d/m/Y \à\s H:i');
-				
+
 		$dados = EscalaPessoaFuncaoQuery::create()
 			->joinEscalaPessoa()
 			->joinFuncao()
@@ -367,43 +370,45 @@ class EscalaController extends Internals_Controller_CloseAction {
 			->select(array("Funcao.Nome", "EscalaPessoa.IdStatusEscala"))
 			->find()
 			->toArray();
-		
+
+
 		if($this->nivelPermissao == 3){
 			$this->view->botao = "<a class='btn btn-primary' href='/escala/novousuario?local=" . $idLocal . "
 								&data=" . $this->getRequest()->getParam("data") . "'><i class='icon-white icon-plus'></i>Adicionar usuário</a>";
 		}
-		
+
 		for ($i = 0; $i < count($dados); $i++) {
 			$usuario = UsuarioQuery::create()
 				->findPk($dados[$i]["EscalaPessoaIdUsuario"]);
 			$dados[$i]["UsuarioId"] = $usuario->getId();
 			$dados[$i]["UsuarioNome"] = $usuario->getNome();
 		}
-		
+
 		$this->view->grid = new Internals_View_Helper_Grid(EscalaPessoaFuncaoPeer::OM_CLASS, $this->view, $dados);
-		
+
 		$this->view->grid->addColumn("UsuarioNome", "Nome", UsuarioPeer::OM_CLASS, false);
 		$this->view->grid->addColumn(FuncaoPeer::NOME, "Função", FuncaoPeer::OM_CLASS);
 		if($this->nivelPermissao == 3){
 			$this->view->grid->addColumn("EscalaPessoaMotivoRecusa", "Motivo Recusa", EscalaPessoaPeer::OM_CLASS, false);
 			$link = array("/usuarios/detalhe?idUsuario=[1]"=>array(false => "UsuarioId"));
 			$this->view->grid->addLink("UsuarioNome", $link, null,false);
-			
+
 			$criterio = array(array("<img src='/default/images/icone-interrogacao.png' alt='Confirmação pendente' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "1"))
 							 ,array("<img src='/default/images/icone-positivo.png' alt='Escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "2"))
 							 ,array("<img src='/default/images/icone-negativo.png' alt='Não escalado' style='display: block;margin-left: auto;margin-right: auto;' >", array("EscalaPessoa.IdStatusEscala", "equal", "3")));
 			$this->view->grid->addFlagColumn("Escala confirmada",$criterio);
 		}
+		$this->view->grid->setPaginate(false);
 	}
-	
+
 	public function novousuarioAction(){
 		$this->view->data = $this->getRequest()->getParam("data", null);
 		$this->view->idLocal = $this->getRequest()->getParam("local", null);
-		
+
 		$func = FuncaoQuery::create()->orderByNome()->find();
 		$funcoes = "<option selected='selected'></option>";
 		foreach ($func as $funcao){
-			$funcoes .= "<option value='" . $funcao->getId() . "'>" . $funcao->getNome() . "</option>"; 
+			$funcoes .= "<option value='" . $funcao->getId() . "'>" . $funcao->getNome() . "</option>";
 		}
 		$this->view->funcoes = $funcoes;
 		if($this->getRequest()->isPost()){
@@ -411,14 +416,14 @@ class EscalaController extends Internals_Controller_CloseAction {
 			$idLocal = $this->getRequest()->getPost('idLocal', null);
 			$nome = $this->getRequest()->getPost('nome', null);
 			$idsFuncoes = $this->getRequest()->getPost('idsFuncoes', null);
-			
+
 			$escalaPronta = EscalaPessoaQuery::create()
 				->filterByData(str_replace("%20", " ", $data ))
 				->filterByIdLocal($idLocal)
 				->find();
-			
+
 			$funcoes = explode(",", $idsFuncoes);
-			
+
 			$escala = new EscalaPessoa ();
 			$usuario = UsuarioQuery::create ()->filterByNome ( $nome )->findOne ();
 			$escala->setIdLocal ( $escalaPronta->getFirst()->getIdLocal () );
@@ -432,7 +437,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 				$escala->addEscalaPessoaFuncao($funcao);
 			}
 			$escala->save ();
-			
+
 			$email = new EmailHeader();
 			$email->setAssunto("Nova escala criada!");
 			$email->setIdUsuario ( $this->userId );
@@ -453,12 +458,12 @@ class EscalaController extends Internals_Controller_CloseAction {
 			$alertEmail->setEmailHeader($email);
 			$alertEmail->setUsuario($usuario);
 			$alertEmail->save();
-			
+
 			Internals_Message::success("Escala gravada com sucesso.");
 			$this->_redirect("escala");
 		}
 	}
-	
+
 	public function confirmarAction(){
 		$this->_helper->layout()->setLayout("blank");
 		$this->_helper->viewRenderer->setNoRender();
@@ -481,7 +486,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		Internals_Message::success("Escala confirmada com sucesso!");
 		$this->_redirect("escala/aconfirmar");
 	}
-	
+
 	public function recusarAction(){
 		$this->_helper->layout()->setLayout("blank");
 		$this->_helper->viewRenderer->setNoRender();
@@ -491,7 +496,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		if($escala->getIsEscalaBanda() == 0 || $escala->getIdResponsavel() == $this->userId){
 			$usuario = $escala->getUsuarioRelatedByIdUsuario();
 			$local = $escala->getLocal();
-			
+
 			$email = new EmailHeader();
 			$email->setAssunto("Cancelamento de Escala");
 			$email->setIdUsuario ( $usuario->getId() );
@@ -501,7 +506,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 				<em><strong>Escala cancelada!</strong></em>
 			</h2>
 			<p>
-				O usu&acute;rio " . $usuario->getNome() . " cancelou a escala para o dia " . str_replace("à", "&agrave;", $escala->getData('d/m/Y à\s H:i')) . " 		
+				O usu&acute;rio " . $usuario->getNome() . " cancelou a escala para o dia " . str_replace("à", "&agrave;", $escala->getData('d/m/Y à\s H:i')) . "
 				no local " . $local->getNome() . ".
 			</p>
 			<p>
@@ -569,7 +574,7 @@ class EscalaController extends Internals_Controller_CloseAction {
 		$escalas = EscalaPessoaQuery::create()
 			->filterByData($data)
 			->filterByIdLocal($local)
-			->delete();		
+			->delete();
 		Internals_Message::success("Escala excluída com sucesso.");
 		$this->_redirect("escala");
 	}

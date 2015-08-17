@@ -3,35 +3,35 @@ set_time_limit ( 0 );
 require_once 'init.php';
 
 class Cronjob_Mail {
-	
+
 	private $pdo = null;
 	private $contaEmail = null;
-	
+
 	function __construct() {
 		$this->start ();
 	}
-	
+
 	private function start() {
-		$this->pdo = new PDO ( "mysql:host=mysql.centraldeadoradores.com.br;dbname=adoradores", "adoradoresdb", "adoradoresdb" );
+		$this->pdo = new PDO ( "mysql:host=localhost;dbname=adoradores", "adoradores", "adoradores" );
 		if (! $this->pdo) {
 			die ( 'Erro ao criar a conexão' );
 		}
-		$this->contaEmail = $this->pdo->query ( "SELECT * 
+		$this->contaEmail = $this->pdo->query ( "SELECT *
 				FROM conta_email" )->fetchAll ();
 		$this->verificaConta ();
 	}
-	
+
 	private function verificaConta() {
 		echo ($this->contaEmail [0] ['Ultimo_Envio'] < date("Y-m-d H:i:s", strtotime ("-1 hour"))?"true":"false")."<br>";
 		echo $this->contaEmail [0] ['Emails_Enviados']."<br>";
 		if ($this->contaEmail [0] ['Ultimo_Envio'] < date("Y-m-d H:i:s", strtotime ("-1 hour"))) {
 			$this->contaEmail [0] ['Emails_Enviados'] = 0;
 			$this->getAllEmails ();
-		} else if ($this->contaEmail [0] ['Emails_Enviados'] < 80) {
+		} else if ($this->contaEmail [0] ['Emails_Enviados'] < 500) {
 			$this->getAllEmails ();
 		}
 	}
-	
+
 	private function getAllEmails() {
 		$emailsEnviar = $this->pdo->query ( "
 											SELECT  Enviar.*,
@@ -53,10 +53,10 @@ class Cronjob_Mail {
 											) as Enviar
 											INNER JOIN usuario on usuario.Id = Enviar.remetenteId
 											" )->fetchAll ();
-		
+
 		foreach ( $emailsEnviar as $enviar ) {
 			try {
-				if ($this->contaEmail [0] ["Emails_Enviados"] >= 80) {
+				if ($this->contaEmail [0] ["Emails_Enviados"] >= 500) {
 					break;
 				}
 				$anexos = $this->getAttachments($enviar ['IdHeader']);
@@ -73,10 +73,14 @@ class Cronjob_Mail {
 		$this->updateConta ();
 		echo "Enviados".$this->contaEmail [0] ["Emails_Enviados"];
 	}
-	
+
 	private function sendMail($to, $nome, $assunto, $corpo, $anexos, $remetente, $replyto) {
-		$settings = array ('ssl' => 'ssl', 'port' => 465, 'auth' => 'login', 'username' => $this->contaEmail [0] ["UserName"], 'password' => $this->contaEmail [0] ["Password"] );
-		$transport = new Zend_Mail_Transport_Smtp ( 'smtp.gmail.com', $settings );
+		#$settings = array ('ssl' => 'ssl', 'port' => 465, 'auth' => 'login', 'username' => $this->contaEmail [0] ["UserName"], 'password' => $this->contaEmail [0] ["Password"] );
+		#$transport = new Zend_Mail_Transport_Smtp ( 'smtp.gmail.com', $settings );
+		$settings = array ('ssl' => 'tls', 'port' => 587, 'auth' => 'login', 'username' => 'AKIAIHZPVJKFFRS3DVZQ', 'password' => 'AvGezXL+DunKhrQnv5DBXQPCH9GNTxyrwp5/PKcIK82q' );
+		$transport = new Zend_Mail_Transport_Smtp ( 'email-smtp.us-east-1.amazonaws.com', $settings );
+
+
 		$email_from = "centraldeadoradores@centraldeadoradores.com.br";
 		$name_from = "Central de Adoradores";
 		$email_to = $to;
@@ -90,24 +94,24 @@ class Cronjob_Mail {
 		$mail = $this->addAttachments($mail, $anexos);
 		$mail->send ( $transport );
 	}
-	
+
 	private function getAttachments($IdHeader){
 		$arquivos = $this->pdo->query ( "
-											SELECT * 
+											SELECT *
 											FROM arquivo_email
 											INNER JOIN arquivo on arquivo.Id = arquivo_email.Id_Arquivo
 											WHERE Id_Email = " . $IdHeader . "
 											" )->fetchAll ();
 		return $arquivos;
 	}
-	
+
 	private function addAttachments($mail, $anexos){
 		if($anexos != null){
 			$mail->createAttachment($anexos[0]["Conteudo"], $anexos[0]["Mime"], Zend_Mime::DISPOSITION_INLINE, Zend_Mime::ENCODING_BASE64, $anexos[0]["Nome"]);
 		}
 		return $mail;
 	}
-	
+
 	private function updateEmailEnviado($idEmailEnviado) {
 		$stmt = $this->pdo->prepare ( '	UPDATE email_detail
 										SET
@@ -116,14 +120,14 @@ class Cronjob_Mail {
 									' );
 		$stmt->execute ( array (':id' => $idEmailEnviado ) );
 	}
-	
+
 	private function updateConta() {
-		
-		$stmt = $this->pdo->prepare ( '	
+
+		$stmt = $this->pdo->prepare ( '
 										UPDATE conta_email
 										SET
 										Emails_Enviados = :Emails_Enviados,
-										Ultimo_Envio = :Ultimo_Envio 
+										Ultimo_Envio = :Ultimo_Envio
 										WHERE Id_Conta_Email = :id
 									' );
 		$stmt->execute ( array (':Emails_Enviados' => $this->contaEmail [0] ["Emails_Enviados"], ':Ultimo_Envio' => $this->contaEmail [0] ["Ultimo_Envio"], ':id' => $this->contaEmail [0] ['Id_Conta_Email'] ) );

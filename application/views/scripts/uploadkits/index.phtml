@@ -4,12 +4,12 @@
 			$(".btn").addClass("disabled");
 			$("#arquivo").change(function(){
 				var arquivo = document.getElementById('arquivo');
-				if(arquivo.files[0].size > 8000000){
+				if(arquivo.files[0].size > 15000000){
 					$.ajax({
 						url: '/ajax/geterroralert',
 						type: 'post',
 						dataType: 'html',
-						data: {"texto":"O arquivo para upload deve ser menor que 8MB."},
+						data: {"texto":"O arquivo para upload deve ser menor que 15MB."},
 						success: function(data) {
 							$("#alerts").html(data);
 							$(".btn").addClass("disabled");
@@ -24,7 +24,7 @@
 		} else {
 			$("#body").html('<div class="span6 offset1">'+
 								'<h2>Browser desatualizado.</h2>'+
-								'<p>Seu browser não está na ultima versão disponível. E para esta função, precisamos de algumas funcionalidades que'+  
+								'<p>Seu browser não está na ultima versão disponível. E para esta função, precisamos de algumas funcionalidades que'+
 								'esta versão não contém.</p>'+
 								'<p>Por favor, baixe a ultima versão do seu browser.</p>'+
 								'<div style="text-align:center;">'+
@@ -45,7 +45,7 @@
 									'</a>'+
 								'</div>'+
 							'</div>');
-			
+
 		}
 	});
 </script>
@@ -57,7 +57,7 @@
 		    <div class="controls">
 				<select id="funcao" class="span5" name="funcao">
 					<option selected="selected"></option>
-					<?php 
+					<?php
 						foreach ($this->funcoes as $funcao)
 						{
 							echo "<option value=\"".$funcao->getId()."\">".$funcao->getNome()."</option>";
@@ -81,5 +81,5 @@
 		</div>
 		<input class="btn" type="submit" value="Enviar" autocomplete="off" data-loading-text="Enviando, aguarde..." style="float:right;" onclick="$(this).button('loading');" />
 	</form>
-	
+
 </div>
